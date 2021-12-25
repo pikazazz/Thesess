@@ -1,4 +1,4 @@
 <script>
 
-    window.location = 'Introduce';
+    window.location = '../Introduce';
 </script>

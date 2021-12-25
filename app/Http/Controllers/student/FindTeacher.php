@@ -75,6 +75,8 @@ class FindTeacher extends Controller
      */
     public function update(Request $request, $id)
     {
+
+
         if ($request->reject) {
             $cancelRequest = request_teacher::find($id);
             $cancelRequest->status = "reject";
@@ -92,13 +94,14 @@ class FindTeacher extends Controller
             $cancelRequest->status = "success";
             $cancelRequest->save();
 
+            
             request_teacher::where('request_sender', '=',  $cancelRequest->request_sender)->update(['status' => 'cancel']);
             request_teacher::where('request_receiver', '=',  $cancelRequest->request_receiver)->update(['status' => 'cancel']);
             request_teacher::where('request_receiver', '=',  $cancelRequest->request_receiver)
                 ->where('request_sender', '=',  $cancelRequest->request_sender)
                 ->update(['status' => 'success']);
 
-            $group =  groupModel::find($cancelRequest->request_sender);
+            $group =  groupModel::find(Auth::user()->group);
             $group->teacher = $cancelRequest->request_sender;
             $group->save();
 

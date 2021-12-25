@@ -19,6 +19,7 @@ class CreateNews extends Migration
             $table->string('news_name')->nullable();
             $table->text('news_detail')->nullable();
             $table->text('creator')->nullable();
+            $table->text('icon')->nullable();
             $table->timestamps();
         });
     }

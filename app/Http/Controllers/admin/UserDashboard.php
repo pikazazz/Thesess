@@ -69,6 +69,20 @@ class UserDashboard extends Controller
     {
 
 
+        DB::table('users')->insert([
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'username' => $request->username,
+            'tel' => '',
+            'role' => $request->role,
+            'group' => null,
+            'email' => $request->username . '@mail.rmutt.ac.th',
+            'password' => Hash::make($request->password),
+        ]);
+
+        $student = DB::table('users')->where('role', '=', 'student')->get();
+        $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
+        return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student]);
     }
 
     /**

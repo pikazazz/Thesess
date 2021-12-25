@@ -23,6 +23,69 @@
 
 @section('content')
 
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title"></h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="{{route('UserDashboard.store')}}" method="POST" >
+                @csrf
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">ชื่อจริง</label>
+                        <input type="text" class="form-control" id="fname" name="fname"
+                            value="" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">นามสกุล</label>
+                        <input type="text" class="form-control" id="lname" name="lname"
+                            value="" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">รหัสนักศึกษา / รหัสอาจารย์</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                            value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">สถานะ</label>
+                        <select class="form-control" name="role" id="role">
+                            <option value="" selected="selected">
+                                -- โปรดเลือก --
+                            </option>
+                            <option value="student">นักศึกษา</option>
+                            <option value="teacher">อาจารย์</option>
+                            <option value="admin">ผู้ดูแลระบบ</option>
+                            </option>
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">รหัสผ่าน</label>
+                        <input type="password" class="form-control" minlength="8" id="password" name="password"
+                            value="" required>
+                    </div>
+
+
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
     <div class="row">
         <!-- left column -->
         <div class="col-md-12">

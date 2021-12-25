@@ -17,6 +17,7 @@ class CreateCategory extends Migration
             $table->id();
             $table->string('category_name')->nullable();
             $table->string('creator')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

@@ -70,7 +70,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"> ชื่อกลุ่ม {{ $group->group_name }}</h1>
+                    <h1 class="m-0"> ชื่อกลุ่ม </h1>
 
 
                 </div><!-- /.col -->
@@ -80,6 +80,13 @@
                         <li class="breadcrumb-item active">ขั้นตอนการทำวิทยานิพนธ์</li>
                     </ol>
                 </div><!-- /.col -->
+            </div><!-- /.row -->
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h5 class="m-0"> {{ $group->group_name }} </h5>
+
+                </div><!-- /.col -->
+
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>

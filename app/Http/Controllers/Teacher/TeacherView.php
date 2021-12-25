@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Teacher;
 
+use App\Models\student\groupModel;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherView extends Controller
 {
@@ -19,7 +22,26 @@ class TeacherView extends Controller
     public function index()
     {
 
-        return view('components.teacher.dashbroad.home',['page' => "list_group"]);
+        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+
+        $list_names = [];
+        foreach ($group as $Group) {
+            $list_name = User::find($Group->std_first);
+            $list_names[] = array(
+                'name' => $list_name->fname . ' ' . $list_name->lname,
+                'tel' => $list_name->tel
+            );
+        }
+
+        foreach ($group as $Groups) {
+            $list_name = User::find($Groups->std_second);
+            $list_names[] = array(
+                'name' => $list_name->fname . ' ' . $list_name->lname,
+                'tel' => $list_name->tel
+            );
+        }
+
+        return view('components.teacher.dashbroad.home', ['page' => 'list_group', 'group' => $group,'list_std'=>$list_names]);
     }
 
     /**
@@ -72,7 +94,27 @@ class TeacherView extends Controller
                 break;
         }
 
-        return view('components.teacher.dashbroad.home', ['page' => $type]);
+        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+
+        $list_names = [];
+        foreach ($group as $Group) {
+            $list_name = User::find($Group->std_first);
+            $list_names[] = array(
+                'name' => $list_name->fname . ' ' . $list_name->lname,
+                'tel' => $list_name->tel
+            );
+        }
+
+        foreach ($group as $Groups) {
+            $list_name = User::find($Groups->std_second);
+            $list_names[] = array(
+                'name' => $list_name->fname . ' ' . $list_name->lname,
+                'tel' => $list_name->tel
+            );
+        }
+
+        return view('components.teacher.dashbroad.home', ['page' => $type, 'group' => $group,'list_std'=>$list_names]);
+
     }
 
     /**

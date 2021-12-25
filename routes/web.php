@@ -124,7 +124,15 @@ Route::group(['middleware' => ['checkrole:admin']], function () {
                     ]);
                     $pass = null;
                 }
+
+                $student = DB::table('users')->where('role', '=', 'student')->get();
+                $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
+                return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student, 'message' => $request->message]);
             } else {
+                $student = DB::table('users')->where('role', '=', 'student')->get();
+                $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
+                return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student, 'message' => $request->message]);
+                dd('ss');
             }
         } catch (\Illuminate\Database\QueryException $ex) {
             $student = DB::table('users')->where('role', '=', 'student')->get();

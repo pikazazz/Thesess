@@ -41,7 +41,20 @@
                             <input type="text" class="form-control" id="category_name" name="category_name" value=""
                                 placeholder="ชื่อหมวดหมู่">
                         </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">สีหัวข้อ</label>
+                            <select class="form-control" name="color" placeholder="ทีปรึกษาร่วม" id="color">
+                                <option value="" selected="selected">
+                                    -- โปรดเลือก --
+                                </option>
+                                <option value="bg-green" class="bg-green">Green</option>
+                                <option value="bg-yellow" class="bg-yellow">Yellow</option>
+                                <option value="bg-red" class="bg-red">Red</option>
+                            </select>
+                        </div>
                     </div>
+
+
                     <!-- /.card-body -->
                     <div class="card-footer">
                         <button type="submit" name="type" value="category" class="btn btn-primary">Submit</button>
@@ -91,6 +104,26 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">ไอคอน</label>
+
+                            <select class="form-control" name="icon" id="icon">
+                                <option value="" selected="selected">
+                                    -- โปรดเลือก --
+                                </option>
+
+                                <option value="fas fa-envelope">จดหมาย</option>
+                                <option value="fas fa-clock">นาฬิกา</option>
+                                <option value="fas fa-calendar-alt">ปฏิทิน</option>
+                                <option value="fas fa-exclamation-triangle">เตือน</i>
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">รายละเอียด</label>
@@ -153,11 +186,11 @@
                                                     </form>
                                                 </td>
                                                 <td class="col-md-1">
-                                                    <form action="{{ route('UserDashboard.destroy', $Category->id) }}"
+                                                    <form action="{{ route('Introduce.destroy', $Category->id) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('delete')
-                                                        <button type="submit" class="btn btn-danger"><i
+                                                        <button type="submit" name="type" value="category" class="btn btn-danger"><i
                                                                 class="fas fa-trash"></i></button>
                                                     </form>
                                                 </td>
@@ -179,28 +212,12 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">อาจารย์</h3>
-                    <div class="card-tools">
-                        <form action="{{ route('UserDashboard.create') }}" method="POST">
-                            @csrf
-                            @method('GET')
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="teacher_search" class="form-control float-right"
-                                    placeholder="Search">
+                    <h3 class="card-title">หมวดหมู่</h3>
 
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -212,59 +229,48 @@
                                 <table class="table table-head-fixed text-nowrap">
                                     <thead>
                                         <tr>
-                                            <th>ID </th>
-                                            <th>ชื่อ นามสกุล</th>
-                                            <th>อีเมล์</th>
-                                            <th>ระดับผู้ใช้</th>
-                                            <th>สิทธิ์การใช้งาน</th>
+                                            <th>ID</th>
+                                            <th>ชื่อข่าวประชาสัมพันธ์</th>
+                                            <th>เนื้อหา</th>
+                                            <th>วันที่สร้าง</th>
                                             <th></th>
                                             <th>เครื่องมือ</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @php
-                                            $i = 1;
-                                        @endphp
-                                        @foreach ($teacher as $tea)
-                                            @if ($tea->role != 'student')
-                                                <tr>
-                                                    <td>{{ $i++ }}</td>
-                                                    <td>{{ $tea->fname }} {{ $tea->lname }}</td>
-                                                    <td>{{ $tea->email }}</td>
-                                                    <td>{{ $tea->role }}</td>
-                                                    <td>{{ $tea->level }}</td>
-                                                    <td>
-                                                        <form action="{{ route('UserDashboard.edit', $tea->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('put')
-                                                            <button type="submit" class="btn btn-warning"><i
-                                                                    class="fas fa-pen"></i></button>
-                                                        </form>
-                                                    </td>
-                                                    <td class="col-md-1">
-                                                        <form action="{{ route('UserDashboard.destroy', $tea->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit" class="btn btn-danger"><i
-                                                                    class="fas fa-trash"></i></button>
-                                                        </form>
-                                                    </td>
 
-                                                    <td class="col-md-1">
-                                                        <form action="{{ route('UserDashboard.show', $tea->id) }}"
-                                                            method="GET">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit" class="btn btn-success"><i
-                                                                    class="fas fa-eye"></i></button>
-                                                        </form>
-                                                    </td>
+                                        @foreach ($news as $News)
 
-                                                </tr>
-                                            @endif
+                                            <tr>
+                                                <td>{{ $News->id }}</td>
+                                                <td>{{ $News->news_name }}</td>
+                                                <td>{!! $News->news_detail !!}</td>
+                                                <td>{{ $News->created_at }}</td>
+                                                <td>
+                                                    <form action="{{ route('UserDashboard.edit', $News->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('put')
+                                                        <button type="submit" class="btn btn-warning"><i
+                                                                class="fas fa-pen"></i></button>
+                                                    </form>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <form action="{{ route('Introduce.destroy', $News->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" name="type" value="news" class="btn btn-danger"><i
+                                                                class="fas fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+
+
+
+                                            </tr>
+
+
                                         @endforeach
 
                                     </tbody>
@@ -277,7 +283,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
 
 

@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\student;
+use App\Models\admins\category;
+use App\Models\admins\news;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,7 +16,9 @@ class introduce extends Controller
      */
     public function index()
     {
-        return view('components.student.introduce.home');
+        $category = category::get();
+        $news = news::get();
+        return view('components.student.introduce.home',['category'=> $category,'news'=>$news]);
     }
 
     /**

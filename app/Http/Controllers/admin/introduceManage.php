@@ -23,7 +23,7 @@ class introduceManage extends Controller
 
         $news = news::get();
         $category = category::get();
-       
+
         return view('components.admin.introduce.home', ['category' => $category, 'news' => $news]);
     }
 
@@ -50,9 +50,8 @@ class introduceManage extends Controller
             $crateCategory = new category();
             $crateCategory->category_name = $request->category_name;
             $crateCategory->creator = Auth::user()->id;
+            $crateCategory->color = $request->color;
             $crateCategory->save();
-
-
             $news = news::get();
             $category = category::get();
 
@@ -63,6 +62,8 @@ class introduceManage extends Controller
             $cratenews->news_name = $request->news_name;
             $cratenews->news_detail = $request->news_detail;
             $cratenews->creator = Auth::user()->id;
+            $cratenews->icon = $request->icon;
+
             $cratenews->save();
 
 
@@ -113,8 +114,16 @@ class introduceManage extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+
+        if ($request->type == 'news') {
+            news::destroy($id);
+        } else if ($request->type == 'category') {
+            category::destroy($id);
+        }
+        $news = news::get();
+        $category = category::get();
+        return view('components.admin.introduce.redirect', ['category' => $category, 'news' => $news]);
     }
 }

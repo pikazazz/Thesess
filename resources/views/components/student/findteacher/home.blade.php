@@ -51,11 +51,8 @@
 
                         <div class="card-footer">
                             <div class="row">
-                                <div class="col-5"></div>
-
-                                <div class="col-sm-3">
+                                <div class="col-sm-12">
                                     <br>
-
                                     <div class="description-block">
                                         <h5 class="description-header">{{ $Teacher->fname }} {{ $Teacher->lname }}</h5>
                                     </div>

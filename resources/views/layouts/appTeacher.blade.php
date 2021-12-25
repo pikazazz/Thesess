@@ -225,7 +225,7 @@
                                     alt="User Image">
                             </div>
                             <div class="info">
-                                <a href="{{ route('Account.index') }}" style="color: white"
+                                <a href="{{ route('') }}" style="color: white"
                                     class="d-block">{{ Auth::user()->fname }}
                                     {{ Auth::user()->lname }}</a>
                             </div>

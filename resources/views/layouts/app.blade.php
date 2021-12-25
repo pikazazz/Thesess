@@ -269,7 +269,7 @@
                                     <a href="{{ route('FindGroup.index') }}" class="nav-link">
                                         <i class="nav-icon fas fa-th"></i>
                                         <p>
-                                            ค้นหาคู่โปรเจค
+                                            ค้นหาคู่โครงงาน
                                             <span class="right badge badge-danger">New</span>
                                         </p>
                                     </a>
