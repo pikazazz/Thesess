@@ -51,6 +51,7 @@
                             <tr>
                                 <th>ชื่อโครงงาน</th>
                                 <th>ผู้จัดทำ</th>
+                                <th>รายการสอบ</th>
                                 <th>วันที่</th>
                                 <th>เครื่องมือ</th>
 
@@ -69,6 +70,7 @@
 
                                     <td>ระบบหยอดเหรียญ</td>
                                     <td>นายวิศรุต คงจำเนียร</td>
+                                    <td>80%</td>
                                     <td>11-7-2014</td>
                                     <td><button type="modal" class="btn btn-success" data-toggle="modal"
                                             data-target="#modal-success{{ $i }}">

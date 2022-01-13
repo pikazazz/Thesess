@@ -15,7 +15,7 @@
         <!-- Font Awesome -->
         <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
         <!-- Ionicons -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css')}}">
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Tempusdominus Bootstrap 4 -->
         <link rel="stylesheet"
             href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
@@ -29,6 +29,8 @@
         <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
         <!-- Daterange picker -->
         <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}">
         <!-- summernote -->
         <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -58,8 +60,8 @@
 
                 <!-- Preloader -->
                 <div class="preloader flex-column justify-content-center align-items-center">
-                    <img class="animation__shake" src="{{ asset('/img/loading.png') }}" alt="AdminLTELogo" height="200"
-                        width="200">
+                    <img class="animation__shake" src="{{ asset('/img/loading.png') }}" alt="AdminLTELogo"
+                        height="200" width="200">
                 </div>
 
                 <!-- Navbar -->
@@ -221,11 +223,11 @@
                         <!-- Sidebar user panel (optional) -->
                         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                             <div class="image">
-                                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
-                                    alt="User Image">
+                                <img src="{{ Auth::user()->img }}" style="width: 40px;height: 40px;"
+                                    class="img-circle elevation-2" alt="User Image">
                             </div>
                             <div class="info">
-                                <a href="{{ route('') }}" style="color: white"
+                                <a href="{{ route('Accounts.index') }}" style="color: white"
                                     class="d-block">{{ Auth::user()->fname }}
                                     {{ Auth::user()->lname }}</a>
                             </div>
@@ -257,28 +259,20 @@
                                 data-widget="treeview" role="menu" data-accordion="false">
                                 <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
+                                <li class="nav-header">อาจารย์ทั่วไป</li>
+
                                 <li class="nav-item">
                                     <a href="{{ route('Dashboard.index') }}" class="nav-link ">
                                         <i class="nav-icon fas fa-tachometer-alt"></i>
                                         <p>Dashboard</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('Proposal.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-book"></i>
-                                        <p>สอบหัวข้อโครงงาน</p>
-                                    </a>
-                                </li>
+
                                 <li class="nav-item">
                                     <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
                                         <i class="nav-icon fas fa-book"></i>
                                         <p>หัวข้อโครงงาน</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-users"></i>
-                                        <p>กลุ่มโครงงาน</p>
+                                        <p>ที่ยังไม่มีอาจารย์ที่ปรึกษา</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -287,35 +281,29 @@
                                         <p>กลุ่มโครงงานของฉัน</p>
                                     </a>
                                 </li>
-                                {{-- <li class="nav-item menu-open">
-                                <a href="{{ route('Dashboard.index') }}" class="nav-link ">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Dashboard
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="./index.html" class="nav-link ">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v1</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index2.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v2</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index3.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dashboard v3</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li> --}}
+
+
+                                <li class="nav-header">อาจารย์ประจำวิชา</li>
+
+                                <li class="nav-item">
+                                    <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-book"></i>
+                                        <p>เปิดจองวันสอบ</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('Proposal.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-book"></i>
+                                        <p>ลงผลการสอบ</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>รายการขอสอบ</p>
+                                    </a>
+                                </li>
+
 
 
 
@@ -381,8 +369,7 @@
             </div>
         </main>
 
-        <!-- ./wrapper -->
-
+      
 
         <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
         <!-- jQuery UI 1.11.4 -->
@@ -415,9 +402,9 @@
         <script src="{{ asset('dist/js/adminlte.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="{{ asset('dist/js/demo.js') }}"></script>
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
 
+        <script src="{{ asset('plugins/fullcalendar/main.js') }}"></script>
+        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     </body>
 
     </html>

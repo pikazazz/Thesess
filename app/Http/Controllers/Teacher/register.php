@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\publics;
+namespace App\Http\Controllers\teacher;
 
-use Illuminate\Support\Facades\Auth;
-use App\Models\student\groupModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class groups extends Controller
+class register extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +14,7 @@ class groups extends Controller
      */
     public function index()
     {
-        return view('components.public.group.home');
+        return view('components.teacher.register.home');
     }
 
     /**
@@ -48,11 +46,7 @@ class groups extends Controller
      */
     public function show($id)
     {
-        if (Auth::user()->group = $id) {
-            return view('components.public.group.home');
-        } else {
-            return view('components.public.group.home');
-        }
+        //
     }
 
     /**
@@ -75,16 +69,7 @@ class groups extends Controller
      */
     public function update(Request $request, $id)
     {
-        $editGroup = groupModel::find($id);
-        $editGroup->group_name = $request->group_name;
-        $editGroup->path_img_group = $request->path_img_group;
-        $editGroup->co_teacher = $request->co1;
-        $editGroup->co_teacher_2 = $request->co2;
-        $editGroup->co_teacher_3 = $request->co3;
-        $editGroup->save();
-
-        return redirect()->route('Group.index')->with('messagesok','แก้ไขข้อมูลกลุ่มสำเร็จ')->with('messagetype','success');
-
+        //
     }
 
     /**

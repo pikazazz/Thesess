@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active">FindGroup</li>
+                        <li class="breadcrumb-item active">Profile</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -23,49 +23,59 @@
 
 @section('content')
 
-<div class="row">
+    <div class="row">
 
-    <div class="col-sm-3">
-    </div>
-    <div class="col-sm-6">
-        <div class="card card-primary card-outline">
-            <div class="card-body box-profile">
-              <div class="text-center">
-                <img class="profile-user-img img-fluid img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
-              </div>
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-6">
+            <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                    <div class="text-center">
+                        <img class="profile-user-img img-fluid img-circle" style="width: 128px;height: 128px;"
+                            src="{{ Auth::user()->img }} " alt="User profile picture">
+                    </div>
 
-              <h3 class="profile-username text-center">ดร.วีณา จันทร์รัชชกูล</h3>
+                    <h3 class="profile-username text-center">{{ Auth::user()->fname }} {{ Auth::user()->lname }} </h3>
 
-              <p class="text-muted text-center">อาจารย์</p>
+                    <p class="text-muted text-center">อาจารย์</p>
 
-              <ul class="list-group list-group-unbordered mb-3">
-                <li class="list-group-item">
-                  <b>ภาควิชา</b> <a class="float-right">วิทยาการคอมพิวเตอร์</a>
-                </li>
+                    <ul class="list-group list-group-unbordered mb-3">
+                        <li class="list-group-item">
+                            <b>ภาควิชา</b> <a class="float-right">วิทยาการคอมพิวเตอร์</a>
+                        </li>
 
-                <li class="list-group-item">
-                  <b>ที่อยู่</b> <a class="float-right">54/9</a>
-                </li>
-                <li class="list-group-item">
-                    <b>เบอร์โทรศัพท์</b> <a class="float-right">0972742800</a>
-                </li>
-                <li class="list-group-item">
-                    <b>อีเมล์</b> <a class="float-right">manirat@gmail.com</a>
-                </li>
-              </ul>
-              @php
-                  $id = Auth::user()->id;
-              @endphp
-              <a href="{{route('Account.show',$id)}}" class="btn btn-primary btn-block"><b>แก้ไขข้อมูล</b></a>
+                        <li class="list-group-item">
+                            <b>ที่อยู่</b> <a class="float-right">{{ Auth::user()->address }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>เบอร์โทรศัพท์</b> <a class="float-right">{{ Auth::user()->tel }}</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>อีเมล์</b> <a class="float-right">{{ Auth::user()->email }}</a>
+                        </li>
+                    </ul>
+                    @php
+                        $id = Auth::user()->id;
+                    @endphp
+                    <a href="{{ route('Accounts.update', $id) }}" class="btn btn-primary btn-block"><b>แก้ไขข้อมูล</b></a>
+                </div>
+                <!-- /.card-body -->
             </div>
-            <!-- /.card-body -->
-          </div>
 
 
-    </div><!-- /.col -->
-    <div class="col-sm-3">
+        </div><!-- /.col -->
+        <div class="col-sm-3">
+        </div>
     </div>
-</div>
-@endsection
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (\Session::has('messages'))
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire(
+                'Success',
+                '{!! \Session::get('messages') !!}',
+                '{!! \Session::get('messagetype') !!}',
+            )
+        </script>
+    @endif
+@endsection

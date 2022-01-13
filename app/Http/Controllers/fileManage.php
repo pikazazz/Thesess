@@ -53,7 +53,7 @@ class fileManage extends Controller
             $group->path_proposal = "$destinationPath" . "/" . "$file";
             $group->save();
 
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->type != 'proposal' && $request->chapter1 == 'pdf') {
             $input = $request->all();
             $input['file'] = '';
@@ -66,7 +66,9 @@ class fileManage extends Controller
             $group = groupModel::find(Auth::user()->group);
             $group->path_ch1 = "$destinationPath" . "/" . "$file";
             $group->save();
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
+
+
         } else if ($request->type != 'proposal' && $request->chapter2 == 'pdf') {
             $input = $request->all();
             $input['file'] = '';
@@ -79,7 +81,7 @@ class fileManage extends Controller
             $group = groupModel::find(Auth::user()->group);
             $group->path_ch2 = "$destinationPath" . "/" . "$file";
             $group->save();
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->type != 'proposal' && $request->chapter3 == 'pdf') {
             $input = $request->all();
             $input['file'] = '';
@@ -92,7 +94,7 @@ class fileManage extends Controller
             $group = groupModel::find(Auth::user()->group);
             $group->path_ch3 = "$destinationPath" . "/" . "$file";
             $group->save();
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->type != 'proposal' && $request->chapter4 == 'pdf') {
             $input = $request->all();
             $input['file'] = '';
@@ -105,7 +107,7 @@ class fileManage extends Controller
             $group = groupModel::find(Auth::user()->group);
             $group->path_ch4 = "$destinationPath" . "/" . "$file";
             $group->save();
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->type != 'proposal' && $request->chapter5 == 'pdf') {
             $input = $request->all();
             $input['file'] = '';
@@ -118,9 +120,10 @@ class fileManage extends Controller
             $group = groupModel::find(Auth::user()->group);
             $group->path_ch5 = "$destinationPath" . "/" . "$file";
             $group->save();
-            return redirect()->route('Group.index', ['messagesok' => '2']);
+            return redirect()->route('Group.index')->with('messagesok','เพิ่มไฟล์สำเร็จ')->with('messagetype','success');
         } else {
-            return redirect()->route('Group.index', ['messagesok' => '3']);
+            return redirect()->route('Group.index')->with('messagesok','ประเภทไฟล์ไม่ถูกต้อง ลองใหม่ด้วยไฟล์ PDF')->with('messagetype','error');
+
         }
     }
 
@@ -178,7 +181,8 @@ class fileManage extends Controller
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
+
         } else if ($request->typedel == 'ch1') {
             $destinationPath = 'groups/' . Auth::user()->group . '/ch1';
             $folderPath = public_path($destinationPath);
@@ -189,18 +193,19 @@ class fileManage extends Controller
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->typedel == 'ch2') {
             $destinationPath = 'groups/' . Auth::user()->group . '/ch2';
             $folderPath = public_path($destinationPath);
             $response = File::deleteDirectory($folderPath);
-
             $rm =    groupModel::find($id);
             $rm->path_ch2 = null;
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
+
+
         } else if ($request->typedel == 'ch3') {
             $destinationPath = 'groups/' . Auth::user()->group . '/ch3';
             $folderPath = public_path($destinationPath);
@@ -211,7 +216,7 @@ class fileManage extends Controller
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->typedel == 'ch4') {
             $destinationPath = 'groups/' . Auth::user()->group . '/ch4';
             $folderPath = public_path($destinationPath);
@@ -222,7 +227,7 @@ class fileManage extends Controller
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
         } else if ($request->typedel == 'ch5') {
             $destinationPath = 'groups/' . Auth::user()->group . '/ch5';
             $folderPath = public_path($destinationPath);
@@ -233,7 +238,7 @@ class fileManage extends Controller
             $rm->save();
             // dd($response,$folderPath);
 
-            return redirect()->route('Group.index', ['messagesok' => '1']);
+            return redirect()->route('Group.index')->with('messagesok','ลบไฟล์สำเร็จ')->with('messagetype','success');
         }
     }
 }

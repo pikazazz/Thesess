@@ -4,6 +4,8 @@ namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\student\groupModel;
+use Illuminate\Support\Facades\Auth;
 
 class mygroup extends Controller
 {
@@ -18,7 +20,16 @@ class mygroup extends Controller
     }
     public function index()
     {
-        return view('components.teacher.mygroup.home');
+
+
+        $group = groupModel::where('teacher','=',Auth::user()->id)
+            ->orwhere('co_teacher', '=',Auth::user()->id)
+            ->orwhere('co_teacher_2', '=',Auth::user()->id)
+            ->orwhere('co_teacher_3', '=',Auth::user()->id)
+            ->get();
+
+        
+        return view('components.teacher.mygroup.home',['group'=>$group]);
     }
 
     /**

@@ -3,8 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\student\request_group;
-
-
+use App\Models\publics\messagelogs;
+use Illuminate\Support\Facades\DB;
+use App\Models\calendar;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,67 +31,57 @@ Route::POST('FindGroup', function (Request $request) {
 });
 
 
-Route::GET('DOI', function (Request $request) {
 
 
-    $api_url = 'https://www.bitkub.com/api/market/market-prices';
+Route::POST('messageapi', function (Request $request) {
 
-    // Read JSON file
-    $json_data = file_get_contents($api_url);
+    $result = new messagelogs;
+    $result->group = $request->chanel;
+    $result->sender = $request->sender_id;
+    $result->massage = $request->message;
+    $result->save();
 
-    // Decode JSON data into PHP array
-    $response_data = json_decode($json_data);
-
-    // All user data exists in 'data' object
-    $user_data = $response_data->data;
-
-    // Cut long data into small & select only first 10 records
-    $user_data = array_slice($user_data, 0, 9);
-
-    // Print data if need to debug
-
-    $rate = 0;
-    foreach ($user_data as $user) {
-
-        if ($user->currency == "KUB") {
-            $rate =  $user->last_price;
-        }
-    }
-
-    if ($rate >= 320 or $rate < 200) {
-
-        $url        = 'https://notify-api.line.me/api/notify';
-        $token      = 'e4aFQo8OrZpUs9Wkm71noz0fo5VFZpV7dsZEEtefURL';
-        $headers    = [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Authorization: Bearer ' . $token
-        ];
-        $fields     = 'message=เรทตอนนี้ ' . $rate;
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        $result = json_decode($result, TRUE);
-
-
-        return "SUCCESS";
-    }
-    return "<script>
-    window.setInterval('refresh()', 2000);
-    // Call a function every 10000 milliseconds
-    // (OR 10 seconds).
-    // Refresh or reload page.
-    function refresh() {
-        window.location.reload();
-    }
-</script>
-    ";
+    return $request;
 });
 
 
+Route::GET('calendar', function () {
+
+    $result = DB::table('calendar')->get();
+    return $result;
+});
+
+Route::POST('calendar', function (Request $request) {
+
+    $request->validate(
+        [
+            'title' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'backgroundColor' => 'required',
+            'borderColor' => 'required',
+            'unit' => 'required',
+        ],
+        [
+            'title.required' => 'ตรวจสอบการกรอก หัวข้อ',
+            'start_date.required' => 'ตรวจสอบการกรอก วันที่เปิด',
+            'end_date.required' => 'ตรวจสอบการกรอก วันที่ปิด ',
+            'backgroundColor.required' => 'ตรวจสอบการเลือกสี',
+            'borderColor.required' => 'ตรวจสอบการเลือกสี',
+            'unit.required' => 'ตรวจสอบการกรอก จำนวนที่เปิดรับ'
+        ]
+    );
+
+    $result = new calendar;
+
+    $result->title = $request->title;
+    $result->start_date = $request->start_date;
+    $result->end_date = $request->end_date;
+    $result->backgroundColor = $request->backgroundColor;
+    $result->borderColor = $request->borderColor;
+    $result->allDay = $request->allDay;
+    $result->unit = $request->unit;
+    $result->save();
+   
+    return $result;
+});

@@ -22,116 +22,168 @@
     @endsection
 
 
+
+
     @section('content')
+
         <div class="row">
             <div class="col-md-3"></div>
             <div class="col-md-6">
                 <div class="card card-danger">
                     <div class="card-body">
-                            
-                        <!-- Date dd/mm/yyyy -->
-                        <div class="form-group">
-                            <label>ชื่อจริง :</label>
+                        @php
+                            $id = Auth::user()->id;
+                        @endphp
 
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="far fa-user"></i></span>
+                        <form action="{{ route('Accounts.update', $id) }}" method="post">
+                            @csrf
+                            @method('put')
+                            <!-- Date dd/mm/yyyy -->
+                            <div class="form-group">
+                                <label>ชื่อจริง :</label>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="fname"
+                                        value="{{ Auth::user()->fname }}" data-inputmask-alias="datetime"
+                                        data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
                                 </div>
-                                <input type="text" class="form-control" value="{{ Auth::user()->fname }}"
-                                    data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                                    inputmode="numeric">
+                                <!-- /.input group -->
                             </div>
-                            <!-- /.input group -->
-                        </div>
 
 
-                        <div class="form-group">
-                            <label>นามสกุล :</label>
+                            <div class="form-group">
+                                <label>นามสกุล :</label>
 
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="far fa-user"></i></span>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="lname"
+                                        value="{{ Auth::user()->lname }}" data-inputmask-alias="datetime"
+                                        data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
                                 </div>
-                                <input type="text" class="form-control" value="{{ Auth::user()->lname }}"
-                                    data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                                    inputmode="numeric">
+                                <!-- /.input group -->
                             </div>
-                            <!-- /.input group -->
-                        </div>
-                        <!-- /.form group -->
+                            <!-- /.form group -->
 
 
 
-                        <!-- phone mask -->
-                        <div class="form-group">
-                            <label>ที่อยู่ :</label>
+                            <!-- phone mask -->
+                            <div class="form-group">
+                                <label>ที่อยู่ :</label>
 
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                    </div>
+                                    <input type="text" name="address" value="{{ Auth::user()->address }}"
+                                        class="form-control" inputmode="text" required>
                                 </div>
-                                <input type="text" value="{{ Auth::user()->address }}" class="form-control"
-                                    data-inputmask="'mask': ['999-999-9999 [x99999]', '+099 99 99 9999[9]-9999']"
-                                    data-mask="" inputmode="text">
+                                <!-- /.input group -->
                             </div>
-                            <!-- /.input group -->
-                        </div>
-                        <!-- /.form group -->
+                            <!-- /.form group -->
 
-                        <!-- IP mask -->
-                        <div class="form-group">
-                            <label>เบอร์โทรศัพท์ :</label>
+                            <!-- IP mask -->
+                            <div class="form-group">
+                                <label>เบอร์โทรศัพท์ :</label>
 
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                    </div>
+                                    <input type="text" name="tel" value="{{ Auth::user()->tel }}" class="form-control"
+                                        inputmode="text" required>
                                 </div>
-                                <input type="text" value="{{ Auth::user()->tel }}" class="form-control"
-                                    data-inputmask="'alias': 'ip'" data-mask="" inputmode="numeric">
+                                <!-- /.input group -->
                             </div>
-                            <!-- /.input group -->
-                        </div>
-                        <!-- /.form group -->
+                            <!-- /.form group -->
+                            <!-- IP mask -->
+                            <div class="form-group">
+                                <label>อีเมล์ :</label>
 
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ Auth::user()->email }}" placeholder="Enter email" readonly>
 
-                        <!-- IP mask -->
-                        <div class="form-group">
-                            <label>อีเมล์ :</label>
-
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                 </div>
-                                <input type="email" class="form-control" id="email" value="{{ Auth::user()->email }}"
-                                    placeholder="Enter email">
-
+                                <br>
                             </div>
-                            <br>
-                            @php
-                                $id = Auth::user()->id;
-                            @endphp
-                            <a type="submit" href="{{route('Account.show',$id)}}"
-                                class="btn btn-success btn-block"><b>บันทึกข้อมูล</b></a>
 
-                            <!-- /.input group -->
-                        </div>
+
+                            <button type="submit" class="btn btn-success btn-block">บันทึกข้อมูล</button>
+
+                        </form>
+
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                    <div class="card-body">
+                        <form action="{{ route('Accounts.update', $id) }}" method="post">
+                            @csrf
+                            @method('put')
+
+                            <div class="form-group">
+                                <label>รหัสเก่า : </label>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    <input type="password" id="oldpassword" name="oldpassword" value=""
+                                        class="form-control oldpassword" required>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+
+                            <div class="form-group">
+                                <label>รหัสใหม่ : </label>
+
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                    </div>
+                                    <input type="password" name="newpassword" value="" class="form-control" required>
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+
+                            <button type="submit" id="repassword" name="repassword" value="true"
+                                class="btn btn-success btn-block ">แก้ไขรหัสผ่าน</button>
+
+                        </form>
+                        <!-- /.input group -->
+
                         <!-- /.form group -->
 
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
-            <div class="col-md-3"></div>
+            <!-- /.card -->
         </div>
+        <div class="col-md-3"></div>
+        </div>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+        @if (\Session::has('messages'))
+
+            <script>
+                Swal.fire(
+                    'Success',
+                    '{!! \Session::get('messages') !!}',
+                    '{!! \Session::get('messagetype') !!}',
+                )
+            </script>
+        @endif
     @endsection
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @else
     error
 @endif

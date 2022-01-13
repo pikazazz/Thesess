@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">รายการชื่อหัวข้อโครงงาน</h1>
+                    <h1 class="m-0">รายชื่อโครงงาน</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -51,6 +51,7 @@
                             <tr>
                                 <th>ชื่อโครงงาน</th>
                                 <th>ผู้จัดทำ</th>
+                                <th>รายการสอบ</th>
                                 <th>วันที่</th>
                                 <th>เครื่องมือ</th>
 
@@ -68,6 +69,7 @@
 
                                 <td>ระบบหยอดเหรียญ</td>
                                 <td>นายวิศรุต คงจำเนียร</td>
+                                <td>Proposal</td>
                                 <td>11-7-2014</td>
                                 <td><button type="modal" class="btn btn-success" data-toggle="modal"
                                         data-target="#modal-success{{$i}}">

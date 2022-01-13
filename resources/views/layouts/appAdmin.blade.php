@@ -222,7 +222,7 @@
                         <!-- Sidebar user panel (optional) -->
                         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                             <div class="image">
-                                <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
+                                <img src="{{ Auth::user()->img }}" class="img-circle elevation-2"
                                     alt="User Image">
                             </div>
                             <div class="info">
@@ -362,7 +362,7 @@
         <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <!-- include summernote css/js -->
-
+        <script src="/js/app.js"></script>
         <script>
             $(document).ready(function() {
                 $('#summernote').summernote();

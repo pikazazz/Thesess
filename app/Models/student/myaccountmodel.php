@@ -21,7 +21,8 @@ class myaccountmodel extends Model
         'lname',
         'address',
         'tel',
-        'year'
+        'year',
+        'img'
     ];
 
     /**

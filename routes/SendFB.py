@@ -1,7 +1,7 @@
 from fbchat import Client
 from fbchat.models import *
 
-client=Client('thumma.palakrai@hotmail.com','Mix@2745162') # ลงชื่อเข้าใช้งาน facebook
+client=Client('thumma.palakrai@hotmail.com','Mix@27451622') # ลงชื่อเข้าใช้งาน facebook
 
 friend_id="100003082631040"
 group_id="2770062866375119"

@@ -1,6 +1,9 @@
 <?php
 
+use App\Events\Message;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -21,10 +24,11 @@ use App\Http\Controllers\Teacher\TeacherView;
 use App\Http\Controllers\Teacher\TeacherAccount;
 use App\Http\Controllers\Teacher\proposal;
 use App\Http\Controllers\Teacher\joingroup;
-use App\Http\Controllers\Teacher\group;
+use App\Http\Controllers\teacher\register;
 use App\Http\Controllers\Teacher\mygroup;
 
 
+use App\Http\Controllers\publics\messagelog;
 use App\Http\Controllers\publics\groups;
 use App\Http\Controllers\publics\error;
 use App\Http\Controllers\fileManage;
@@ -81,15 +85,21 @@ Route::group(['middleware' => ['checkrole:student']], function () {
     });
 });
 
+
+Route::resource('Message', messagelog::class);
+
+
+
 Route::resource('Group', groups::class);
 Route::resource('Error', error::class);
 
 Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('Dashboard', TeacherView::class);
-    Route::resource('Account', TeacherAccount::class);
+    Route::resource('Accounts', TeacherAccount::class);
     Route::resource('Proposal', proposal::class);
     Route::resource('JoinGroup', joingroup::class);
     Route::resource('MyGroup', mygroup::class);
+    Route::resource('RegisterExam', register::class);
 });
 
 Route::group(['middleware' => ['checkrole:admin']], function () {
