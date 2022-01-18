@@ -24,7 +24,10 @@ class calendar extends Model
         'backgroundColor',
         'borderColor',
         'allDay',
-        'unit'
+        'unit',
+        'year',
+        'type',
+        'slug'
 
     ];
 }

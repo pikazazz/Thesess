@@ -19,12 +19,24 @@
         </div><!-- /.container-fluid -->
     </div>
 
+
 @endsection
+
 
 
 @section('content')
     <!-- Content Wrapper. Contains page content -->
 
+    @if (\Session::has('message'))
+
+        <script>
+            Swal.fire(
+                'Success',
+                '{!! \Session::get('message') !!}',
+                '{!! \Session::get('messageType') !!}',
+            )
+        </script>
+    @endif
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -57,48 +69,117 @@
                                 <h3 class="card-title">สร้างวันสอบ</h3>
                             </div>
                             <div class="card-body">
-                                <form>
-                                    <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                                        <ul class="fc-color-picker" id="color-chooser">
-                                            <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
-                                            <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
-                                            <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
-                                            <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
-                                            <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
-                                        </ul>
-                                    </div>
+
+                                <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+                                    <ul class="fc-color-picker" id="color-chooser">
+                                        <li><a class="text-primary" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-warning" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-success" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-danger" href="#"><i class="fas fa-square"></i></a></li>
+                                        <li><a class="text-muted" href="#"><i class="fas fa-square"></i></a></li>
+                                    </ul>
+                                </div>
+                                <!-- /btn-group -->
+                                <br>
+                                <label>หัวข้อ : </label>
+                                <div class="input-group">
+                                    {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
+                                    <select id="title" name="title" class="form-control">
+                                        <option value="สอบหัวข้อ Proposal">สอบหัวข้อ Proposal</option>
+                                        <option value="สอบ บทที่ 1">สอบ บทที่ 1</option>
+                                        <option value="สอบ บทที่ 2">สอบ บทที่ 2</option>
+                                        <option value="สอบ บทที่ 3">สอบ บทที่ 3</option>
+                                        <option value="สอบ บทที่ 4">สอบ บทที่ 4</option>
+                                        <option value="สอบ บทที่ 5">สอบ บทที่ 5</option>
+                                        <option value="สอบความคืบหน้า 60%">สอบความคืบหน้า 60%</option>
+                                        <option value="สอบความคืบหน้า 70%">สอบความคืบหน้า 70%</option>
+                                        <option value="สอบความคืบหน้า 80%">สอบความคืบหน้า 80%</option>
+                                        <option value="สอบความคืบหน้า 100%">สอบความคืบหน้า 100%</option>
+                                    </select>
                                     <!-- /btn-group -->
+                                </div>
+                                <br>
+                                <label>ประเภท : </label>
+                                <div class="input-group">
+                                    {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
+                                    <select id="type" name="type" class="form-control">
+                                        <option value="0" selected='selected'>สอบปกติ</option>
+                                        <option value="1">ซ่อม ครั้งที่ 1</option>
+                                        <option value="2">ซ่อม ครั้งที่ 2</option>
+                                        <option value="3">ซ่อม ครั้งที่ 3</option>
+                                    </select>
+                                    <!-- /btn-group -->
+                                </div>
+                                <br>
+                                <label>วันที่เปิด : </label>
+                                <div class="input-group">
+                                    {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
+                                    <input type="datetime-local" id="start_date" class="form-control">
+                                    <!-- /btn-group -->
+                                </div>
+                                <br>
+                                <label>วันที่ปิด : </label>
+                                <div class="input-group">
+                                    {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
+                                    <input type="datetime-local" id="end_date" class="form-control">
+                                    <!-- /btn-group -->
+                                </div>
+                                <br>
+                                <label>จำนวนกลุ่ม : </label>
+                                <div class="input-group">
+                                    {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
+                                    <input type="number" id="unit" class="form-control" placeholder="ระบุจำนวน">
+                                    <!-- /btn-group -->
+                                </div>
+                                <br>
+                                <label>ปีการศึกษา : </label>
+                                <div class="input-group">
+                                    <select id="year" name="year" class="form-control">
+                                        @php
+                                            $year = 56;
+                                        @endphp
+
+                                        @for ($i = 2556; $i < 2600; $i++)
+
+                                            <option value="{{ $year++ }}"> {{ $i }}</option>
+                                        @endfor
+
+
+                                    </select>
+                                </div>
+                                <br>
+                                <button id="setdate" type="submit" class="btn btn-primary">เพิ่ม</button>
+                                <!-- /input-group -->
+
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">ลบรายการ</h3>
+                            </div>
+                            @php
+                                use App\Models\calendar;
+                                $calendar = calendar::get();
+                            @endphp
+                            <div class="card-body">
+
+                                <form method="POST" action="{{ route('RegisterExam.destroy', 0) }}">
+                                    @csrf
+                                    @method('delete')
+
+                                    <select id="delete" name="id" class="form-control">
+                                        @foreach ($calendar as $Calendar)
+                                            <option value="{{ $Calendar->id }}">{{ $Calendar->title }} ,
+                                                {{ $Calendar->start_date }} </option>
+                                        @endforeach
+
+                                    </select>
+
                                     <br>
-                                    <label>หัวข้อ : </label>
-                                    <div class="input-group">
-                                        {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
-                                        <input type="text" class="form-control" id="title" placeholder="ระบุหัวข้อ">
-                                        <!-- /btn-group -->
-                                    </div>
-                                    <br>
-                                    <label>วันที่เปิด : </label>
-                                    <div class="input-group">
-                                        {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
-                                        <input type="datetime-local" id="start_date" class="form-control">
-                                        <!-- /btn-group -->
-                                    </div>
-                                    <br>
-                                    <label>วันที่ปิด : </label>
-                                    <div class="input-group">
-                                        {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
-                                        <input type="datetime-local" id="end_date" class="form-control">
-                                        <!-- /btn-group -->
-                                    </div>
-                                    <br>
-                                    <label>จำนวนนักศึกษา : </label>
-                                    <div class="input-group">
-                                        {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
-                                        <input type="number" id="unit" class="form-control" placeholder="ระบุจำนวน">
-                                        <!-- /btn-group -->
-                                    </div>
-                                    <br>
-                                    <button id="setdate" type="submit" class="btn btn-primary">เพิ่ม</button>
-                                    <!-- /input-group -->
+                                    <button type="submit" style="width: 100%" class="btn btn-danger"><i
+                                            class="fa fa-trash"></i>
+                                    </button>
+
                                 </form>
                             </div>
                         </div>
@@ -117,6 +198,7 @@
                 </div>
                 <!-- /.col -->
             </div>
+
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </section>
@@ -128,6 +210,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
+    <script>
+        function getAlert(image) {
+            alert('Here\'s an alert!')
+        }
+    </script>
     <script>
         /* ADDING EVENTS */
         var currColor = '#3c8dbc' //Red by default
@@ -160,6 +247,9 @@
             var end_date = document.getElementById('end_date').value;
             var title = document.getElementById('title').value;
             var unit = document.getElementById('unit').value;
+            var year = document.getElementById('year').value;
+
+            var type = document.getElementById('type').value;
 
 
 
@@ -181,7 +271,11 @@
                         'backgroundColor': currColor, //red
                         'borderColor': currColor, //red
                         'allDay': false,
-                        'unit': unit
+                        'unit': unit,
+                        'year': year,
+                        'type': type,
+
+
                     }
                 })
                 .then(response => {
@@ -284,12 +378,17 @@
                         mi2 = date2.getMinutes()
 
                     events.push({
+                        eventid: element.id,
                         title: element.title,
                         start: new Date(y, m, d, h, mi),
                         end: new Date(y2, m2, d2, h2, mi2),
                         backgroundColor: element.backgroundColor, //red
                         borderColor: element.borderColor, //red
-                        allDay: element.allDay
+                        allDay: element.allDay,
+                        unit: element.unit,
+                        year: element.year,
+                        type: element.type,
+
                     })
 
                     mark_data(events);
@@ -378,7 +477,49 @@
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
+
                     themeSystem: 'bootstrap',
+                    eventMouseEnter: function(event, jsEvent, view) {
+
+                        console.log(event.event._def.extendedProps.eventid);
+                        var type = "";
+                        if (event.event._def.extendedProps.type == "0") {
+                            type = "สอบปกติ";
+                        } else if (event.event._def.extendedProps.type == "1") {
+                            type = "ซ่อม ครั้งที่ 1";
+                        } else if (event.event._def.extendedProps.type == "2") {
+                            type = "ซ่อม ครั้งที่ 2";
+                        } else if (event.event._def.extendedProps.type == "3") {
+                            type = "ซ่อม ครั้งที่ 3";
+                        }
+                        Swal.fire({
+                            title: 'แจ้งเตือนจากระบบ',
+                            html: '' + event.event._def.title +
+                                "</br>" + 'จำนวนที่เปิดรับ : ' + event.event._def.extendedProps
+                                .unit +
+                                "</br>" + 'ปีการศึกษา : ' + event.event._def.extendedProps
+                                .year +
+                                "</br>" + 'ประเภท : ' + type,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            didOpen: () => {
+                                Swal.showLoading()
+
+                            },
+                            willClose: () => {
+
+                            }
+                        })
+                    },
+
+                    eventMouseLeave: function(event, jsEvent, view) {
+                        // Swal.fire(
+                        //     'Success',
+                        //     'Out',
+                        //     'success',
+                        // )
+                    },
+
                     //Random default events
                     events,
                     editable: false,

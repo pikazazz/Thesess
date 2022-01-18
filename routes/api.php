@@ -81,7 +81,9 @@ Route::POST('calendar', function (Request $request) {
     $result->borderColor = $request->borderColor;
     $result->allDay = $request->allDay;
     $result->unit = $request->unit;
+    $result->year = $request->year;
+    $result->type = $request->type;
     $result->save();
-   
+
     return $result;
 });

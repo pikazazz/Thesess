@@ -271,8 +271,9 @@
                                 <li class="nav-item">
                                     <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
                                         <i class="nav-icon fas fa-book"></i>
-                                        <p>หัวข้อโครงงาน</p>
-                                        <p>ที่ยังไม่มีอาจารย์ที่ปรึกษา</p>
+
+                                        <p>หัวข้อโครงงาน  <br> ที่ยังไม่มีอาจารย์ที่ปรึกษา</p>
+
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -287,7 +288,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-book"></i>
+                                        <i class="nav-icon far fa-calendar-alt"></i>
                                         <p>เปิดจองวันสอบ</p>
                                     </a>
                                 </li>
@@ -369,7 +370,7 @@
             </div>
         </main>
 
-      
+
 
         <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
         <!-- jQuery UI 1.11.4 -->

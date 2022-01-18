@@ -22,6 +22,9 @@ class CreateCalendar extends Migration
             $table->string('backgroundColor')->nullable();
             $table->string('borderColor')->nullable();
             $table->boolean('allDay')->nullable();
+            $table->string('type')->nullable();
+
+            $table->string('year')->nullable();
             $table->timestamps();
         });
     }

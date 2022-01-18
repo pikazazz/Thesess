@@ -47,49 +47,6 @@
     @endif
 
 
-    {{-- @switch(request()->get('messagesok'))
-        @case('1')
-            <script>
-                Swal.fire(
-                    'ข้อความจากระบบ',
-                    'ลบไฟล์สำเร็จ',
-                    'success'
-                )
-            </script>
-        @break
-        @case('2')
-            <script>
-                Swal.fire(
-                    'ข้อความจากระบบ',
-                    'เพิ่มไฟล์สำเร็จ',
-                    'success'
-                )
-            </script>
-        @break
-        @case('3')
-            <script>
-                Swal.fire(
-                    'ข้อความจากระบบ',
-                    'ประเภทไฟล์ไม่ถูกต้อง ลองใหม่ด้วยไฟล์ PDF ',
-                    'error'
-                )
-            </script>
-        @break
-        @case('4')
-            <script>
-                Swal.fire(
-                    'ข้อความจากระบบ',
-                    'แก้ไขข้อมูลกลุ่มสำเร็จ',
-                    'success'
-                )
-            </script>
-        @break
-        @default
-
-    @endswitch --}}
-
-
-    {{-- {{ $group }} --}}
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -119,10 +76,7 @@
 
 @section('content')
 
-
-
     <section class="content">
-
         <!-- Default box -->
         <div class="row">
             <div class="col-md-4">
@@ -142,11 +96,7 @@
                                 <p class="text-muted text-center">{favorite}</p>
 
                                 <ul class="list-group list-group-unbordered mb-3">
-
-
                                 </ul>
-
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -169,8 +119,6 @@
                                 <p class="text-muted text-center">{favorite}</p>
 
                                 <ul class="list-group list-group-unbordered mb-3">
-
-
                                 </ul>
 
 
@@ -225,12 +173,12 @@
 
                                 <ul class="list-group list-group-unbordered mb-3">
 
-                                    @if (Auth::user()->role=='teacher')
-                                    <button type="submit" onclick="showcase()"
-                                    class="btn btn-danger">ฉันต้องการหนีนักศึกษากลุ่มนี้</button>
+                                    @if (Auth::user()->role == 'teacher')
+                                        <button type="submit" onclick="showcase()"
+                                            class="btn btn-danger">ฉันต้องการหนีนักศึกษากลุ่มนี้</button>
                                     @else
-                                    <button type="submit" onclick="showcase()"
-                                    class="btn btn-danger">ปุ่มลาออกจากกลุ่มโครงงาน</button>
+                                        <button type="submit" onclick="showcase()"
+                                            class="btn btn-danger">ปุ่มลาออกจากกลุ่มโครงงาน</button>
                                     @endif
 
                                 </ul>
@@ -549,6 +497,15 @@
                             <td class="project-state">
                                 <span class="badge badge-success">Pass</span>
                             </td>
+
+
+                            <td class="project-actions text-right">
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#">
+                                    <i class="far fa-eye"></i>
+                                    สมัครสอบ
+                                </button>
+                                </a>
+                            </td>
                             @if (Auth::user()->role == 'student')
                                 @php
                                     $ex = groupModel::find(Auth::user()->group);
@@ -578,10 +535,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_proposal != '')
-                                    <a href="{{ asset($group->path_proposal) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_proposal) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
 
                                 </td>
@@ -642,10 +599,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_ch1 != '')
-                                    <a href="{{ asset($group->path_ch1) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_ch1) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
                                 </td>
                             @endif
@@ -707,10 +664,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_ch2 != '')
-                                    <a href="{{ asset($group->path_ch2) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_ch2) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
                                 </td>
                             @endif
@@ -776,10 +733,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_ch3 != '')
-                                    <a href="{{ asset($group->path_ch3) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_ch3) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
                                 </td>
                             @endif
@@ -838,10 +795,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_ch4 != '')
-                                    <a href="{{ asset($group->path_ch4) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_ch4) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
 
                                 </td>
@@ -903,10 +860,10 @@
                             @else
                                 <td class="project-actions text-right">
                                     @if ($group->path_ch5 != '')
-                                    <a href="{{ asset($group->path_ch5) }}" class="btn btn-primary btn-sm">
-                                        <i class="far fa-eye"></i>
-                                        View
-                                    </a>
+                                        <a href="{{ asset($group->path_ch5) }}" class="btn btn-primary btn-sm">
+                                            <i class="far fa-eye"></i>
+                                            View
+                                        </a>
                                     @endif
 
                                 </td>

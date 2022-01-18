@@ -24,7 +24,7 @@ use App\Http\Controllers\Teacher\TeacherView;
 use App\Http\Controllers\Teacher\TeacherAccount;
 use App\Http\Controllers\Teacher\proposal;
 use App\Http\Controllers\Teacher\joingroup;
-use App\Http\Controllers\teacher\register;
+use App\Http\Controllers\teacher\calendarController;
 use App\Http\Controllers\Teacher\mygroup;
 
 
@@ -87,11 +87,10 @@ Route::group(['middleware' => ['checkrole:student']], function () {
 
 
 Route::resource('Message', messagelog::class);
-
-
-
+Route::resource('RegisterExam', calendarController::class);
 Route::resource('Group', groups::class);
 Route::resource('Error', error::class);
+
 
 Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('Dashboard', TeacherView::class);
@@ -99,7 +98,7 @@ Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('Proposal', proposal::class);
     Route::resource('JoinGroup', joingroup::class);
     Route::resource('MyGroup', mygroup::class);
-    Route::resource('RegisterExam', register::class);
+
 });
 
 Route::group(['middleware' => ['checkrole:admin']], function () {
@@ -119,7 +118,7 @@ Route::group(['middleware' => ['checkrole:admin']], function () {
                     $pass = null;
                     $pass = Str::random(10);
                     $passwordexport[$i] = [
-                        'email' => Str::replaceArray('-', [''], $data[$i]->std_id) . '@gmail.com', 'password' => $pass
+                        'email' => Str::replaceArray('-', [''], $data[$i]->std_id) . '@mail.rmutt.ac.th', 'password' => $pass
                     ];
                     DB::table('users')->insert([
                         'fname' => $data[$i]->fname,

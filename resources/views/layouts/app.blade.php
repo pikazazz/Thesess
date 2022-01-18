@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+
+
+    <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}">
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
@@ -216,8 +219,7 @@
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="{{ Auth::user()->img }}" class="img-circle elevation-2"
-                                alt="User Image">
+                            <img src="{{ Auth::user()->img }}" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
                             <a href="{{ route('myaccount.index') }}" style="color: white"
@@ -314,12 +316,9 @@
 
                             <li class="nav-header">EXAMPLES</li>
                             <li class="nav-item">
-                                <a href="pages/calendar.html" class="nav-link">
+                                <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
                                     <i class="nav-icon far fa-calendar-alt"></i>
-                                    <p>
-                                        Calendar
-
-                                    </p>
+                                    <p>จองวันสอบ</p>
                                 </a>
                             </li>
 
@@ -407,7 +406,8 @@
     <script src="{{ asset('dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
-    <script src="public/js"></script>
+
+    <script src="{{ asset('plugins/fullcalendar/main.js') }}"></script>
 
 </body>
 
