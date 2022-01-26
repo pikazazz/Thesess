@@ -87,3 +87,30 @@ Route::POST('calendar', function (Request $request) {
 
     return $result;
 });
+
+
+
+Route::GET('search', function (Request $request) {
+    $result = DB::table('users')
+        ->where(function ($query) use ($request) {
+            $query->where('role', '=', 'student')
+                ->Where('fname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'student')
+                ->Where('lname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'student')
+                ->Where('year', 'LIKE', '%' . $request->text . '%');
+        })->get();
+
+    return $result;
+});
+
+
+Route::GET('searchgroup', function (Request $request) {
+
+    $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->get();
+    return $result;
+});

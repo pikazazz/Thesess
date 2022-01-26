@@ -30,7 +30,7 @@ class DashboardProfessional extends Controller
 
 
 
-        return view('components.teacher.dashbroadProfessional.test', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names]);
+        return view('components.teacher.dashbroadProfessional.home', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names]);
     }
 
     /**
@@ -63,7 +63,39 @@ class DashboardProfessional extends Controller
     public function show(Request $request, $id)
     {
 
-        return $request;
+        switch ($id) {
+            case '1':
+                $type = "list_group";
+
+                break;
+            case '2':
+                $type = "list_student";
+                break;
+            case '3':
+                $type = "list_success";
+
+                break;
+            case '4':
+                $type = "list_reject";
+
+                break;
+            default:
+                # code...
+                break;
+        }
+
+        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+
+        $list_names = [];
+        $list_name = User::where('role','=','student')->get();
+        foreach ($list_name as $List_name) {
+            $list_names[] = array(
+                'name' => $List_name->fname . ' ' . $List_name->lname,
+                'tel' => $List_name->tel
+            );
+        }
+
+        return view('components.teacher.dashbroadProfessional.home', ['page' => $type, 'group' => $group,'list_std'=>$list_names]);
     }
 
     /**

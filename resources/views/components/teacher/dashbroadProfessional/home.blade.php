@@ -22,11 +22,13 @@
 
 
 @section('content')
+    <!-- Main content -->
 
 
     <div class="row">
         <div class="col-lg-3 col-6">
             <!-- small card -->
+
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3> @php
@@ -38,7 +40,7 @@
                 <div class="icon">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <a href="{{ route('Dashboard.show', 1) }}" class="small-box-footer">
+                <a href="{{ route('DashboardPro.show', 1) }}" class="small-box-footer">
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -60,7 +62,7 @@
 
 
 
-                <a href="{{ route('Dashboard.show', 2) }}" class="small-box-footer">
+                <a href="{{ route('DashboardPro.show', 2) }}" class="small-box-footer">
 
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
@@ -89,7 +91,7 @@
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>65</h3>
-                    <p>ไม่จบการศึกษา</p>
+                    <p>อยู่ระหว่างการทำโครงงาน</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-chart-pie"></i>
@@ -102,10 +104,37 @@
         <!-- ./col -->
     </div>
 
+    <div id="activity" class="activity">
+
+    </div>
+
 
 
     @if ($page == 'list_group')
         <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">ค้นหา</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="row">
+                <div class="col">
+                    <div class="card-body p-0 m-3">
+                        <div class="form-group">
+                            <div class="c input-group input-group-lg">
+                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="findgroup()"
+                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- /.card-body -->
+
+        </div>
+        <div class="card">
+
             <div class="card-header">
                 <h3 class="card-title">รายชื่อกลุ่ม</h3>
                 <div class="card-tools">
@@ -131,7 +160,7 @@
                             <th style="width: 100px">สถานะ</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="group_table">
                         @php
                             static $nums = 1;
                         @endphp
@@ -155,7 +184,29 @@
 
         </div>
 
-    @elseif($page=="list_student")
+    @elseif($page == 'list_student')
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">ค้นหา</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="row">
+                <div class="col">
+                    <div class="card-body p-0 m-3">
+                        <div class="form-group">
+                            <div class="c input-group input-group-lg">
+                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="findname()"
+                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- /.card-body -->
+
+        </div>
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">รายชื่อนักศึกษา</h3>
@@ -182,7 +233,7 @@
                             <th style="width: 200px">เบอร์ติดต่อ</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="student_table">
                         @php
                             static $nums = 1;
                         @endphp
@@ -190,7 +241,7 @@
                         @foreach ($list_std as $List_std)
 
                             <tr>
-                                <td>{{$nums++}}</td>
+                                <td>{{ $nums++ }}</td>
                                 <td>{{ $List_std['name'] }}</td>
                                 <td><span class="badge bg-primary">1</span></td>
                                 <td>{{ $List_std['tel'] }}</td>
@@ -204,7 +255,7 @@
             <!-- /.card-body -->
 
         </div>
-    @elseif($page=="list_success")
+    @elseif($page == 'list_success')
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">list_success</h3>
@@ -278,7 +329,7 @@
             <!-- /.card-body -->
 
         </div>
-    @elseif($page=="list_reject")
+    @elseif($page == 'list_reject')
 
         <div class="card">
             <div class="card-header">
@@ -364,3 +415,80 @@
 @endsection
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    function findname() {
+        //Set id to 0 so you will get all records on page load.
+        var text = document.getElementById('text').value;
+
+        $.ajax({
+            type: 'get',
+            url: `/api/search`,
+            data: {
+                id: `{{ Auth::user()->id }}`,
+                text: text,
+            }, //Add request data
+            dataType: 'json',
+
+            success: function(data) {
+                $('#student_table').html("");
+                console.log(data);
+                data.forEach(element => {
+
+                    if (typeof element['fname'] !== 'undefined') {
+                        $('#student_table').append(`<tr>
+                    <td></td>
+                                <td>${element['fname']} ${element['lname']}</td>
+                                <td><span class="badge bg-primary">1</span></td>
+                                <td>${element['tel']}</td>
+                            </tr>`);
+                    } else {
+                        $('#student_table').html("");
+                    }
+                });
+
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+</script>
+<script>
+    function findgroup() {
+        //Set id to 0 so you will get all records on page load.
+        var text = document.getElementById('text').value;
+
+        $.ajax({
+            type: 'get',
+            url: `/api/searchgroup`,
+            data: {
+                id: `{{ Auth::user()->id }}`,
+                text: text,
+            }, //Add request data
+            dataType: 'json',
+
+            success: function(data) {
+                $('#group_table').html("");
+                data.forEach((element,index)=> {
+                    if (typeof element['group_name'] !== 'undefined') {
+                        $('#group_table').append(`<tr>
+                    <td>${index+1}</td>
+                                <td>${element['group_name']}</td>
+                                <td><span class="badge bg-primary">1</span></td>
+                                <td></td>
+                            </tr>`);
+                    } else {
+                        $('#group_table').html("");
+                    }
+                });
+
+            },
+            error: function(e) {
+             
+            }
+        });
+    }
+</script>

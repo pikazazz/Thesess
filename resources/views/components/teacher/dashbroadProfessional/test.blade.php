@@ -29,7 +29,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                 $('#activity').html("");
                 $('#activity').append(`<h1>${data.year}${data.name}</h1>`);
             },
-            error: function() {}
+            error: function() {
+                
+            }
         });
     }
 </script>
