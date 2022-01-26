@@ -322,9 +322,17 @@
                                                         <td>{{ $Listbooking->unit }}</td>
                                                         <td>{{ showRegis($Listbooking->id) }}</td>
                                                         <td>
+                                                            @if (showRegis($Listbooking->id)>=$Listbooking->unit)
+                                                            <button type="" data-toggle="modal"
+                                                            data-target="#Listbooking{{ $Listbooking->id }}"
+                                                            class="btn btn-" disabled>เต็มจำนวน</button>
+
+                                                            @else
                                                             <button type="submit" data-toggle="modal"
-                                                                data-target="#Listbooking{{ $Listbooking->id }}"
-                                                                class="btn btn-success">สมัครสอบ</button>
+                                                            data-target="#Listbooking{{ $Listbooking->id }}"
+                                                            class="btn btn-success">สมัครสอบ</button>
+                                                            @endif
+
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -413,10 +421,10 @@
 
 
             start_date = new Date(start_date);
-            start_date.setDate(start_date.getDate() + 1);
+            start_date.setDate(start_date.getDate() );
 
             end_date = new Date(end_date);
-            end_date.setDate(end_date.getDate() + 1);
+            end_date.setDate(end_date.getDate() );
 
 
             console.log(end_date);

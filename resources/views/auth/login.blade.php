@@ -4,8 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign In & Sign Up Form</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800&display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
+
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -21,7 +21,6 @@
         margin: 0;
         padding: 0;
         font-family: 'Prompt';
-
     }
 
     a {
@@ -30,7 +29,7 @@
 
     body,
     input {
-        font-family: "Poppins", sans-serif;
+        font-family: "Prompt", sans-serif;
     }
 
     .container {
@@ -131,6 +130,7 @@
         font-size: 2.2rem;
         color: #444;
         margin-bottom: 10px;
+
     }
 
     .form__input-field {
@@ -241,8 +241,10 @@
     }
 
     .form__social-icons:hover {
-        color: #1f51bd;;
-        border-color: #1f51bd;;
+        color: #1f51bd;
+        ;
+        border-color: #1f51bd;
+        ;
     }
 
     .panel {
@@ -567,44 +569,28 @@
                 </form>
 
                 <form action="" class="form__sign-up">
-                    <h2 class="form__title">Sign Up</h2>
+                    <h2 class="form__title">ค้นหาโครงงานในระบบ</h2>
                     <div class="form__input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Username" required />
+                        <input type="text" id="year" name="year" placeholder="ปีการศึกษา" required />
                     </div>
+                    <p class="form__social-text">Or</p>
                     <div class="form__input-field">
                         <i class="fas fa-envelope"></i>
-                        <input type="text" placeholder="Email" required />
-                    </div>
-                    <div class="form__input-field">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" required />
+                        <input type="text" id="free" name="free" placeholder="คำค้น (FreeText)" required />
                     </div>
 
-                    <input class="form__submit" type="submit" value="Sign Up" />
 
-                    <p class="form__social-text">Or Sign up with social platforms</p>
-                    <div class="form__social-media">
-                        <a href="#" class="form__social-icons">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="form__social-icons">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="form__social-icons">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="form__social-icons">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
+                    <input class="form__submit" onclick=" onclickS()" type="submit" value="ค้นหา" />
+
+
                 </form>
             </div>
         </div>
         <div class="container__panels">
             <div class="panel panel__left">
                 <div class="panel__content">
-                    <h3 class="panel__title">รหัสผ่านได้จากไหน  ?</h3>
+                    <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
                     <p class="panel__paragraph">
                         วิธีเข้าสู่ระบบบริหารจัดการรายวิชาโครงงาน<br>
                         ทางด้านร้านวิทยาการคอมพิวเตอร์
@@ -613,22 +599,21 @@
                         View More
                     </button>
                 </div>
-                <img class="panel__image" src="{{asset('img/Loginpage2.png')}}"
-                alt="" />
+                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
             </div>
             <div class="panel panel__right">
                 <div class="panel__content">
-                    <h3 class="panel__title">One of us ?</h3>
+                    <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
                     <p class="panel__paragraph">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Doloremque adipisci tempore aliquid?
+                        Username ระบบได้ทำการ Generate อัตโนมัติ ให้แล้ว
+                        <br> โดยใช้ email มหาวิทยาลัยในการใช้งานเงิน เช่น 116110905xxxxx@mail.rmutt.ac.th
+                        Password สอบถามจากอาจารย์ที่ปรึกษา
                     </p>
                     <button class="btn btn-transparent" id="sign-in-btn">
-                        Sign In
+                        หน้าหลัก
                     </button>
                 </div>
-                <img class="panel__image" src="{{asset('img/Loginpage2.png')}}"
-                    alt="" />
+                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
 
             </div>
         </div>
@@ -650,3 +635,29 @@
     });
 </script>
 {{-- @endsection --}}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function onclickS() {
+        let timerInterval
+        Swal.fire({
+            title: 'กำลังทำการค้นหา!',
+            html: 'หน้าต่างกำลังจะปิดในอีก <b></b> .',
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+                const b = Swal.getHtmlContainer().querySelector('b')
+                timerInterval = setInterval(() => {
+                    b.textContent = Swal.getTimerLeft()
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            $('#ShowSearch').modal('show');
+        })
+    }
+</script>

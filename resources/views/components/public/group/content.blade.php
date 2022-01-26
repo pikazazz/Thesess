@@ -74,6 +74,14 @@
 @endsection
 
 
+@php
+use App\Models\publics\group;
+
+$findPermission = group::where('std_first', '=', Auth::user()->id)->orWhere('std_second', '=', Auth::user()->id)->orWhere('teacher', '=', Auth::user()->id)->get();
+
+dd($findPermission);
+@endphp
+
 @section('content')
 
     <section class="content">
@@ -499,13 +507,7 @@
                             </td>
 
 
-                            <td class="project-actions text-right">
-                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#">
-                                    <i class="far fa-eye"></i>
-                                    สมัครสอบ
-                                </button>
-                                </a>
-                            </td>
+
                             @if (Auth::user()->role == 'student')
                                 @php
                                     $ex = groupModel::find(Auth::user()->group);

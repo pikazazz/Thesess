@@ -46,7 +46,7 @@
 
 </style>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
 
     <main class="py-4">
@@ -314,7 +314,6 @@
                                 </li>
                             @endif
 
-                            <li class="nav-header">EXAMPLES</li>
                             <li class="nav-item">
                                 <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
                                     <i class="nav-icon far fa-calendar-alt"></i>
@@ -322,6 +321,8 @@
                                 </a>
                             </li>
 
+
+                            <li class="nav-header">************************</li>
                             <li class="nav-item">
                                 <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="nav-link">

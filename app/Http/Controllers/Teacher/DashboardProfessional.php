@@ -1,31 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\teacher;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
-use App\Models\teacher\examgroup;
+use App\Models\student\groupModel;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class proposal extends Controller
+class DashboardProfessional extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
+        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
 
-        $examgroup = examgroup::get();
+        $list_names = [];
+        foreach ($group as $Group) {
+            $list_name = User::find($Group->std_first);
+            $list_names[] = array(
+                'name' => $list_name->fname . ' ' . $list_name->lname,
+                'tel' => $list_name->tel
+            );
+        }
 
 
 
-        return view('components.teacher.proposal.home', ['examgroup' => $examgroup]);
+        return view('components.teacher.dashbroadProfessional.test', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names]);
     }
 
     /**
@@ -55,10 +60,10 @@ class proposal extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
 
-        return view('components.teacher.proposal.home', ['id' => $id]);
+        return $request;
     }
 
     /**
@@ -71,6 +76,8 @@ class proposal extends Controller
     {
         //
     }
+
+
 
     /**
      * Update the specified resource in storage.

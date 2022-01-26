@@ -24,8 +24,11 @@ use App\Http\Controllers\Teacher\TeacherView;
 use App\Http\Controllers\Teacher\TeacherAccount;
 use App\Http\Controllers\Teacher\proposal;
 use App\Http\Controllers\Teacher\joingroup;
-use App\Http\Controllers\teacher\calendarController;
+use App\Http\Controllers\Teacher\calendarController;
 use App\Http\Controllers\Teacher\mygroup;
+use App\Http\Controllers\Teacher\ExamRequest;
+use App\Http\Controllers\Teacher\DashboardProfessional;
+
 
 
 use App\Http\Controllers\publics\messagelog;
@@ -94,12 +97,15 @@ Route::resource('Error', error::class);
 
 Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('Dashboard', TeacherView::class);
+    Route::resource('DashboardPro', DashboardProfessional::class);
     Route::resource('Accounts', TeacherAccount::class);
-    Route::resource('Proposal', proposal::class);
+    Route::resource('AddPoint', proposal::class);
     Route::resource('JoinGroup', joingroup::class);
     Route::resource('MyGroup', mygroup::class);
-
+    Route::resource('Request_Exam', ExamRequest::class);
 });
+
+
 
 Route::group(['middleware' => ['checkrole:admin']], function () {
     Route::resource('UserDashboard', UserDashboard::class);

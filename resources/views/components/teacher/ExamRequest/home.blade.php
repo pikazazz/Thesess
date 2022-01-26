@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">กลุ่มโครงงานที่ยังไม่มีที่ปรึกษา</h1>
+                    <h1 class="m-0">รายการยื่นขอสอบ</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active">JoinGroup</li>
+                        <li class="breadcrumb-item active">ExamRequest</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -30,7 +30,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">รายการทั้งหมด</h3>
+                    <h3 class="card-title">รายการ</h3>
 
                     <div class="card-tools">
                         <div class="input-group input-group-sm" style="width: 150px;">
@@ -51,27 +51,46 @@
                             <tr>
                                 <th>ชื่อโครงงาน</th>
                                 <th>ผู้จัดทำ</th>
+                                <th>หัวข้อการสอบ</th>
                                 <th>เครื่องมือ</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $i = 1;
-                                function findstd($id){
-                                    $std = DB::table('users')->find($id);
+                                function findgroup($id)
+                                {
+                                    $group = DB::table('group')->find($id);
 
-                                    return  $std->fname .' '. $std->lname;
+                                    return $group->group_name;
+                                }
+
+                                function findstd($id)
+                                {
+                                    $std = DB::table('group')->find($id);
+
+                                    $std_1 = DB::table('users')->find($std->std_first);
+                                    $std_2 = DB::table('users')->find($std->std_second);
+                                    return $std_1->fname . ' ' . $std_1->lname . ' , ' . $std_2->fname . ' ' . $std_2->lname;
+                                }
+                                function findcalendar($id)
+                                {
+                                    $calendar = DB::table('calendar')->find($id);
+
+                                    return $calendar->title;
                                 }
                             @endphp
-                            @foreach ($group as $Group)
-                                @include('components.teacher.joingroup.modalApprove')
+                            @foreach ($examgroup as $Examgroup)
+                                @include('components.teacher.ExamRequest.modal')
                                 <tr>
-                                    <td>{{$Group->group_name}}</td>
-                                    <td>{{findstd($Group->std_first) }},{{findstd($Group->std_second) }}</td>
+                                    <td>{{ findgroup($Examgroup->group) }}</td>
+                                    <td>{{ findstd($Examgroup->group) }}</td>
+                                    <td>{{ findcalendar($Examgroup->exam_id) }}</td>
+
                                     <td><button type="modal" class="btn btn-success" data-toggle="modal"
                                             data-target="#modal-success{{ $i }}">
-                                            <i class="fas fa-paper-plane"></i>
-                                            ส่งคำเชิญ
+                                        ปรับสถานะ
                                         </button>
                                     </td>
                                 </tr>

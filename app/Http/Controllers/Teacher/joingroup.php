@@ -4,6 +4,8 @@ namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\student\groupModel;
+use Illuminate\Support\Facades\Auth;
 
 class joingroup extends Controller
 {
@@ -18,7 +20,11 @@ class joingroup extends Controller
     }
     public function index()
     {
-        return view('components.teacher.joingroup.home');
+
+        $group = groupModel::where('teacher', '=', null)->get();
+
+
+        return view('components.teacher.joingroup.home', ['group' => $group]);
     }
 
     /**

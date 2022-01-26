@@ -44,7 +44,7 @@ io.on('connection', (socket) => {
             })
             .catch(err => {
                 // io.sockets.emit('sendChatToClient', message);
-              
+
 
             })
     });

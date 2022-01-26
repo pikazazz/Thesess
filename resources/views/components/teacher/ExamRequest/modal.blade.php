@@ -8,12 +8,18 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>คุณต้องการยืนยันการส่งคำเชิญไปยังกลุ่มนี้หรือไม่ {{$i}}</p>
+                <h5>อนุญาตให้สอบ</h5>
+                <div class="form-group">
 
+                    <select name="approve" class="custom-select form-control-border" id="exampleSelectBorder">
+                        <option value="1">ให้สอบ</option>
+                        <option value="0">ไม่ให้สอบ</option>
+                    </select>
+                </div>
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">ใช่</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </div>
         </div>
         <!-- /.modal-content -->

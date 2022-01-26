@@ -10,7 +10,7 @@
 @endauth
 
 @guest
-<script type="text/javascript">
-    window.location = "/login";
-</script>
+    <script type="text/javascript">
+        window.location = "/login";
+    </script>
 @endguest

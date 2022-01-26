@@ -51,36 +51,58 @@
                             <tr>
                                 <th>ชื่อโครงงาน</th>
                                 <th>ผู้จัดทำ</th>
-                                <th>รายการสอบ</th>
-                                <th>วันที่</th>
+                                <th>หัวข้อการสอบ</th>
                                 <th>เครื่องมือ</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             @php
-                                $i = 5;
+                                $i = 1;
+                                function findgroup($id)
+                                {
+                                    $group = DB::table('group')->find($id);
+
+                                    return $group->group_name;
+                                }
+
+                                function findstd($id)
+                                {
+                                    $std = DB::table('group')->find($id);
+
+                                    $std_1 = DB::table('users')->find($std->std_first);
+                                    $std_2 = DB::table('users')->find($std->std_second);
+                                    return $std_1->fname . ' ' . $std_1->lname . ' , ' . $std_2->fname . ' ' . $std_2->lname;
+                                }
+                                function findcalendar($id)
+                                {
+                                    $calendar = DB::table('calendar')->find($id);
+
+                                    return $calendar->title;
+                                }
                             @endphp
-                            @while ($i != 0)
+                            @foreach ($examgroup as $Examgroup)
+                                @include('components.teacher.proposal.modal')
+                                <tr>
+                                    <td>{{ findgroup($Examgroup->group) }}</td>
+                                    <td>{{findstd($Examgroup->group)}}</td>
+                                    <td>{{ findcalendar($Examgroup->exam_id) }}</td>
+                                   
+                                    <td><button type="modal" class="btn btn-success" data-toggle="modal"
+                                            data-target="#modal-success{{ $i }}">
+                                            <i class="fas fa-coins"></i>
+                                            ลงคะแนน
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                @php
+                                    $i++;
+                                @endphp
+
+                            @endforeach
 
 
-                            @include('components.teacher.proposal.modal')
-                            <tr>
-
-                                <td>ระบบหยอดเหรียญ</td>
-                                <td>นายวิศรุต คงจำเนียร</td>
-                                <td>Proposal</td>
-                                <td>11-7-2014</td>
-                                <td><button type="modal" class="btn btn-success" data-toggle="modal"
-                                        data-target="#modal-success{{$i}}">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </button></td>
-                            </tr>
-
-                            @php
-                                $i--;
-                            @endphp
-                            @endwhile
 
 
 

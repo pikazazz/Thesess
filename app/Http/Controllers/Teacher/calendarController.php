@@ -17,12 +17,11 @@ class calendarController extends Controller
      */
     public function index()
     {
+
         $duedate =  calendar::get();
         $listbooking =  calendar::where('year', '=', Auth::user()->year)->get();
-
         return view('components.public.register.home', ['duedate' => $duedate, 'listbooking' => $listbooking]);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -51,6 +50,13 @@ class calendarController extends Controller
             if ($checkdupicate) {
                 return redirect()->route('RegisterExam.index')->with('message', 'ไม่สามารถลงทะเบียนได้เนื่องจากได้ลงทะเบียนแล้ว')->with('messagetype', 'error');
             } else {
+              
+                $create =  new examgroup();
+                $create->group = Auth::user()->group;
+                $create->exam_id = $RegisterExam->id;
+                $create->type = 0;
+                $create->type = 0;
+                $create->save();
                 return redirect()->route('RegisterExam.index')->with('message', 'ลงทะเบียนสอบสำเร็จ')->with('messagetype', 'success');
             }
         } else {

@@ -6,7 +6,7 @@
             </script>
         @else
             <script type="text/javascript">
-                window.location = "/Group";
+                window.location = "/introduce";
             </script>
         @endif
 

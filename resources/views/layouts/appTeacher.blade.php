@@ -46,7 +46,7 @@
 
     </style>
 
-    <body class="hold-transition sidebar-mini layout-fixed">
+    <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
 
         <main class="py-4">
@@ -282,9 +282,29 @@
                                         <p>กลุ่มโครงงานของฉัน</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('AddPoint.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-book"></i>
+                                        <p>ลงผลการสอบ</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('Request_Exam.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-users"></i>
+                                        <p>รายการขอสอบ</p>
+                                    </a>
+                                </li>
 
 
                                 <li class="nav-header">อาจารย์ประจำวิชา</li>
+
+
+                                <li class="nav-item">
+                                    <a href="{{ route('DashboardPro.index') }}" class="nav-link ">
+                                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                                        <p>Dashboard-Pro</p>
+                                    </a>
+                                </li>
 
                                 <li class="nav-item">
                                     <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
@@ -292,33 +312,8 @@
                                         <p>เปิดจองวันสอบ</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('Proposal.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-book"></i>
-                                        <p>ลงผลการสอบ</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-users"></i>
-                                        <p>รายการขอสอบ</p>
-                                    </a>
-                                </li>
 
-
-
-
-
-                                <li class="nav-header">EXAMPLES</li>
-                                <li class="nav-item">
-                                    <a href="pages/calendar.html" class="nav-link">
-                                        <i class="nav-icon far fa-calendar-alt"></i>
-                                        <p>
-                                            Calendar
-                                            <span class="badge badge-info right">2</span>
-                                        </p>
-                                    </a>
-                                </li>
+                                <li class="nav-header">***************************</li>
 
                                 <li class="nav-item">
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -413,6 +408,7 @@
 
 
 @else
+
     <script type="text/javascript">
         window.location = "/login";
     </script>

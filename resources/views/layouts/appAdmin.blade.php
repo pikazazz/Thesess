@@ -45,7 +45,7 @@
 
     </style>
 
-    <body class="hold-transition sidebar-mini layout-fixed">
+    <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 
 
         <main class="py-4">
