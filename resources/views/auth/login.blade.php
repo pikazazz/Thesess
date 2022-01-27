@@ -11,6 +11,9 @@
 
     <script src="https://kit.fontawesome.com/1788c719dd.js" crossorigin="anonymous"></script>
 
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 </head>
 
@@ -32,7 +35,7 @@
         font-family: "Prompt", sans-serif;
     }
 
-    .container {
+    .containers {
         position: relative;
         width: 100%;
         min-height: 100vh;
@@ -40,7 +43,15 @@
         overflow: hidden;
     }
 
-    .container::before {
+    .fullscreen {
+        margin: 0;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .containers::before {
         content: "";
         position: absolute;
         width: 2000px;
@@ -55,7 +66,7 @@
         transition: 1.8s ease-in-out;
     }
 
-    .container__forms {
+    .containers__forms {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -63,7 +74,7 @@
         left: 0;
     }
 
-    .container__panels {
+    .containers__panels {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -323,53 +334,53 @@
         transform: translateX(800px);
     }
 
-    .container.sign-up-mode .panel__right .panel__content,
-    .container.sign-up-mode .panel__right .panel__image {
+    .containers.sign-up-mode .panel__right .panel__content,
+    .containers.sign-up-mode .panel__right .panel__image {
         -webkit-transform: translateX(0px);
         transform: translateX(0px);
     }
 
-    .container.sign-up-mode::before {
+    .containers.sign-up-mode::before {
         -webkit-transform: translate(100%, -50%);
         transform: translate(100%, -50%);
         right: 52%;
     }
 
-    .container.sign-up-mode .panel__left .panel__image,
-    .container.sign-up-mode .panel__left .panel__content {
+    .containers.sign-up-mode .panel__left .panel__image,
+    .containers.sign-up-mode .panel__left .panel__content {
         -webkit-transform: translateX(-800px);
         transform: translateX(-800px);
     }
 
-    .container.sign-up-mode .panel__left {
+    .containers.sign-up-mode .panel__left {
         pointer-events: none;
     }
 
-    .container.sign-up-mode .panel__right {
+    .containers.sign-up-mode .panel__right {
         pointer-events: all;
     }
 
-    .container.sign-up-mode .form {
+    .containers.sign-up-mode .form {
         left: 25%;
     }
 
-    .container.sign-up-mode form.form__sign-in {
+    .containers.sign-up-mode form.form__sign-in {
         z-index: 1;
         opacity: 0;
     }
 
-    .container.sign-up-mode form.form__sign-up {
+    .containers.sign-up-mode form.form__sign-up {
         z-index: 2;
         opacity: 1;
     }
 
     @media (max-width: 870px) {
-        .container {
+        .containers {
             min-height: 800px;
             height: 100vh;
         }
 
-        .container::before {
+        .containers::before {
             width: 1500px;
             height: 1500px;
             left: 30%;
@@ -392,7 +403,7 @@
             transition: 1s 0.8s ease-in-out;
         }
 
-        .container__panels {
+        .containers__panels {
             -ms-grid-columns: 1fr;
             grid-template-columns: 1fr;
             -ms-grid-rows: 1fr 2fr 1fr;
@@ -457,20 +468,20 @@
             font-size: 0.7rem;
         }
 
-        .container.sign-up-mode::before {
+        .containers.sign-up-mode::before {
             -webkit-transform: translate(-50%, 100%);
             transform: translate(-50%, 100%);
             bottom: 32%;
             right: initial;
         }
 
-        .container.container.sign-up-mode .panel__left .panel__image,
-        .container.container.sign-up-mode .panel__left .panel__content {
+        .containers.containers.sign-up-mode .panel__left .panel__image,
+        .containers.containers.sign-up-mode .panel__left .panel__content {
             -webkit-transform: translateY(-300px);
             transform: translateY(-300px);
         }
 
-        .container.sign-up-mode .form {
+        .containers.sign-up-mode .form {
             top: 5%;
             -webkit-transform: translate(-50%, 0);
             transform: translate(-50%, 0);
@@ -491,12 +502,12 @@
             padding: 0.5rem 1rem;
         }
 
-        .container::before {
+        .containers::before {
             bottom: 72%;
             left: 50%;
         }
 
-        .container.sign-up-mode::before {
+        .containers.sign-up-mode::before {
             bottom: 28%;
             left: 50%;
         }
@@ -505,8 +516,8 @@
 </style>
 
 <body>
-    <div class="container">
-        <div class="container__forms">
+    <div class="containers">
+        <div class="containers__forms">
             <div class="form">
                 <form method="POST" action="{{ route('login') }}">
 
@@ -572,12 +583,12 @@
                     <h2 class="form__title">ค้นหาโครงงานในระบบ</h2>
                     <div class="form__input-field">
                         <i class="fas fa-user"></i>
-                        <input type="text" id="year" name="year" placeholder="ปีการศึกษา" required />
+                        <input type="text" placeholder="ปีการศึกษา" required />
                     </div>
                     <p class="form__social-text">Or</p>
                     <div class="form__input-field">
                         <i class="fas fa-envelope"></i>
-                        <input type="text" id="free" name="free" placeholder="คำค้น (FreeText)" required />
+                        <input type="text" id="title" name="title" placeholder=" ชื่อโครงงาน " required />
                     </div>
 
 
@@ -587,7 +598,7 @@
                 </form>
             </div>
         </div>
-        <div class="container__panels">
+        <div class="containers__panels">
             <div class="panel panel__left">
                 <div class="panel__content">
                     <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
@@ -618,27 +629,56 @@
             </div>
         </div>
     </div>
-
 </body>
+<!-- Modal -->
+<div class="modal fade " id="modal-xl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ผลการค้นหา</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ">
+                <table class="table" style="width: 100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">ชื่อโครงงาน</th>
+                            <th scope="col">ปีการศึกษา</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data_table">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     const signInBtn = document.querySelector("#sign-in-btn");
     const signUpBtn = document.querySelector("#sign-up-btn");
-    const container = document.querySelector(".container");
+    const containers = document.querySelector(".containers");
 
     signUpBtn.addEventListener("click", () => {
-        container.classList.add("sign-up-mode");
+        containers.classList.add("sign-up-mode");
     });
 
     signInBtn.addEventListener("click", () => {
-        container.classList.remove("sign-up-mode");
+        containers.classList.remove("sign-up-mode");
     });
 </script>
 {{-- @endsection --}}
+
+
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     function onclickS() {
+        $('#data_table').html(``);
         let timerInterval
         Swal.fire({
             title: 'กำลังทำการค้นหา!',
@@ -647,7 +687,7 @@
             timerProgressBar: true,
             didOpen: () => {
                 Swal.showLoading()
-                const b = Swal.getHtmlContainer().querySelector('b')
+                const b = Swal.getHtmlcontainers().querySelector('b')
                 timerInterval = setInterval(() => {
                     b.textContent = Swal.getTimerLeft()
                 }, 100)
@@ -657,7 +697,52 @@
             }
         }).then((result) => {
             /* Read more about handling dismissals below */
-            $('#ShowSearch').modal('show');
+            var title = document.getElementById('title').value;
+
+            if (title != '') {
+                $.ajax({
+                    type: 'get',
+                    url: `/api/searchgroups`,
+                    data: {
+                        title: title,
+                    }, //Add request data
+                    dataType: 'json',
+                    success: function(data) {
+                        data.forEach((element, index) => {
+                            if (typeof element['group_name'] !== 'undefined') {
+                                $('#data_table').append(`  <tr>
+                            <th scope="row">${index+1}</th>
+                            <td>${element['group_name']}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>`);
+                            }
+                        });
+                        $('#modal-xl').modal("show");
+                    },
+                    error: function(e) {
+
+                    }
+                });
+
+            } else {
+                $('#data_table').html(``);
+                $('#data_table').append(`  <tr>
+                            <th></th>
+                            <td></td>
+                            <td>ไม่พบข้อมูล</td>
+                            <td></td>
+                        </tr>`);
+            }
+
+
         })
     }
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

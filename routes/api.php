@@ -110,7 +110,12 @@ Route::GET('search', function (Request $request) {
 
 
 Route::GET('searchgroup', function (Request $request) {
-
     $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->get();
+    return $result;
+});
+
+
+Route::GET('searchgroups', function (Request $request) {
+    $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->title . '%')->get();
     return $result;
 });

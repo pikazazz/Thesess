@@ -73,14 +73,14 @@
     </div>
 @endsection
 
-
+{{-- 
 @php
 use App\Models\publics\group;
 
 $findPermission = group::where('std_first', '=', Auth::user()->id)->orWhere('std_second', '=', Auth::user()->id)->orWhere('teacher', '=', Auth::user()->id)->get();
 
 dd($findPermission);
-@endphp
+@endphp --}}
 
 @section('content')
 
