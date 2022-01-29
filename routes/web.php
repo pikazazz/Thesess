@@ -1,6 +1,7 @@
 <?php
-
+  use App\Models\UserExport;
 use App\Events\Message;
+use App\Exports\BulkExport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -41,6 +42,10 @@ use App\Http\Controllers\admin\UserDashboard;
 use App\Http\Controllers\admin\account;
 use Illuminate\Support\Facades\Auth;
 
+
+use App\Http\Controllers\ImportExportController;
+
+use Maatwebsite\Excel\Facades\Excel;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -51,10 +56,6 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-
-
 
 
 
@@ -94,6 +95,7 @@ Route::resource('RegisterExam', calendarController::class);
 Route::resource('Group', groups::class);
 Route::resource('Error', error::class);
 
+Route::resource('export', ImportExportController::class);
 
 Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('Dashboard', TeacherView::class);
@@ -124,8 +126,14 @@ Route::group(['middleware' => ['checkrole:admin']], function () {
                     $pass = null;
                     $pass = Str::random(10);
                     $passwordexport[$i] = [
-                        'email' => Str::replaceArray('-', [''], $data[$i]->std_id) . '@mail.rmutt.ac.th', 'password' => $pass
+                        'username' => Str::replaceArray('-', [''], $data[$i]->std_id) . '@mail.rmutt.ac.th', 'password' => $pass
                     ];
+
+                    $query = new UserExport();
+                    $query->username = Str::replaceArray('-', [''], $data[$i]->std_id) . '@mail.rmutt.ac.th';
+                    $query->password =  $pass;
+                    $query->save();
+
                     DB::table('users')->insert([
                         'fname' => $data[$i]->fname,
                         'lname' => $data[$i]->lname,
@@ -135,19 +143,25 @@ Route::group(['middleware' => ['checkrole:admin']], function () {
                         'group' => null,
                         'email' => Str::replaceArray('-', [''], $data[$i]->std_id) . '@mail.rmutt.ac.th',
                         'year' => substr($data[$i]->std_id, 2, 2),
-                        'password' => Hash::make(Str::random(10)),
+                        'password' => Hash::make($pass),
+                        'img' => 'https://cdn-icons-png.flaticon.com/512/219/219983.png',
                     ]);
                     $pass = null;
                 }
 
+
+
+
+
+
                 $student = DB::table('users')->where('role', '=', 'student')->get();
                 $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
                 return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student, 'message' => $request->message]);
+
             } else {
                 $student = DB::table('users')->where('role', '=', 'student')->get();
                 $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
                 return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student, 'message' => $request->message]);
-                dd('ss');
             }
         } catch (\Illuminate\Database\QueryException $ex) {
             $student = DB::table('users')->where('role', '=', 'student')->get();

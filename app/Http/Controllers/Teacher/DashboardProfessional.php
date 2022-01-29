@@ -84,7 +84,7 @@ class DashboardProfessional extends Controller
                 break;
         }
 
-        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+        $group = groupModel::get();
 
         $list_names = [];
         $list_name = User::where('role','=','student')->get();

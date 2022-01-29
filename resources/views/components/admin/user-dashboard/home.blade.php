@@ -24,68 +24,65 @@
 @section('content')
 
 
-<div class="row">
-    <!-- left column -->
-    <div class="col-md-12">
-        <!-- general form elements -->
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title"></h3>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title"></h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form action="{{ route('UserDashboard.store') }}" method="POST">
+                    @csrf
+
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">ชื่อจริง</label>
+                            <input type="text" class="form-control" id="fname" name="fname" value="" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">นามสกุล</label>
+                            <input type="text" class="form-control" id="lname" name="lname" value="" required>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">รหัสนักศึกษา / รหัสอาจารย์</label>
+                            <input type="text" class="form-control" id="username" name="username" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">สถานะ</label>
+                            <select class="form-control" name="role" id="role">
+                                <option value="" selected="selected">
+                                    -- โปรดเลือก --
+                                </option>
+                                <option value="student">นักศึกษา</option>
+                                <option value="teacher">อาจารย์</option>
+                                <option value="admin">ผู้ดูแลระบบ</option>
+                                </option>
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">รหัสผ่าน</label>
+                            <input type="password" class="form-control" minlength="8" id="password" name="password"
+                                value="" required>
+                        </div>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-            <form action="{{route('UserDashboard.store')}}" method="POST" >
-                @csrf
-
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">ชื่อจริง</label>
-                        <input type="text" class="form-control" id="fname" name="fname"
-                            value="" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">นามสกุล</label>
-                        <input type="text" class="form-control" id="lname" name="lname"
-                            value="" required>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">รหัสนักศึกษา / รหัสอาจารย์</label>
-                        <input type="text" class="form-control" id="username" name="username"
-                            value="" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">สถานะ</label>
-                        <select class="form-control" name="role" id="role">
-                            <option value="" selected="selected">
-                                -- โปรดเลือก --
-                            </option>
-                            <option value="student">นักศึกษา</option>
-                            <option value="teacher">อาจารย์</option>
-                            <option value="admin">ผู้ดูแลระบบ</option>
-                            </option>
-
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">รหัสผ่าน</label>
-                        <input type="password" class="form-control" minlength="8" id="password" name="password"
-                            value="" required>
-                    </div>
-
-
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
+            <!-- /.card -->
         </div>
-        <!-- /.card -->
     </div>
-</div>
     <div class="row">
         <!-- left column -->
         <div class="col-md-12">
@@ -130,8 +127,8 @@
                 <div class="card-header">
                     <h3 class="card-title">นักศึกษา</h3>
                     <div class="card-tools">
-                        <form action="{{ route('UserDashboard.create') }}" method="get">
-                            @csrf
+                        <form action="" method="get">
+
                             <div class="input-group input-group-sm" style="width: 150px;">
                                 <input type="text" name="student_search" class="form-control float-right"
                                     placeholder="Search">
@@ -170,23 +167,24 @@
                                             $i = 1;
                                         @endphp
                                         @foreach ($student as $std)
+                                            @include('components.admin.user-dashboard.modal')
                                             @if ($std->role != 'teacher')
                                                 <tr>
 
-                                                    <td>{{ $i++ }}</td>
+                                                    <td>{{ $i + 1 }}</td>
                                                     <td>{{ $std->fname }} {{ $std->lname }}</td>
                                                     <td>{{ $std->email }}</td>
                                                     <td>{{ $std->role }}</td>
                                                     <td>{{ $std->year }}</td>
                                                     <td>
-                                                        <form action="{{ route('UserDashboard.edit', $std->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('put')
-                                                            <button type="submit" class="btn btn-warning"><i
-                                                                    class="fas fa-pen"></i></button>
-                                                        </form>
+                                                        <button type="modal" class="btn btn-warning" data-toggle="modal"
+                                                            data-target="#modal-success{{ $i }}">
+                                                            <i class="fas fa-pen"></i>
+                                                        </button>
                                                     </td>
+                                                    @php
+                                                        $i++;
+                                                    @endphp
                                                     <td class="col-md-1">
                                                         <form action="{{ route('UserDashboard.destroy', $std->id) }}"
                                                             method="POST">
@@ -333,7 +331,9 @@
             )
         </script>
     @endisset
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     @isset($message)
         @switch($message)
@@ -382,6 +382,22 @@
                         'The file has been uploaded.',
                         'success'
                     )
+
+                    fetch(`{{ route('export.create', 'ssss') }}`)
+                        .then(resp => resp.blob())
+                        .then(blob => {
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.style.display = 'none';
+                            a.href = url;
+                            // the filename you want
+                            a.download = 'UserPassword.xlsx';
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        })
+
+                    fetch(`api/delexport`)
                 </script>
             @break
 

@@ -119,3 +119,11 @@ Route::GET('searchgroups', function (Request $request) {
     $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->title . '%')->get();
     return $result;
 });
+
+Route::GET('delexport', function (Request $request) {
+    $result = DB::table('export_user')->truncate();
+    return $result;
+});
+
+
+

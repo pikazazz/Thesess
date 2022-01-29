@@ -73,7 +73,7 @@
     </div>
 @endsection
 
-{{-- 
+{{--
 @php
 use App\Models\publics\group;
 
@@ -891,8 +891,8 @@ dd($findPermission);
     </script>
     <script>
         $(function() {
-            let ip_address = '127.0.0.1';
-            let socket_port = '3000';
+            let ip_address = '203.158.109.144';
+            let socket_port = '80';
             let socket = io(ip_address + ':' + socket_port);
 
             let chatInput = $('#chatInput');
