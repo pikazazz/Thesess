@@ -216,142 +216,334 @@
                     <!-- /.card-body -->
                 </div>
 
+
+                @if (Auth::user()->role == 'teacher')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">ตารางการสอบที่เปิด</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="example1" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 25%">หัวข้อโครงงาน</th>
+                                                        <th style="width: 15%">Proposal</th>
+                                                        <th style="width: 15%">สอบ 60 %</th>
+                                                        <th style="width: 15%">สอบ 70 %</th>
+                                                        <th style="width: 15%">สอบ 80 %</th>
+                                                        <th style="width: 15%">สอบ 100 %</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($group->unique('group_name') as $Group)
+                                                        <tr>
+                                                            <td>{{ $Group->group_name }}</td>
+                                                            <td>
+                                                                <span class="badge badge-warning">สมัครแล้ว</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge badge-danger">สอบไม่ผ่าน</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge badge-success">สอบแล้ว</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge badge-warning">สมัครแล้ว</span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge badge-danger">สอบไม่ผ่าน</span>
+                                                            </td>
+
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                @endif
+
+
                 @php
 
                     use App\Models\teacher\examgroup;
 
                 @endphp
                 @if (Auth::user()->role == 'student')
-                    <div class="col-md-12">
-                        <div class="card card-primary">
-                            <div class="card-body p-0">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">ตารางการสอบที่เปิด</h3>
-                                    </div>
-                                    <!-- /.card-header -->
-                                    <div class="card-body">
-                                        <table id="example1" class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>ลำดับ</th>
-                                                    <th>ชื่อหัวข้อ</th>
-                                                    <th>จำนวนที่เปิดรับ</th>
-                                                    <th>จำนวนที่สมัคร</th>
-                                                    <th>เครื่องมือ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-
-                                                @php
-                                                    $i = 1;
-                                                    function showRegis($id)
-                                                    {
-                                                        $checkCount = examgroup::where('exam_id', '=', $id)
-                                                            ->get()
-                                                            ->count();
-                                                        return $checkCount;
-                                                    }
-                                                @endphp
-                                                @foreach ($listbooking as $Listbooking)
-                                                    <div class="modal fade" id="Listbooking{{ $Listbooking->id }}">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">ยืนยันการสอบ</h4>
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">&times;</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div class="modal-body">
-
-
-                                                                    @if ($Listbooking->type == '0')
-                                                                        ยืนยันการสมัคร {{ $Listbooking->title }} สอบปกติ
-
-                                                                    @elseif ($Listbooking->type == '1')
-                                                                        ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
-                                                                        ครั้งที่ 1
-
-                                                                    @elseif ($Listbooking->type == '2')
-                                                                        ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
-                                                                        ครั้งที่ 2
-
-                                                                    @elseif ($Listbooking->type == '3')
-                                                                        ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
-                                                                        ครั้งที่ 3
-
-                                                                    @endif
-                                                                </div>
-                                                                <form action="{{ route('RegisterExam.store') }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    @method('post')
-                                                                    <div class="modal-footer justify-content-between">
-                                                                        <input type="text" name="data"
-                                                                            value="{{ $Listbooking }}" hidden>
-                                                                        <button type="submit" class="btn btn-primary"
-                                                                            name="group"
-                                                                            value="{{ Auth::user()->group }}">บันทึก</button>
-                                                                    </div>
-                                                                </form>
-
-                                                            </div>
-                                                            <!-- /.modal-content -->
-                                                        </div>
-                                                        <!-- /.modal-dialog -->
-                                                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">ตารางการสอบที่เปิด</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="example1" class="table table-bordered table-striped">
+                                                <thead>
                                                     <tr>
-                                                        <td>{{ $i++ }}</td>
+                                                        <th>ลำดับ</th>
+                                                        <th>ชื่อหัวข้อ</th>
+                                                        <th>จำนวนที่เปิดรับ</th>
+                                                        <th>จำนวนที่สมัคร</th>
+                                                        <th>เครื่องมือ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                        @if ($Listbooking->type == '0')
-                                                            <td>{{ $Listbooking->title }} สอบปกติ</td>
 
-                                                        @elseif ($Listbooking->type == '1')
-                                                            <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 1</td>
+                                                    @php
+                                                        $i = 1;
+                                                        function showRegis($id)
+                                                        {
+                                                            $checkCount = examgroup::where('exam_id', '=', $id)
+                                                                ->get()
+                                                                ->count();
+                                                            return $checkCount;
+                                                        }
+                                                    @endphp
+                                                    @foreach ($listbooking as $Listbooking)
+                                                        <div class="modal fade"
+                                                            id="Listbooking{{ $Listbooking->id }}">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">ยืนยันการสอบ</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
 
-                                                        @elseif ($Listbooking->type == '2')
-                                                            <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 2</td>
 
-                                                        @elseif ($Listbooking->type == '3')
-                                                            <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 3</td>
-                                                        @endif
+                                                                        @if ($Listbooking->type == '0')
+                                                                            ยืนยันการสมัคร {{ $Listbooking->title }}
+                                                                            สอบปกติ
 
-                                                        <td>{{ $Listbooking->unit }}</td>
-                                                        <td>{{ showRegis($Listbooking->id) }}</td>
-                                                        <td>
-                                                            @if (showRegis($Listbooking->id)>=$Listbooking->unit)
-                                                            <button type="" data-toggle="modal"
-                                                            data-target="#Listbooking{{ $Listbooking->id }}"
-                                                            class="btn btn-" disabled>เต็มจำนวน</button>
+                                                                        @elseif ($Listbooking->type == '1')
+                                                                            ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
+                                                                            ครั้งที่ 1
 
-                                                            @else
-                                                            <button type="submit" data-toggle="modal"
-                                                            data-target="#Listbooking{{ $Listbooking->id }}"
-                                                            class="btn btn-success">สมัครสอบ</button>
+                                                                        @elseif ($Listbooking->type == '2')
+                                                                            ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
+                                                                            ครั้งที่ 2
+
+                                                                        @elseif ($Listbooking->type == '3')
+                                                                            ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
+                                                                            ครั้งที่ 3
+
+                                                                        @endif
+                                                                    </div>
+                                                                    <form action="{{ route('RegisterExam.store') }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        @method('post')
+                                                                        <div class="modal-footer justify-content-between">
+                                                                            <input type="text" name="data"
+                                                                                value="{{ $Listbooking }}" hidden>
+                                                                            <button type="submit" class="btn btn-primary"
+                                                                                name="group"
+                                                                                value="{{ Auth::user()->group }}">บันทึก</button>
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                                <!-- /.modal-content -->
+                                                            </div>
+                                                            <!-- /.modal-dialog -->
+                                                        </div>
+                                                        <tr>
+                                                            <td>{{ $i++ }}</td>
+
+                                                            @if ($Listbooking->type == '0')
+                                                                <td>{{ $Listbooking->title }} สอบปกติ</td>
+
+                                                            @elseif ($Listbooking->type == '1')
+                                                                <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 1</td>
+
+                                                            @elseif ($Listbooking->type == '2')
+                                                                <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 2</td>
+
+                                                            @elseif ($Listbooking->type == '3')
+                                                                <td>{{ $Listbooking->title }} ซ่อม ครั้งที่ 3</td>
                                                             @endif
 
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                            <td>{{ $Listbooking->unit }}</td>
+                                                            <td>{{ showRegis($Listbooking->id) }}</td>
+                                                            <td>
+                                                                @if (showRegis($Listbooking->id) >= $Listbooking->unit)
+                                                                    <button type="" data-toggle="modal"
+                                                                        data-target="#Listbooking{{ $Listbooking->id }}"
+                                                                        class="btn btn-" disabled>เต็มจำนวน</button>
 
-                                            </tbody>
-                                        </table>
+                                                                @else
+                                                                    <button type="submit" data-toggle="modal"
+                                                                        data-target="#Listbooking{{ $Listbooking->id }}"
+                                                                        class="btn btn-success">สมัครสอบ</button>
+                                                                @endif
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
                                     </div>
-                                    <!-- /.card-body -->
-                                </div>
 
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
+                    </div>
+                @endif
+
+                @if (Auth::user()->role == 'student')
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">ประวัติรายการสมัคร</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body">
+                                            <table id="example1" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ลำดับ</th>
+                                                        <th>ชื่อหัวข้อ</th>
+                                                        <th>วันที่สมัคร</th>
+                                                        <th>จำนวนคะแนน</th>
+                                                        <th>สถานะ</th>
+                                                    </tr>
+                                                </thead>
+                                                @php
+                                                    $j = 1;
+                                                @endphp
+                                                <tbody>
+                                                    @foreach ($listbookingMe as $ListbookingMe)
+                                                        {{-- <div class="modal fade"
+                                                            id="ListbookingMe{{ $ListbookingMe->id }}">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title">ยืนยันการสอบ</h4>
+                                                                        <button type="button" class="close"
+                                                                            data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+
+
+                                                                        @if ($ListbookingMe->type == '0')
+                                                                            ยืนยันการสมัคร {{ $ListbookingMe->title }}
+                                                                            สอบปกติ
+
+                                                                        @elseif ($ListbookingMe->type == '1')
+                                                                            ยืนยันการสมัคร {{ $ListbookingMe->title }}
+                                                                            ซ่อม
+                                                                            ครั้งที่ 1
+
+                                                                        @elseif ($ListbookingMe->type == '2')
+                                                                            ยืนยันการสมัคร {{ $ListbookingMe->title }}
+                                                                            ซ่อม
+                                                                            ครั้งที่ 2
+
+                                                                        @elseif ($ListbookingMe->type == '3')
+                                                                            ยืนยันการสมัคร {{ $ListbookingMe->title }}
+                                                                            ซ่อม
+                                                                            ครั้งที่ 3
+
+                                                                        @endif
+                                                                    </div>
+                                                                    <form action="{{ route('RegisterExam.store') }}"
+                                                                        method="post">
+                                                                        @csrf
+                                                                        @method('post')
+                                                                        <div class="modal-footer justify-content-between">
+                                                                            <input type="text" name="data"
+                                                                                value="{{ $ListbookingMe }}" hidden>
+                                                                            <button type="submit" class="btn btn-primary"
+                                                                                name="group"
+                                                                                value="{{ Auth::user()->group }}">บันทึก</button>
+                                                                        </div>
+                                                                    </form>
+
+                                                                </div>
+                                                                <!-- /.modal-content -->
+                                                            </div>
+                                                            <!-- /.modal-dialog -->
+                                                        </div> --}}
+                                                        <tr>
+                                                            <td>{{ $j++ }}</td>
+
+                                                            @if ($ListbookingMe->type == '0')
+                                                                <td>{{ $ListbookingMe->title }} สอบปกติ</td>
+
+                                                            @elseif ($ListbookingMe->type == '1')
+                                                                <td>{{ $ListbookingMe->title }} ซ่อม ครั้งที่ 1</td>
+
+                                                            @elseif ($ListbookingMe->type == '2')
+                                                                <td>{{ $ListbookingMe->title }} ซ่อม ครั้งที่ 2</td>
+
+                                                            @elseif ($ListbookingMe->type == '3')
+                                                                <td>{{ $ListbookingMe->title }} ซ่อม ครั้งที่ 3</td>
+                                                            @endif
+
+                                                            <td>{{ $ListbookingMe->created_at }}</td>
+                                                            <td>{{ $ListbookingMe->summation }}</td>
+                                                            <td>
+                                                                @if (($ListbookingMe->summation / 5) * 100 > 79)
+                                                                    <span
+                                                                        class="badge badge-success">{{ $ListbookingMe->status }}</span>
+                                                                @else
+                                                                    <span
+                                                                        class="badge badge-danger">{{ $ListbookingMe->status }}</span>
+                                                                @endif
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
                     </div>
                 @endif
 
                 <!-- /.col -->
             </div>
+
+
+
+
 
             <!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -421,10 +613,10 @@
 
 
             start_date = new Date(start_date);
-            start_date.setDate(start_date.getDate() );
+            start_date.setDate(start_date.getDate());
 
             end_date = new Date(end_date);
-            end_date.setDate(end_date.getDate() );
+            end_date.setDate(end_date.getDate());
 
 
             console.log(end_date);

@@ -575,6 +575,9 @@
                         @enderror
 
                     </div>
+                    <a class="btn btn-link " style="color: #1f51bd" href="{{ route('password.request') }}">
+                        {{ __('ลืมรหัสผ่าน') }}
+                    </a>
                     <input class="form__submit" type="submit" value="Login" />
 
                 </form>

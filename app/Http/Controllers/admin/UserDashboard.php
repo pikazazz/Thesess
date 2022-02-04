@@ -5,9 +5,12 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Support\Str;
 
 use App\Http\Controllers\Controller;
+use App\Mail\sendEmail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserDashboard extends Controller
 {
@@ -116,7 +119,18 @@ class UserDashboard extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user =  User::find($id);
+        $user->password = Hash::make($request->password);
+        $user->fname = $request->fname;
+        $user->lname = $request->lname;
+        $user->tel = $request->tel;
+        $user->save();
+
+
+        $mail = new sendEmail($request);
+        // return $mail;
+        Mail::to($user->email)->send($mail);
+        return redirect()->route('UserDashboard.index');
     }
 
     /**

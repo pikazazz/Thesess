@@ -7,6 +7,7 @@ use App\Models\student\groupModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardProfessional extends Controller
 {
@@ -17,20 +18,28 @@ class DashboardProfessional extends Controller
      */
     public function index()
     {
-        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+
+        $year = intval(date("Y")) + 539;
+
+        $group = groupModel::join('users', 'group.id', '=', 'users.group')->where('year', '=', substr($year, 2, 2))
+            ->get();
 
         $list_names = [];
-        foreach ($group as $Group) {
-            $list_name = User::find($Group->std_first);
+        $list_name = User::where('role', '=', 'student')->get();
+        foreach ($list_name as $List_name) {
             $list_names[] = array(
-                'name' => $list_name->fname . ' ' . $list_name->lname,
-                'tel' => $list_name->tel
+                'name' => $List_name->fname . ' ' . $List_name->lname,
+                'tel' => $List_name->tel
             );
         }
 
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')
+            ->get();
 
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')
+            ->get();
 
-        return view('components.teacher.dashbroadProfessional.home', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names]);
+        return view('components.teacher.dashbroadProfessional.home', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names, 'groupEnd' => $groupEnd, 'groupWait' => $groupWait]);
     }
 
     /**
@@ -87,7 +96,7 @@ class DashboardProfessional extends Controller
         $group = groupModel::get();
 
         $list_names = [];
-        $list_name = User::where('role','=','student')->get();
+        $list_name = User::where('role', '=', 'student')->get();
         foreach ($list_name as $List_name) {
             $list_names[] = array(
                 'name' => $List_name->fname . ' ' . $List_name->lname,
@@ -95,7 +104,17 @@ class DashboardProfessional extends Controller
             );
         }
 
-        return view('components.teacher.dashbroadProfessional.home', ['page' => $type, 'group' => $group,'list_std'=>$list_names]);
+
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')
+            ->get();
+
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')
+            ->get();
+
+
+
+
+        return view('components.teacher.dashbroadProfessional.home', ['page' => $type, 'group' => $group, 'list_std' => $list_names, 'groupEnd' => $groupEnd, 'groupWait' => $groupWait]);
     }
 
     /**

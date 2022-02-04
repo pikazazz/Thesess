@@ -127,19 +127,18 @@
                 <div class="card-header">
                     <h3 class="card-title">นักศึกษา</h3>
                     <div class="card-tools">
-                        <form action="" method="get">
 
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="student_search" class="form-control float-right"
-                                    placeholder="Search">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="student_search" id="student_search" onkeyup="findname()"
+                                class="form-control float-right" placeholder="Search">
 
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default">
+                                    <i class="fas fa-search"></i>
+                                </button>
                             </div>
-                        </form>
+                        </div>
+
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -157,14 +156,15 @@
                                             <th>อีเมล์</th>
                                             <th>ระดับผู้ใช้</th>
                                             <th>ปีการศึกษา</th>
+                                            <th>เบอร์โทร</th>
                                             <th></th>
                                             <th>เครื่องมือ</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="table_student" id="table_student">
                                         @php
-                                            $i = 1;
+                                            $i = 0;
                                         @endphp
                                         @foreach ($student as $std)
                                             @include('components.admin.user-dashboard.modal')
@@ -176,9 +176,10 @@
                                                     <td>{{ $std->email }}</td>
                                                     <td>{{ $std->role }}</td>
                                                     <td>{{ $std->year }}</td>
+                                                    <td>{{ $std->tel }}</td>
                                                     <td>
                                                         <button type="modal" class="btn btn-warning" data-toggle="modal"
-                                                            data-target="#modal-success{{ $i }}">
+                                                            data-target="#modal-success{{ $std->id }}">
                                                             <i class="fas fa-pen"></i>
                                                         </button>
                                                     </td>
@@ -192,16 +193,6 @@
                                                             @method('delete')
                                                             <button type="submit" class="btn btn-danger"><i
                                                                     class="fas fa-trash"></i></button>
-                                                        </form>
-                                                    </td>
-
-                                                    <td class="col-md-1">
-                                                        <form action="{{ route('UserDashboard.show', $std->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('GET')
-                                                            <button type="submit" class="btn btn-success"><i
-                                                                    class="fas fa-eye"></i></button>
                                                         </form>
                                                     </td>
 
@@ -228,11 +219,9 @@
                 <div class="card-header">
                     <h3 class="card-title">อาจารย์</h3>
                     <div class="card-tools">
-                        <form action="{{ route('UserDashboard.create') }}" method="POST">
-                            @csrf
-                            @method('GET')
+
                             <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="teacher_search" class="form-control float-right"
+                                <input type="text" id="teacher_search" onkeyup="findnameteacher()" class="form-control float-right"
                                     placeholder="Search">
 
                                 <div class="input-group-append">
@@ -241,7 +230,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -259,31 +248,32 @@
                                             <th>อีเมล์</th>
                                             <th>ระดับผู้ใช้</th>
                                             <th>สิทธิ์การใช้งาน</th>
+                                            <th>เบอร์ติดต่อ</th>
                                             <th></th>
                                             <th>เครื่องมือ</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="table_teacher" class="table_teacher">
                                         @php
                                             $i = 1;
                                         @endphp
                                         @foreach ($teacher as $tea)
+                                        @include('components.admin.user-dashboard.modalTeacher')
                                             @if ($tea->role != 'student')
-                                                <tr>
+                                                <tr >
                                                     <td>{{ $i++ }}</td>
                                                     <td>{{ $tea->fname }} {{ $tea->lname }}</td>
                                                     <td>{{ $tea->email }}</td>
                                                     <td>{{ $tea->role }}</td>
                                                     <td>{{ $tea->level }}</td>
+                                                    <td>{{ $tea->tel }}</td>
                                                     <td>
-                                                        <form action="{{ route('UserDashboard.edit', $tea->id) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('put')
-                                                            <button type="submit" class="btn btn-warning"><i
-                                                                    class="fas fa-pen"></i></button>
-                                                        </form>
+                                                        <button type="modal" class="btn btn-warning" data-toggle="modal"
+                                                        data-target="#modal-successs{{ $tea->id }}">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
+
                                                     </td>
                                                     <td class="col-md-1">
                                                         <form action="{{ route('UserDashboard.destroy', $tea->id) }}"
@@ -292,16 +282,6 @@
                                                             @method('delete')
                                                             <button type="submit" class="btn btn-danger"><i
                                                                     class="fas fa-trash"></i></button>
-                                                        </form>
-                                                    </td>
-
-                                                    <td class="col-md-1">
-                                                        <form action="{{ route('UserDashboard.show', $tea->id) }}"
-                                                            method="GET">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <button type="submit" class="btn btn-success"><i
-                                                                    class="fas fa-eye"></i></button>
                                                         </form>
                                                     </td>
 
@@ -418,7 +398,124 @@
 
 @endsection
 
+<script>
+    function findname() {
+        //Set id to 0 so you will get all records on page load.
+        var text = document.getElementById('student_search').value;
 
+        $.ajax({
+            type: 'get',
+            url: `/api/search`,
+            data: {
+                id: `{{ Auth::user()->id }}`,
+                text: text,
+            }, //Add request data
+            dataType: 'json',
+
+            success: function(data) {
+                $('#table_student').html("");
+                var i = 1;
+                var id;
+                console.log(data);
+                data.forEach(element => {
+                    if (typeof element['fname'] !== 'undefined') {
+                        $('#table_student').append(`
+                        <tr>
+                            <td>${i++}</td>
+                            <td>${element['fname']}  ${element['lname']} </td>
+                            <td>${element['email']}</td>
+                            <td>${element['role']}</td>
+                            <td>${element['year']}</td>
+                            <td>${element['tel']} </td>
+                            <td>
+                                <button type="modal"  class="btn btn-warning" data-toggle="modal"
+                                data-target="#modal-success${element['id']}">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </td>
+
+                        <td class="col-md-1">
+                            <form action="/UserDashboard/${element['id']}"
+                                method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="submit"  class="btn btn-danger"><i
+                                    class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                            </tr>`);
+                    } else {
+                        $('#table_student').html("");
+                    }
+                });
+
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+
+
+    function findnameteacher() {
+        //Set id to 0 so you will get all records on page load.
+        var text = document.getElementById('teacher_search').value;
+
+        $.ajax({
+            type: 'get',
+            url: `/api/searchteacher`,
+            data: {
+                id: `{{ Auth::user()->id }}`,
+                text: text,
+            }, //Add request data
+            dataType: 'json',
+
+            success: function(data) {
+                $('#table_teacher').html("");
+                var i = 1;
+                var id;
+                console.log(data);
+
+                data.forEach(element => {
+                    if (typeof element['fname'] !== 'undefined') {
+                        $('#table_teacher').append(`
+                        <tr>
+                            <td>${i++}</td>
+                            <td>${element['fname']}  ${element['lname']} </td>
+                            <td>${element['email']}</td>
+                            <td>${element['role']}</td>
+                            <td>${element['year']}</td>
+                            <td>${element['level']} </td>
+                            <td>${element['tel']} </td>
+                            <td>
+                                <button type="modal"  class="btn btn-warning" data-toggle="modal"
+                                data-target="#modal-success${element['id']}">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </td>
+
+                        <td class="col-md-1">
+                            <form action="/UserDashboard/${element['id']}"
+                                method="POST">
+                                @csrf
+                                @method('delete')
+                                <button type="submit"  class="btn btn-danger"><i
+                                    class="fas fa-trash"></i></button>
+                                </form>
+                            </td>
+                            </tr>`);
+                    } else {
+                        $('#table_teacher').html("");
+                    }
+                });
+
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+    }
+</script>
 
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

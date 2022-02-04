@@ -22,26 +22,25 @@ class TeacherView extends Controller
     public function index()
     {
 
-        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+        $group = groupModel::join('users', 'group.id', '=', 'users.group')->where('teacher', '=', Auth::user()->id)
+            ->get();
 
         $list_names = [];
-        foreach ($group as $Group) {
-            $list_name = User::find($Group->std_first);
+        $list_name = User::where('role', '=', 'student')->get();
+        foreach ($list_name as $List_name) {
             $list_names[] = array(
-                'name' => $list_name->fname . ' ' . $list_name->lname,
-                'tel' => $list_name->tel
+                'name' => $List_name->fname . ' ' . $List_name->lname,
+                'tel' => $List_name->tel
             );
         }
 
-        foreach ($group as $Groups) {
-            $list_name = User::find($Groups->std_second);
-            $list_names[] = array(
-                'name' => $list_name->fname . ' ' . $list_name->lname,
-                'tel' => $list_name->tel
-            );
-        }
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')
+            ->get();
 
-        return view('components.teacher.dashbroad.home', ['page' => 'list_group', 'group' => $group,'list_std'=>$list_names]);
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')
+            ->get();
+
+        return view('components.teacher.dashbroad.home', ['page' => 'list_group', 'group' => $group, 'list_std' => $list_names, 'groupEnd' => $groupEnd, 'groupWait' => $groupWait]);
     }
 
     /**
@@ -94,27 +93,26 @@ class TeacherView extends Controller
                 break;
         }
 
-        $group = groupModel::where('teacher', '=', Auth::user()->id)->get();
+        $group = groupModel::join('users', 'group.id', '=', 'users.group')->where('teacher', '=', Auth::user()->id)
+            ->get();
 
         $list_names = [];
-        foreach ($group as $Group) {
-            $list_name = User::find($Group->std_first);
+        $list_name = groupModel::join('users', 'group.id', '=', 'users.group')->where('teacher', '=', Auth::user()->id)->get();
+        foreach ($list_name as $List_name) {
             $list_names[] = array(
-                'name' => $list_name->fname . ' ' . $list_name->lname,
-                'tel' => $list_name->tel
+                'name' => $List_name->fname . ' ' . $List_name->lname,
+                'tel' => $List_name->tel,
+                'group_name' => $List_name->group_name
             );
         }
 
-        foreach ($group as $Groups) {
-            $list_name = User::find($Groups->std_second);
-            $list_names[] = array(
-                'name' => $list_name->fname . ' ' . $list_name->lname,
-                'tel' => $list_name->tel
-            );
-        }
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')->where('teacher', '=', Auth::user()->id)
+            ->get();
 
-        return view('components.teacher.dashbroad.home', ['page' => $type, 'group' => $group,'list_std'=>$list_names]);
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')->where('teacher', '=', Auth::user()->id)
+            ->get();
 
+        return view('components.teacher.dashbroad.home', ['page' => $type, 'group' => $group, 'list_std' => $list_names, 'groupEnd' => $groupEnd, 'groupWait' => $groupWait]);
     }
 
     /**

@@ -1,11 +1,16 @@
 <?php
 
+use App\Mail\sendEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\student\request_group;
 use App\Models\publics\messagelogs;
 use Illuminate\Support\Facades\DB;
 use App\Models\calendar;
+use App\Models\student\groupModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -89,6 +94,29 @@ Route::POST('calendar', function (Request $request) {
 });
 
 
+Route::GET('searchteacher', function (Request $request) {
+    $result = DB::table('users')
+        ->where(function ($query) use ($request) {
+            $query->where('role', '=', 'teacher')
+                ->Where('fname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'teacher')
+                ->Where('lname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'teacher')
+                ->Where('year', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'teacher')
+                ->Where('tel', 'LIKE', '%' . $request->text . '%');
+        })->get();
+
+    return $result;
+});
+
+
 
 Route::GET('search', function (Request $request) {
     $result = DB::table('users')
@@ -103,17 +131,41 @@ Route::GET('search', function (Request $request) {
         ->orWhere(function ($query) use ($request) {
             $query->where('role', '=', 'student')
                 ->Where('year', 'LIKE', '%' . $request->text . '%');
+        })->orWhere(function ($query) use ($request) {
+            $query->where('role', '=', 'student')
+                ->Where('tel', 'LIKE', '%' . $request->text . '%');
         })->get();
-
     return $result;
 });
+
 
 
 Route::GET('searchgroup', function (Request $request) {
-    $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->get();
+
+    $year = intval(date("Y")) + 539;
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('year', '=', substr($year, 2, 2))
+        ->get();
     return $result;
 });
 
+Route::GET('searchend', function (Request $request) {
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')
+        ->where(function ($query) use ($request) {
+            $query->where('status', '=', 'success')
+                ->Where('group_name', 'LIKE', '%' . $request->text . '%');
+        })->distinct()->get(['group_name']);
+    return $result;
+});
+
+
+Route::GET('searchwait', function (Request $request) {
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')
+        ->where(function ($query) use ($request) {
+            $query->where('status', '=', 'warning')
+                ->Where('group_name', 'LIKE', '%' . $request->text . '%');
+        })->distinct()->get(['group_name']);
+    return $result;
+});
 
 Route::GET('searchgroups', function (Request $request) {
     $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->title . '%')->get();
@@ -126,4 +178,45 @@ Route::GET('delexport', function (Request $request) {
 });
 
 
+Route::GET('searchkey', function (Request $request) {
 
+    if ($request->group = 'group') {
+        $year = intval(date("Y")) + 539;
+        $result = groupModel::join('users', 'group.id', '=', 'users.group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', $request->id)
+            ->where('year', '=', substr($year, 2, 2))
+            ->get();
+        return $result;
+    } else if ($request->group = 'success') {
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
+            ->get();
+        return $groupEnd;
+    } else if ($request->group = 'warning') {
+
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
+            ->get();
+        return $groupWait;
+    }
+});
+
+
+Route::GET('searchkey2', function (Request $request) {
+
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')
+        ->where(function ($query) use ($request) {
+            $query->where('teacher', '=', $request->id)
+                ->Where('fname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('teacher', '=', $request->id)
+                ->Where('lname', 'LIKE', '%' . $request->text . '%');
+        })
+        ->orWhere(function ($query) use ($request) {
+            $query->where('teacher', '=', $request->id)
+                ->Where('year', 'LIKE', '%' . $request->text . '%');
+        })->orWhere(function ($query) use ($request) {
+            $query->where('teacher', '=', $request->id)
+                ->Where('tel', 'LIKE', '%' . $request->text . '%');
+        })->get();
+
+    return $result;
+});
