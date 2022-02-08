@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active">FindGroup</li>
+                        <li class="breadcrumb-item active">AddPoint</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -23,6 +23,18 @@
 
 @section('content')
 
+
+    @if (\Session::has('message'))
+
+        <script>
+            Swal.fire(
+                'Success',
+                '{!! \Session::get('message') !!}',
+                '{!! \Session::get('messagetype') !!}',
+            )
+        </script>
+
+    @endif
     <div class="row">
 
 
@@ -78,16 +90,28 @@
                                 {
                                     $calendar = DB::table('calendar')->find($id);
 
-                                    return $calendar->title;
+                                    if( $calendar->type ==0){
+                                        return $calendar->title.' ปกติ';
+                                    }else if( $calendar->type ==2){
+                                        return $calendar->title.' ซ่อมครั้งที่ 1';
+                                    }else{
+                                        return $calendar->title.' ซ่อมครั้งที่ 2';
+                                    }
+
+
                                 }
                             @endphp
                             @foreach ($examgroup as $Examgroup)
                                 @include('components.teacher.proposal.modal')
+
+                                @csrf
+                                @method('post')
+
                                 <tr>
                                     <td>{{ findgroup($Examgroup->group) }}</td>
-                                    <td>{{findstd($Examgroup->group)}}</td>
+                                    <td>{{ findstd($Examgroup->group) }}</td>
                                     <td>{{ findcalendar($Examgroup->exam_id) }}</td>
-                                   
+
                                     <td><button type="modal" class="btn btn-success" data-toggle="modal"
                                             data-target="#modal-success{{ $i }}">
                                             <i class="fas fa-coins"></i>
@@ -95,7 +119,6 @@
                                         </button>
                                     </td>
                                 </tr>
-
                                 @php
                                     $i++;
                                 @endphp
@@ -119,6 +142,50 @@
 
         </div>
 
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-body p-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">ประวัติรายการลงคะแนน</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อโครงงาน</th>
+                                        <th>ประเภทการสมัคร</th>
+                                        <th>จำนวนคะแนน</th>
+                                    </tr>
+                                </thead>
+                                @php
+                                    $j = 1;
+                                @endphp
+                                <tbody>
+                                    @foreach ($point_tran as $Point_tran)
+                                        <tr>
+                                            <td>{{ $j++ }}</td>
+                                            <td>{{ $Point_tran->group_name }}</td>
+                                            <td>{{ $Point_tran->title }}</td>
+                                            <td>{{ $Point_tran->point }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
     </div>
 @endsection
 

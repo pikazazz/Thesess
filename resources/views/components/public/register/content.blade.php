@@ -32,6 +32,7 @@
             <div class="row">
                 @php
                     use App\Models\calendar;
+
                     $calendar = calendar::get();
                 @endphp
                 @if (Auth::user()->role == 'teacher')
@@ -240,23 +241,51 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+
+                                                    @php
+
+                                                        function findRegister($i, $x)
+                                                        {
+                                                            $result = calendar::join('exam_group', 'exam_group.exam_id', '=', 'calendar.id')
+                                                                ->select('calendar.title', 'exam_group.created_at', 'exam_group.id', 'exam_group.status', 'calendar.type', 'exam_group.summation')
+                                                                ->where('group', '=', $i)
+                                                                ->where('title', '=', $x)
+                                                                ->orderBy('id', 'desc')
+                                                                ->limit(1)
+                                                                ->get();
+
+                                                            if (isset($result[0])) {
+                                                                if ($result[0]->status == 'ผ่าน') {
+                                                                    return '<span class="badge badge-success">' . $result[0]->status . '</span>';
+                                                                } elseif ($result[0]->status == 'ไม่ผ่าน') {
+                                                                    return '<span class="badge badge-danger">' . $result[0]->status . '</span>';
+                                                                }else{
+                                                                    return '<span class="badge badge-warning">ยังไม่ได้สมัคร</span>';
+                                                                }
+                                                            } else {
+                                                                return '<span class="badge badge-warning">ยังไม่ได้สมัคร</span>';
+                                                            }
+                                                        }
+
+                                                    @endphp
                                                     @foreach ($group->unique('group_name') as $Group)
                                                         <tr>
-                                                            <td>{{ $Group->group_name }}</td>
-                                                            <td>
-                                                                <span class="badge badge-warning">สมัครแล้ว</span>
+                                                            <td><a href="{{route('Group.show',$Group->group)}}">{{ $Group->group_name }}</a>
                                                             </td>
                                                             <td>
-                                                                <span class="badge badge-danger">สอบไม่ผ่าน</span>
+                                                                {!! findRegister($Group->group, 'สอบหัวข้อ Proposal') !!}
                                                             </td>
                                                             <td>
-                                                                <span class="badge badge-success">สอบแล้ว</span>
+                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 60%') !!}
                                                             </td>
                                                             <td>
-                                                                <span class="badge badge-warning">สมัครแล้ว</span>
+                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 70%') !!}
                                                             </td>
                                                             <td>
-                                                                <span class="badge badge-danger">สอบไม่ผ่าน</span>
+                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 80%') !!}
+                                                            </td>
+                                                            <td>
+                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 100%') !!}
                                                             </td>
 
                                                         </tr>
@@ -515,7 +544,7 @@
                                                                 @if (($ListbookingMe->summation / 5) * 100 > 79)
                                                                     <span
                                                                         class="badge badge-success">{{ $ListbookingMe->status }}</span>
-                                                                @else
+                                                                @else 
                                                                     <span
                                                                         class="badge badge-danger">{{ $ListbookingMe->status }}</span>
                                                                 @endif
