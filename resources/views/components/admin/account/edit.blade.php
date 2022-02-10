@@ -44,7 +44,7 @@
                                     </div>
                                     <input type="text" class="form-control" name="fname" value="{{ Auth::user()->fname }}"
                                         data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                                        inputmode="numeric">
+                                        inputmode="numeric" required>
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -59,7 +59,7 @@
                                     </div>
                                     <input type="text" class="form-control" name="lname" value="{{ Auth::user()->lname }}"
                                         data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask=""
-                                        inputmode="numeric">
+                                        inputmode="numeric" required>
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -77,7 +77,7 @@
                                     </div>
                                     <input type="text" name="address" value="{{ Auth::user()->address }}" class="form-control"
                                         data-inputmask="'mask': ['999-999-9999 [x99999]', '+099 99 99 9999[9]-9999']"
-                                        data-mask="" inputmode="text">
+                                        data-mask="" inputmode="text" required>
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -92,7 +92,7 @@
                                         <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
                                     </div>
                                     <input type="text" name="tel" value="{{ Auth::user()->tel }}" class="form-control"
-                                        data-inputmask="'alias': 'ip'" data-mask="" inputmode="numeric">
+                                        data-inputmask="'alias': 'ip'" data-mask="" inputmode="numeric" required>
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -106,7 +106,7 @@
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
                                     <input type="email" class="form-control" id="email"
-                                       name="email" value="{{ Auth::user()->email }}" placeholder="Enter email">
+                                       name="email" value="{{ Auth::user()->email }}" placeholder="Enter email" readonly>
 
                                 </div>
                                 <br>

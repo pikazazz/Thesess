@@ -77,7 +77,7 @@ class account extends Controller
         $myaccount->tel = $request->tel;
         $myaccount->email = $request->email;
         $myaccount->save();
-        return redirect('../');
+        return redirect()->route('Account.index');
     }
 
     /**

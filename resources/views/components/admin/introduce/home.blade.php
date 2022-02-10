@@ -39,11 +39,11 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">ชื่อหมวดหมู่</label>
                             <input type="text" class="form-control" id="category_name" name="category_name" value=""
-                                placeholder="ชื่อหมวดหมู่">
+                                placeholder="ชื่อหมวดหมู่" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">สีหัวข้อ</label>
-                            <select class="form-control" name="color" placeholder="ทีปรึกษาร่วม" id="color">
+                            <select class="form-control" name="color" placeholder="ทีปรึกษาร่วม" id="color" required>
                                 <option value="" selected="selected">
                                     -- โปรดเลือก --
                                 </option>
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="sss">ชื่อเรื่อง</label>
-                            <input type="text" class="form-control" id="news_name" name="news_name" value="">
+                            <input type="text" class="form-control" id="news_name" name="news_name" value="" required>
                         </div>
 
                         <div class="form-group">
@@ -93,7 +93,7 @@
                             @endphp
 
 
-                            <select class="form-control" name="category_id" placeholder="ทีปรึกษาร่วม" id="category_id">
+                            <select class="form-control" name="category_id" placeholder="ทีปรึกษาร่วม" id="category_id" required>
 
                                 <option value="" selected="selected">
                                     -- โปรดเลือก --
@@ -108,7 +108,7 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">ไอคอน</label>
 
-                            <select class="form-control" name="icon" id="icon">
+                            <select class="form-control" name="icon" id="icon" required>
                                 <option value="" selected="selected">
                                     -- โปรดเลือก --
                                 </option>
@@ -125,7 +125,7 @@
 
 
 
-                        <div class="form-group">
+                        <div class="form-group" required>
                             <label for="exampleInputEmail1">รายละเอียด</label>
                             <textarea id="summernote" name="news_detail"></textarea>
                         </div>
@@ -146,7 +146,6 @@
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">หมวดหมู่</h3>
-
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->

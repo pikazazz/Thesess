@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">สถานะ</label>
-                            <select class="form-control" name="role" id="role">
+                            <select class="form-control" name="role" id="role" required>
                                 <option value="" selected="selected">
                                     -- โปรดเลือก --
                                 </option>
