@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-success{{ $i }}">
+<div class="modal fade" id="modal-success1{{ $j }}">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -12,20 +12,18 @@
                 @csrf
                 @method('post')
                 <div class="modal-body">
-                    <h5>อัพเดทผลการสอบ</h5>
-                    <input type="text" name="data" value="{{ $Examgroup }}" hidden>
+
+                    <input type="text" name="data" value="{{ $Point_tran }}" hidden>
                     <div class="form-group">
-                        <select name="point" class="custom-select form-control-border" id="exampleSelectBorder">
-                            <option value="1">ผ่าน</option>
-                            <option value="0">ผ่านเงื่อนไข 1</option>
-                            <option value="0">ผ่านเงื่อนไข 2</option>
-                            <option value="0">ไม่ผ่าน</option>
+                        <select name="summations" class="custom-select form-control-border" id="exampleSelectBorder">
+                            <option value="ผ่าน">ผ่าน</option>
+                            <option value="ไม่ผ่าน">ไม่ผ่าน</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="modal-footer justify-content-between">
-                    <button type="submit" name="type" value="basic"  class="btn btn-primary">ลงคะแนน</button>
+                    <button type="submit" name="type" value="type" class="btn btn-primary">ลงคะแนน</button>
                 </div>
             </form>
         </div>

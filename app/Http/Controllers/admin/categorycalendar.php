@@ -1,31 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\teacher;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\category_calendar;
 use Illuminate\Http\Request;
-use App\Models\student\groupModel;
-use App\Models\teacher\request_group;
-use Illuminate\Support\Facades\Auth;
 
-class joingroup extends Controller
+class categorycalendar extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
 
-        $group = groupModel::where('teacher', '=', null)->get();
-
-
-        return view('components.teacher.joingroup.home', ['group' => $group]);
+        $list_data = category_calendar::get();
+        return view('components.admin.category-calender.home', ['list_data' => $list_data]);
     }
 
     /**
@@ -46,23 +38,13 @@ class joingroup extends Controller
      */
     public function store(Request $request)
     {
+        $insert = new category_calendar();
+        $insert->name = $request->name;
+        $insert->year = $request->year;
+        $insert->teacher_number =  $request->teacher_number;
+        $insert->save();
 
-        $data = json_decode($request->data);
-
-
-        $checksend = request_group::where('request_receiver', '=', $data->std_first)->where('request_sender', '=', Auth::user()->id)->get()->count();
-
-        if ($checksend > 0) {
-            return redirect()->route('JoinGroup.index')->with('messagesok', 'ส่งคำเชิญซ้ำ')->with('messagetype', 'error');
-        } else {
-            $insert = new request_group();
-            $insert->request_sender = Auth::user()->id;
-            $insert->request_receiver = $data->std_first;
-            $insert->status = 'waiting';
-            $insert->save();
-
-            return redirect()->route('JoinGroup.index')->with('messagesok', 'ส่งคำเชิญสำเร็จ')->with('messagetype', 'success');
-        }
+        return redirect()->route('CalendarEdit.index')->with('messagesok', 'เพิ่มรายการสำเร็จ')->with('messagetype', 'success');
     }
     /**
      * Display the specified resource.

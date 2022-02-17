@@ -23,6 +23,7 @@ class proposal extends Controller
     {
 
         $examgroup = examgroup::orderBy('id', 'desc')->get();
+
         $point_tran = point_transection::join('group', 'group.id', '=', 'point_transection.group')
             ->join('exam_group', 'exam_group.id', '=', 'point_transection.exam_id')
             ->join('calendar', 'calendar.id', '=', 'exam_group.exam_id')
@@ -48,46 +49,51 @@ class proposal extends Controller
      */
     public function store(Request $request)
     {
-        $data = json_decode($request->data);
 
 
-        $point_tran = point_transection::join('group', 'group.id', '=', 'point_transection.group')
-            ->join('exam_group', 'exam_group.id', '=', 'point_transection.exam_id')
-            ->join('calendar', 'calendar.id', '=', 'exam_group.exam_id')
-            ->select('group.id as group_id', 'exam_group.id as exam_group_id', 'calendar.title as calendar_title')
-            ->where('teacher_id', '=', Auth::user()->id)->where('exam_group.id', '=', $data->id)
-            ->where('group.id', '=', $data->group)
-            ->where('calendar.id', '=', $data->exam_id)
-            ->get()->count();
+        if ($request->type == 'basic') {
+            $data = json_decode($request->data);
+            $point_tran = point_transection::join('group', 'group.id', '=', 'point_transection.group')
+                ->join('exam_group', 'exam_group.id', '=', 'point_transection.exam_id')
+                ->join('calendar', 'calendar.id', '=', 'exam_group.exam_id')
+                ->select('group.id as group_id', 'exam_group.id as exam_group_id', 'calendar.title as calendar_title')
+                ->where('teacher_id', '=', Auth::user()->id)->where('exam_group.id', '=', $data->id)
+                ->where('group.id', '=', $data->group)
+                ->where('calendar.id', '=', $data->exam_id)
+                ->get()->count();
+            if ($point_tran > 0) {
+                return redirect()->route('AddPoint.index')->with('message', 'ไม่สามารถลงคะแนนได้เนื่องจาก มีการทำรายการซ้ำ')->with('messagetype', 'error');
+            } else {
+                $count = point_transection::where('exam_id', '=', $data->id)->get()->count();
 
+                if ($count > 4) {
+                    return redirect()->route('AddPoint.index')->with('message', 'ไม่สามารถลงคะแนนเพิ่มได้ เนื่องจากลงคะแนนเต็มแล้ว ')->with('messagetype', 'error');
+                } else {
+                    $query = examgroup::find($data->id);
+                    $query->summation = $query->summation += $request->point;
+                    $query->status = 'กำลังดำเนินการ';
+                    $query->save();
 
-        if ($point_tran > 0) {
-            return redirect()->route('AddPoint.index')->with('message', 'ไม่สามารถลงคะแนนได้เนื่องจาก มีการทำรายการซ้ำ')->with('messagetype', 'error');
+                    
+                    $query2 = new point_transection();
+                    $query2->group = $data->group;
+                    $query2->exam_id = $data->id;
+                    $query2->type = $data->type;
+                    $query2->teacher_id = Auth::user()->id;
+                    $query2->point = $request->point;
+                    $query2->save();
+
+                    return redirect()->route('AddPoint.index')->with('message', 'ลงทะเบียนสำเร็จ ')->with('messagetype', 'success');
+                }
+            }
         } else {
 
-            $count = point_transection::where('exam_id', '=', $data->id)->get()->count();
+            $data = json_decode($request->data);
+            $query = examgroup::find($data->id);
+            $query->status = $request->summations;
+            $query->save();
 
-            if ($count > 4) {
-                return redirect()->route('AddPoint.index')->with('message', 'ไม่สามารถลงคะแนนเพิ่มได้ เนื่องจากลงคะแนนเต็มแล้ว ')->with('messagetype', 'error');
-            } else {
-                $query = examgroup::find($data->id);
-                $query->summation = $query->summation += $request->point;
-                if ($query->summation / 5 * 100 > 79) {
-                    $query->status = 'ผ่าน';
-                } else {
-                    $query->status = 'ไม่ผ่าน';
-                }
-                $query->save();
-                $query2 = new point_transection();
-                $query2->group = $data->group;
-                $query2->exam_id = $data->id;
-                $query2->type = $data->type;
-                $query2->teacher_id = Auth::user()->id;
-                $query2->point = $request->point;
-                $query2->save();
-
-                return redirect()->route('AddPoint.index')->with('message', 'ลงทะเบียนสำเร็จ ')->with('messagetype', 'success');
-            }
+            return redirect()->route('AddPoint.index')->with('message', 'ปรับสถานะสำเร็จ ')->with('messagetype', 'success');
         }
     }
 

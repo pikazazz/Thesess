@@ -1,5 +1,4 @@
 @section('header-content')
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -15,8 +14,6 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-
-
 @endsection
 
 
@@ -77,21 +74,10 @@
                                     <!-- /btn-group -->
                                     <br>
                                     <label>หัวข้อ : </label>
-                                    <div class="input-group">
-                                        {{-- <input id="new-event" type="text" class="form-control" placeholder="Event Title"> --}}
-                                        <select id="title" name="title" class="form-control">
-                                            <option value="สอบหัวข้อ Proposal">สอบหัวข้อ Proposal</option>
-                                            <option value="สอบ บทที่ 1">สอบ บทที่ 1</option>
-                                            <option value="สอบ บทที่ 2">สอบ บทที่ 2</option>
-                                            <option value="สอบ บทที่ 3">สอบ บทที่ 3</option>
-                                            <option value="สอบ บทที่ 4">สอบ บทที่ 4</option>
-                                            <option value="สอบ บทที่ 5">สอบ บทที่ 5</option>
-                                            <option value="สอบความคืบหน้า 60%">สอบความคืบหน้า 60%</option>
-                                            <option value="สอบความคืบหน้า 70%">สอบความคืบหน้า 70%</option>
-                                            <option value="สอบความคืบหน้า 80%">สอบความคืบหน้า 80%</option>
-                                            <option value="สอบความคืบหน้า 100%">สอบความคืบหน้า 100%</option>
+                                    <div class="input-group ">
+                                        <select id="namecalendar" name="title" class="form-control">
+
                                         </select>
-                                        <!-- /btn-group -->
                                     </div>
                                     <br>
                                     <label>ประเภท : </label>
@@ -129,13 +115,12 @@
                                     <br>
                                     <label>ปีการศึกษา : </label>
                                     <div class="input-group">
-                                        <select id="year" name="year" class="form-control">
+                                        <select id="year" name="year" onchange="calendarname()" class="form-control">
                                             @php
                                                 $year = 56;
                                             @endphp
 
                                             @for ($i = 2556; $i < 2600; $i++)
-
                                                 <option value="{{ $year++ }}"> {{ $i }}</option>
                                             @endfor
 
@@ -230,20 +215,11 @@
                                         <!-- /.card-header -->
                                         <div class="card-body">
                                             <table id="example1" class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="width: 25%">หัวข้อโครงงาน</th>
-                                                        <th style="width: 15%">Proposal</th>
-                                                        <th style="width: 15%">สอบ 60 %</th>
-                                                        <th style="width: 15%">สอบ 70 %</th>
-                                                        <th style="width: 15%">สอบ 80 %</th>
-                                                        <th style="width: 15%">สอบ 100 %</th>
-                                                    </tr>
+                                                <thead id="headerTabel">
+
                                                 </thead>
-                                                <tbody>
-
+                                                <tbody id="detailTabel">
                                                     @php
-
                                                         function findRegister($i, $x)
                                                         {
                                                             $result = calendar::join('exam_group', 'exam_group.exam_id', '=', 'calendar.id')
@@ -259,37 +235,17 @@
                                                                     return '<span class="badge badge-success">' . $result[0]->status . '</span>';
                                                                 } elseif ($result[0]->status == 'ไม่ผ่าน') {
                                                                     return '<span class="badge badge-danger">' . $result[0]->status . '</span>';
-                                                                }else{
-                                                                    return '<span class="badge badge-warning">ยังไม่ได้สมัคร</span>';
+                                                                } elseif ($result[0]->status == 'กำลังดำเนินการ') {
+                                                                    return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
                                                                 }
                                                             } else {
                                                                 return '<span class="badge badge-warning">ยังไม่ได้สมัคร</span>';
                                                             }
                                                         }
-
                                                     @endphp
-                                                    @foreach ($group->unique('group_name') as $Group)
-                                                        <tr>
-                                                            <td><a href="{{route('Group.show',$Group->group)}}">{{ $Group->group_name }}</a>
-                                                            </td>
-                                                            <td>
-                                                                {!! findRegister($Group->group, 'สอบหัวข้อ Proposal') !!}
-                                                            </td>
-                                                            <td>
-                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 60%') !!}
-                                                            </td>
-                                                            <td>
-                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 70%') !!}
-                                                            </td>
-                                                            <td>
-                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 80%') !!}
-                                                            </td>
-                                                            <td>
-                                                                {!! findRegister($Group->group, 'สอบความคืบหน้า 100%') !!}
-                                                            </td>
 
-                                                        </tr>
-                                                    @endforeach
+
+
 
                                                 </tbody>
                                             </table>
@@ -332,8 +288,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-
                                                     @php
                                                         $i = 1;
                                                         function showRegis($id)
@@ -374,7 +328,6 @@
                                                                         @elseif ($Listbooking->type == '3')
                                                                             ยืนยันการสมัคร {{ $Listbooking->title }} ซ่อม
                                                                             ครั้งที่ 3
-
                                                                         @endif
                                                                     </div>
                                                                     <form action="{{ route('RegisterExam.store') }}"
@@ -544,7 +497,7 @@
                                                                 @if (($ListbookingMe->summation / 5) * 100 > 79)
                                                                     <span
                                                                         class="badge badge-success">{{ $ListbookingMe->status }}</span>
-                                                                @else 
+                                                                @else
                                                                     <span
                                                                         class="badge badge-danger">{{ $ListbookingMe->status }}</span>
                                                                 @endif
@@ -587,7 +540,6 @@
 
 
     @if (\Session::has('message'))
-
         <script>
             Swal.fire(
                 'Success',
@@ -595,7 +547,6 @@
                 '{!! \Session::get('messagetype') !!}',
             )
         </script>
-
     @endif
 
     <script>
@@ -633,13 +584,11 @@
 
             var start_date = document.getElementById('start_date').value;
             var end_date = document.getElementById('end_date').value;
-            var title = document.getElementById('title').value;
+            var title = document.getElementById('namecalendar').value;
             var unit = document.getElementById('unit').value;
             var year = document.getElementById('year').value;
 
             var type = document.getElementById('type').value;
-
-
 
             start_date = new Date(start_date);
             start_date.setDate(start_date.getDate());
@@ -648,10 +597,9 @@
             end_date.setDate(end_date.getDate());
 
 
-            console.log(end_date);
             axios({
                     method: 'POST',
-                    url: 'http://127.0.0.1:8000/api/calendar',
+                    url: '/api/calendar',
                     data: {
                         'title': title,
                         'start_date': start_date,
@@ -690,7 +638,6 @@
 
                 })
                 .catch(err => {
-                    console.log(err.response.data);
                     let timerInterval
                     Swal.fire({
                         title: 'Alert! ตรวจพบข้อผิดพลาด',
@@ -748,18 +695,18 @@
             var carlendar_data = [];
 
 
-            axios.get('http://127.0.0.1:8000/api/calendar').then(response => {
+            axios.get('/api/calendar').then(response => {
                 carlendar_data.push(response.data)
 
                 response.data.forEach(element => {
                     var date = new Date(element.start_date)
                     var date2 = new Date(element.end_date)
-                    var d = date.getDate(),
+                    var d = date.getDate() + 1,
                         m = date.getMonth(),
                         y = date.getFullYear(),
                         h = date.getHours(),
                         mi = date.getMinutes()
-                    var d2 = date2.getDate(),
+                    var d2 = date2.getDate() + 1,
                         m2 = date2.getMonth(),
                         y2 = date2.getFullYear(),
                         h2 = date2.getHours(),
@@ -869,7 +816,20 @@
                     themeSystem: 'bootstrap',
                     eventMouseEnter: function(event, jsEvent, view) {
 
-                        console.log(event.event._def.extendedProps.eventid);
+                        document.getElementById("year").value = event.event._def.extendedProps.year;
+                        document.getElementById("unit").value = event.event._def.extendedProps.unit;
+
+                        var date = new Date(event.event._instance.range.start);
+                        date = date.toISOString().split('.')[0]
+                        document.getElementById("start_date").value = date;
+
+                        var dates = new Date(event.event._instance.range.end);
+                        dates = dates.toISOString().split('.')[0]
+                        document.getElementById("end_date").value = dates;
+
+
+                        document.getElementById("type").value = event.event._def.extendedProps.type;
+
                         var type = "";
                         if (event.event._def.extendedProps.type == "0") {
                             type = "สอบปกติ";
@@ -892,20 +852,15 @@
                             timerProgressBar: true,
                             didOpen: () => {
                                 Swal.showLoading()
-
                             },
                             willClose: () => {
-
+                                calendarname(event.event._def.extendedProps.year)
                             }
                         })
                     },
 
                     eventMouseLeave: function(event, jsEvent, view) {
-                        // Swal.fire(
-                        //     'Success',
-                        //     'Out',
-                        //     'success',
-                        // )
+
                     },
 
                     //Random default events
@@ -935,7 +890,6 @@
                         return
                     }
 
-                    console.log(val);
                     // Create events
                     var event = $('<div />')
                     event.css({
@@ -960,6 +914,147 @@
 
 
         main()
+    </script>
+
+
+    <script>
+        function calendarname(year) {
+            //Set id to 0 so you will get all records on page load.
+
+            var year = document.getElementById('year').value;
+
+            $.ajax({
+                type: 'get',
+                url: `/api/calendarname`,
+                data: {
+                    id: `{{ Auth::user()->id }}`,
+                    year: year
+                }, //Add request data
+                dataType: 'json',
+                success: function(data) {
+                    $('#namecalendar').html("");
+                    $('#headerTabel').html("");
+                    $('#detailTabel').html("");
+
+                    var title = '';
+                    data.forEach((element, index) => {
+                        if (typeof element['name'] !== 'undefined') {
+                            $('#namecalendar').append(`
+                                            <option value="${element['name']}">${element['name']}</option>
+                                        `);
+                            title += ` <th style="width: 15%">${element['name']}</th>`
+                        } else {
+                            $('#namecalendar').append(`
+                                            <option value="">ไม่พบข้อมูล</option>
+                                        `);
+                        }
+                    });
+
+                    $('#headerTabel').append(`
+                            <tr>
+                                 <th style="width: 25%">หัวข้อโครงงาน</th>
+                                    ${ title}
+                            </tr>
+                     `);
+
+                    detail(year, data.length)
+
+                },
+                error: function(e) {
+
+                }
+            });
+        }
+
+        function detail(year, count) {
+            //Set id to 0 so you will get all records on page load.
+
+            var year = document.getElementById('year').value;
+
+            $.ajax({
+                type: 'get',
+                url: `/api/detailProject`,
+                data: {
+                    id: `{{ Auth::user()->id }}`,
+                    year: year
+                }, //Add request data
+                dataType: 'json',
+                success: function(data) {
+                    var list = [];
+                    var i = 1;
+                    data.forEach((element, index) => {
+                        if (typeof element['group_name'] !== 'undefined') {
+
+                            if (list.find(e => e == element['group_name'])) {
+
+                            } else {
+                                list.push(element['group_name']);
+                                var text = `<tr>
+                                <td><a href="Group/${element['group']}">${element['group_name']}</a></td>`
+
+
+                                $.ajax({
+                                    type: 'get',
+                                    url: `/api/regiscalendar`,
+                                    data: {
+                                        id: `{{ Auth::user()->id }}`,
+                                        count: count,
+                                        year: year,
+                                        group: element['group']
+                                    }, //Add request data
+                                    dataType: 'json',
+                                    success: function(data) {
+                                        if (data.length > 0) {
+                                            let indexCount = 0;
+                                            data.sort((a, b) => {
+                                                return a.Exam_id - b.Exam_id;
+                                            }).forEach((i, ind) => {
+
+                                                if (i.Last_status == 'ผ่าน') {
+                                                    text +=
+                                                        `<td><span class="badge bg-success">${i.Last_status}</span></td>`;
+                                                    indexCount++;
+                                                }else{
+                                                    text +=
+                                                        `<td><span class="badge bg-warning">${i.Last_status}</span></td>`;
+                                                    indexCount++;
+                                                }
+
+
+                                            })
+                                            for (let i = 0; i < count - indexCount; i++) {
+                                                text +=
+                                                    ` <td><span class="badge bg-danger">ยังไม่ได้สมัคร</span></td>`;
+                                            }
+                                        } else {
+                                            for (let i = 0; i < count; i++) {
+                                                text +=
+                                                    ` <td><span class="badge bg-danger">ยังไม่ได้สมัคร</span></td>`;
+                                            }
+                                        }
+                                        text += `</tr>`;
+                                        $('#detailTabel').append(text);
+                                    },
+                                    error: function(e) {
+
+                                    }
+                                });
+                            }
+
+                        } else {
+                            $('#detailTabel').append(`
+                                <tr>
+                                    <td>ไม่พบข้อมูล</td>
+                                </tr>`);
+                        }
+                    });
+
+                },
+                error: function(e) {
+
+                }
+            });
+        }
     </script>
 
 

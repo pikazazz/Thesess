@@ -1,31 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\teacher;
+namespace App\Http\Controllers\publics;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\student\groupModel;
-use App\Models\teacher\request_group;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class joingroup extends Controller
+class pagethesess extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     public function index()
     {
-
-        $group = groupModel::where('teacher', '=', null)->get();
-
-
-        return view('components.teacher.joingroup.home', ['group' => $group]);
+        //
     }
 
     /**
@@ -46,24 +36,9 @@ class joingroup extends Controller
      */
     public function store(Request $request)
     {
-
-        $data = json_decode($request->data);
-
-
-        $checksend = request_group::where('request_receiver', '=', $data->std_first)->where('request_sender', '=', Auth::user()->id)->get()->count();
-
-        if ($checksend > 0) {
-            return redirect()->route('JoinGroup.index')->with('messagesok', 'ส่งคำเชิญซ้ำ')->with('messagetype', 'error');
-        } else {
-            $insert = new request_group();
-            $insert->request_sender = Auth::user()->id;
-            $insert->request_receiver = $data->std_first;
-            $insert->status = 'waiting';
-            $insert->save();
-
-            return redirect()->route('JoinGroup.index')->with('messagesok', 'ส่งคำเชิญสำเร็จ')->with('messagetype', 'success');
-        }
+        //
     }
+
     /**
      * Display the specified resource.
      *
@@ -72,7 +47,12 @@ class joingroup extends Controller
      */
     public function show($id)
     {
-        //
+        $data_group = groupModel::find($id);
+        $std_1 = groupModel::find($data_group->std_first);
+        $std_2 = groupModel::find($data_group->std_second);
+
+        
+        return view('components.public.pagethesess.home', ['data' => $data_group, 'std_1' => $std_1, 'std_2' => $std_2]);
     }
 
     /**

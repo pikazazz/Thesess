@@ -2,7 +2,6 @@
 
 
 @section('header-content')
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -23,7 +22,36 @@
 
 @section('content')
     <!-- Main content -->
+    @php
+    use App\Models\teacher\examgroup;
+    use App\Models\category_calendar;
+    function checkstatus($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
 
+    function checkper($id)
+    {
+        // $counts = category_calendar::where('year', '=', $year)
+        //     ->get()
+        //     ->count();
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+        if (($count / 5) * 100 > 79) {
+            return '<span class="badge bg-success">' . ($count / 5) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / 5) * 100 . '%</span>';
+        }
+    }
+    @endphp
 
     <div class="row">
         <div class="col-lg-3 col-6">
@@ -184,11 +212,10 @@
                             <tr>
                                 <td>{{ $nums++ }}</td>
                                 <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
-
+                                <td> {!! checkstatus($Group->status) !!}</td>
+                                <td>{!! checkper($Group->id) !!}
+                                </td>
                             </tr>
-
                         @endforeach
 
 
@@ -238,10 +265,10 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th style="width: 10px">#</th>
-                            <th>ชื่อ - สกุล</th>
-                            <th style="width: 80px">กลุ่ม</th>
-                            <th style="width: 200px">เบอร์ติดต่อ</th>
+                            <th>#</th>
+                            <th style="width: 20%">ชื่อ - สกุล</th>
+                            <th style="width: 80%">กลุ่ม</th>
+                            <th style="width: 40%">เบอร์ติดต่อ</th>
                         </tr>
                     </thead>
                     <tbody id="student_table">
@@ -250,11 +277,10 @@
                         @endphp
 
                         @foreach ($list_std as $List_std)
-
                             <tr>
                                 <td>{{ $nums++ }}</td>
                                 <td>{{ $List_std['name'] }}</td>
-                                <td><span class="badge bg-primary">1</span></td>
+                                <td>{{ $List_std['group_name'] }}</td>
                                 <td>{{ $List_std['tel'] }}</td>
                             </tr>
                         @endforeach
@@ -319,11 +345,11 @@
                             <tr>
                                 <td>{{ $nums++ }}</td>
                                 <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
+                                <td> {!! checkstatus($Group->status) !!}</td>
+                                <td>{!! checkper($Group->id, $Group->year) !!}
+                                </td>
 
                             </tr>
-
                         @endforeach
 
 
@@ -389,11 +415,10 @@
                             <tr>
                                 <td>{{ $nums++ }}</td>
                                 <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
+                                <td> {!! checkstatus($Group->status) !!}</td>
+                                <td>{!! checkper($Group->id, $Group->year) !!}
 
                             </tr>
-
                         @endforeach
                     </tbody>
                 </table>
@@ -419,10 +444,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     function findname() {
         //Set id to 0 so you will get all records on page load.
         var text = document.getElementById('text').value;
-
         $.ajax({
             type: 'get',
-            url: `/api/search`,
+            url: `/api/searchkey2`,
             data: {
                 id: `{{ Auth::user()->id }}`,
                 text: text,
@@ -431,20 +455,22 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             success: function(data) {
                 $('#student_table').html("");
-                // console.log(data);
+
                 data.forEach(element => {
 
                     if (typeof element['fname'] !== 'undefined') {
                         $('#student_table').append(`<tr>
                     <td></td>
                                 <td>${element['fname']} ${element['lname']}</td>
-                                <td><span class="badge bg-primary">1</span></td>
+                                <td>${element['group_name']}</td>
                                 <td>${element['tel']}</td>
                             </tr>`);
                     } else {
                         $('#student_table').html("");
                     }
                 });
+
+
 
             },
             error: function(e) {
@@ -469,19 +495,29 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             success: function(data) {
                 $('#group_table').html("");
+                var list = [];
+                var i = 1;
                 data.forEach((element, index) => {
                     if (typeof element['group_name'] !== 'undefined') {
-                        $('#group_table').append(`<tr>
-                    <td>${index+1}</td>
+                        // console.log(list.find(e => e == element['group_name']));
+                        // Method (return element > 0).
+                        if (list.find(e => e == element['group_name'])) {
+
+                        } else {
+                            list.push(element['group_name']);
+                            $('#group_table').append(`<tr>
+                    <td>${i++}</td>
                                 <td>${element['group_name']}</td>
-                                <td><span class="badge bg-primary">1</span></td>
-                                <td></td>
+                                <td>${element['checkstatus']}</td>
+                                <td>${element['per']}</td>
+
                             </tr>`);
+                        }
+
                     } else {
                         $('#group_table').html("");
                     }
                 });
-
             },
             error: function(e) {
 
@@ -507,18 +543,28 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             success: function(data) {
                 $('#end_table').html("");
+                var list = [];
+                var i = 1;
                 data.forEach((element, index) => {
                     if (typeof element['group_name'] !== 'undefined') {
-                        $('#end_table').append(`<tr>
+
+                        if (list.find(e => e == element['group_name'])) {
+
+                        } else {
+                            list.push(element['group_name']);
+                            $('#end_table').append(`<tr>
                     <td>${index+1}</td>
                                 <td>${element['group_name']}</td>
-                                <td><span class="badge bg-primary">1</span></td>
-                                <td></td>
+                                <td>${element['checkstatus']}</td>
+                                <td>${element['per']}</td>
                             </tr>`);
+                        }
+
                     } else {
                         $('#end_table').html("");
                     }
                 });
+
 
             },
             error: function(e) {
@@ -545,19 +591,28 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
             success: function(data) {
                 $('#wait_table').html("");
+                var list = [];
+                var i = 1;
                 data.forEach((element, index) => {
                     if (typeof element['group_name'] !== 'undefined') {
-                        $('#wait_table').append(`<tr>
+                        // console.log(list.find(e => e == element['group_name']));
+                        // Method (return element > 0).
+                        if (list.find(e => e == element['group_name'])) {
+
+                        } else {
+                            list.push(element['group_name']);
+                            $('#wait_table').append(`<tr>
                     <td>${index+1}</td>
                                 <td>${element['group_name']}</td>
-                                <td><span class="badge bg-primary">1</span></td>
-                                <td></td>
+                                <td>${element['checkstatus']}</td>
+                                <td>${element['per']}</td>
                             </tr>`);
+                        }
+
                     } else {
                         $('#wait_table').html("");
                     }
                 });
-
             },
             error: function(e) {
 

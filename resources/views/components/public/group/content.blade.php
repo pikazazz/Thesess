@@ -3,6 +3,7 @@
     use App\Models\student\groupModel;
     use App\Models\publics\messagelogs;
     use App\Models\student\myaccountmodel;
+    use App\Models\calendar;
 
     $group = groupModel::find(Auth::user()->group);
 
@@ -25,6 +26,33 @@
         }
     </script>
 
+    @php
+
+    function findRegister($i, $x)
+    {
+        $result = calendar::join('exam_group', 'exam_group.exam_id', '=', 'calendar.id')
+            ->select('calendar.title', 'exam_group.created_at', 'exam_group.id', 'exam_group.status', 'calendar.type', 'exam_group.summation')
+            ->where('group', '=', $i)
+            ->where('title', '=', $x)
+            ->orderBy('id', 'desc')
+            ->limit(1)
+            ->get();
+
+        if (isset($result[0])) {
+            if ($result[0]->status == 'ผ่าน') {
+                return '<span class="badge badge-success">' . $result[0]->status . '</span>';
+            } elseif ($result[0]->status == 'ไม่ผ่าน') {
+                return '<span class="badge badge-danger">' . $result[0]->status . '</span>';
+            } elseif ($result[0]->status == 'กำลังสรุปผล') {
+                return '<span class="badge badge-primary">กำลังดำเนินการ</span>';
+            }
+        } else {
+            return '<span class="badge badge-warning">ยังไม่ได้สมัคร</span>';
+        }
+    }
+
+    @endphp
+
     @if ($group->path_proposal == null && Auth::user()->role == 'student')
         <script>
             Swal.fire(
@@ -36,7 +64,6 @@
     @endif
 
     @if (\Session::has('messagesok'))
-
         <script>
             Swal.fire(
                 'Success',
@@ -73,8 +100,7 @@
     </div>
 @endsection
 
-{{--
-@php
+{{-- @php
 use App\Models\publics\group;
 
 $findPermission = group::where('std_first', '=', Auth::user()->id)->orWhere('std_second', '=', Auth::user()->id)->orWhere('teacher', '=', Auth::user()->id)->get();
@@ -112,31 +138,35 @@ dd($findPermission);
 
 
                     </div>
-                    <div class="col-md">
 
-                        <!-- Profile Image -->
-                        <div class="card card-primary card-outline">
-                            <div class="card-body box-profile">
-                                <div class="text-center">
-                                    <img class="profile-user-img img-fluid img-circle" style="width: 128px;height: 128px;"
-                                        src="{{ $std_2->img }}" alt="User profile picture">
+
+                    <!-- Profile Image -->
+                    @if (isset($std_2))
+                        <div class="col-md">
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle"
+                                            style="width: 128px;height: 128px;" src="{{ $std_2->img }}"
+                                            alt="User profile picture">
+                                    </div>
+
+                                    <h5 class="profile-username text-center">{{ $std_2->fname }} {{ $std_2->lname }}
+                                    </h5>
+
+                                    <p class="text-muted text-center">{favorite}</p>
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                    </ul>
+
+
                                 </div>
-
-                                <h5 class="profile-username text-center">{{ $std_2->fname }} {{ $std_2->lname }}</h5>
-
-                                <p class="text-muted text-center">{favorite}</p>
-
-                                <ul class="list-group list-group-unbordered mb-3">
-                                </ul>
-
-
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
+                    @endif
 
-
-                    </div>
 
                     @if (isset($group) && $group->teacher != null)
                         @php
@@ -278,7 +308,6 @@ dd($findPermission);
                                                                 </div>
                                                                 <!-- /.direct-chat-text -->
                                                             </div>
-
                                                         @endif
 
 
@@ -467,9 +496,6 @@ dd($findPermission);
                             <th style="width: 20%">
                                 หัวข้อ
                             </th>
-                            <th style="width: 6%">
-                                คำแนะนำ
-                            </th>
 
                             <th style="width: 6%" class="text-center">
                                 ผลสอบ
@@ -496,15 +522,11 @@ dd($findPermission);
                                     การนำเสนอหัวข้อโครงงาน
                                 </small>
                             </td>
-                            <td>
-                                <small>
-                                    -
-                                </small>
-                            </td>
+
 
                             <td class="project-state">
-                                <span class="badge badge-success">Pass</span>
-                            </td>
+                                {!! findRegister($group->id, 'สอบหัวข้อ Proposal') !!}
+                             </td>
 
 
 
@@ -561,14 +583,10 @@ dd($findPermission);
                                     บทบำ
                                 </small>
                             </td>
-                            <td>
-                                <ul class="list-inline">
 
-                                </ul>
-                            </td>
 
                             <td class="project-state">
-                                <span class="badge badge-success">Pass</span>
+                                {!! findRegister($group->id, 'สอบความคืบหน้า 60%') !!}
                             </td>
 
                             @if (Auth::user()->role == 'student')
@@ -624,20 +642,13 @@ dd($findPermission);
                                     ทฤษฎีและงานวิจัยที่เกี่ยวข้อง
                                 </small>
                             </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <small>
-                                        -
-                                    </small>
-                                </ul>
-                            </td>
+
 
                             <td class="project-state">
-                                <span class="badge badge-success">Pass</span>
+                                {!! findRegister($group->id, 'สอบความคืบหน้า 70%') !!}
                             </td>
 
                             @if (Auth::user()->role == 'student')
-
                                 @php
                                     $ex = groupModel::find(Auth::user()->group);
 
@@ -692,20 +703,13 @@ dd($findPermission);
 
                                 </small>
                             </td>
-                            <td>
-                                <ul class="list-inline">
-                                    <small>
-                                        แก้ไขระยะเวลาการดำเนินงาน
-                                    </small>
-                                </ul>
-                            </td>
+
 
                             <td class="project-state">
-                                <span class="badge badge-success">Not Pass</span>
+                                {!! findRegister($group->id, 'สอบความคืบหน้า 100%') !!}
                             </td>
 
                             @if (Auth::user()->role == 'student')
-
                                 @php
                                     $ex = groupModel::find(Auth::user()->group);
 
@@ -758,14 +762,10 @@ dd($findPermission);
                                     ผลและการวิเคราะห์ผลการดำเนินงาน
                                 </small>
                             </td>
-                            <td>
-                                <ul class="list-inline">
 
-                                </ul>
-                            </td>
 
                             <td class="project-state">
-                                <span class="badge badge-success">Not Pass</span>
+                                {!! findRegister($group->id, 'สอบความคืบหน้า 80%') !!}
                             </td>
 
                             @if (Auth::user()->role == 'student')
@@ -821,19 +821,14 @@ dd($findPermission);
                                     สรุปและข้อเสนอแนะ
                                 </small>
                             </td>
-                            <td>
-                                <ul class="list-inline">
 
-                                </ul>
-                            </td>
 
                             <td class="project-state">
-                                <span class="badge badge-success">Not Pass</span>
+                                {!! findRegister($group->id, 'สอบความคืบหน้า 100%') !!}
                             </td>
 
 
                             @if (Auth::user()->role == 'student')
-
                                 @php
                                     $ex = groupModel::find(Auth::user()->group);
 
@@ -891,7 +886,7 @@ dd($findPermission);
     </script>
     <script>
         $(function() {
-            let ip_address = '203.158.109.144';
+            let ip_address = '203.158.109.144/chatapi';
             let socket_port = '80';
             let socket = io(ip_address + ':' + socket_port);
 

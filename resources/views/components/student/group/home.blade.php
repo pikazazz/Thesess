@@ -25,17 +25,32 @@
 
     @include('components.student.group.card')
     <br>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <form action="{{ route('FindGroup.store') }}" method="post">
+                        @csrf
+                        @method('post')
+                        <input type="text" id="id" name="id" value="{{Auth::user()->id}}" hidden>
+                        <button class="form-control btn btn-success">สร้างกลุ่มคนเดียว</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">รายชื่อนักศึกษา</h3>
-
                     <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" id="table_search" onchange="search()" name="table_search" class="form-control float-right" placeholder="Search">
 
+                        <div class="input-group input-group-sm" style="width: 150px;">
+
+                            <input type="text" id="table_search" onchange="search()" name="table_search"
+                                class="form-control float-right" placeholder="Search">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-default">
                                     <i class="fas fa-search"></i>
@@ -83,21 +98,22 @@
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-search()
-        function search(){
+        search()
+
+        function search() {
             $(document).ready(function() {
-            $.ajax({
-                type: 'POST',
-                url: '/table',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    key: document.getElementById("table_search").value,
-                },
-                success: function(data) {
-                    $(".table").html(data);
-                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/table',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        key: document.getElementById("table_search").value,
+                    },
+                    success: function(data) {
+                        $(".table").html(data);
+                    }
+                });
             });
-        });
         }
     </script>
 

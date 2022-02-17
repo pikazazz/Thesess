@@ -1,13 +1,16 @@
 <?php
 
 use App\Mail\sendEmail;
+use App\Models\admins\category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\student\request_group;
 use App\Models\publics\messagelogs;
 use Illuminate\Support\Facades\DB;
 use App\Models\calendar;
+use App\Models\category_calendar;
 use App\Models\student\groupModel;
+use App\Models\teacher\examgroup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -119,7 +122,7 @@ Route::GET('searchteacher', function (Request $request) {
 
 
 Route::GET('search', function (Request $request) {
-    $result = DB::table('users')
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')
         ->where(function ($query) use ($request) {
             $query->where('role', '=', 'student')
                 ->Where('fname', 'LIKE', '%' . $request->text . '%');
@@ -135,6 +138,8 @@ Route::GET('search', function (Request $request) {
             $query->where('role', '=', 'student')
                 ->Where('tel', 'LIKE', '%' . $request->text . '%');
         })->get();
+
+
     return $result;
 });
 
@@ -142,33 +147,145 @@ Route::GET('search', function (Request $request) {
 
 Route::GET('searchgroup', function (Request $request) {
 
+    function checkstatus($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
+
+    function checkper($id, $year)
+    {
+        $counts =   category_calendar::where('year', '=', $year)->get()->count();
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+        if (($count /  $counts) * 100 > 79) {
+            return '<span class="badge bg-success">' . ($count / $counts) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / $counts) * 100 . '%</span>';
+        }
+    }
+
     $year = intval(date("Y")) + 539;
-    $result = groupModel::join('users', 'group.id', '=', 'users.group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('year', '=', substr($year, 2, 2))
+    $result = groupModel::join('users', 'group.id', '=', 'users.group')
+        ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
+        ->Where('group_name', 'LIKE', '%' . $request->text . '%')
         ->get();
+    foreach ($result as $Result) {
+        $Result->per = checkstatus($Result->status);
+        $Result->checkstatus =  checkper($Result->id, $Result->year);
+    }
     return $result;
 });
 
 Route::GET('searchend', function (Request $request) {
+    function checkstatusend($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
+
+
+
+    function checkperend($id, $year)
+    {
+        $counts =   category_calendar::where('year', '=', $year)->get()->count();
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+        if (($count /  $counts) * 100 > 79) {
+            return '<span class="badge bg-success">' . ($count / $counts) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / $counts) * 100 . '%</span>';
+        }
+    }
+
+
     $result = groupModel::join('users', 'group.id', '=', 'users.group')
+    ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
         ->where(function ($query) use ($request) {
             $query->where('status', '=', 'success')
                 ->Where('group_name', 'LIKE', '%' . $request->text . '%');
         })->distinct()->get(['group_name']);
+
+    foreach ($result as $Result) {
+        $Result->per = checkstatusend($Result->status);
+        $Result->checkstatus =  checkperend($Result->id, $Result->year);
+    }
+
     return $result;
 });
 
 
 Route::GET('searchwait', function (Request $request) {
+
+    function checkstatuswait($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
+
+    function checkperwait($id, $year)
+    {
+        $counts =   category_calendar::where('year', '=', $year)->get()->count();
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+
+
+        if (($count / $counts) * 100 > 79) {
+
+            return '<span class="badge bg-success">' . ($count / $counts) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / $counts) * 100 . '%</span>';
+        }
+    }
+
+
     $result = groupModel::join('users', 'group.id', '=', 'users.group')
+    ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
         ->where(function ($query) use ($request) {
             $query->where('status', '=', 'warning')
                 ->Where('group_name', 'LIKE', '%' . $request->text . '%');
         })->distinct()->get(['group_name']);
+
+
+
+
+    foreach ($result as $Result) {
+        $Result->per = checkstatuswait($Result->status);
+        $Result->checkstatus =  checkperwait($Result->id, $Result->year);
+    }
+
     return $result;
 });
 
+
+
+
+
 Route::GET('searchgroups', function (Request $request) {
-    $result = DB::table('group')->Where('group_name', 'LIKE', '%' . $request->title . '%')->get();
+    $result =  groupModel::join('users', 'group.id', '=', 'users.group')
+        ->select('group.*', 'users.year')
+        ->Where('group_name', 'LIKE', '%' . $request->title . '%')->distinct()->get();
     return $result;
 });
 
@@ -180,26 +297,71 @@ Route::GET('delexport', function (Request $request) {
 
 Route::GET('searchkey', function (Request $request) {
 
+    function checkstatusS($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
+
+    function checkperS($id, $year)
+    {
+        $counts =   category_calendar::where('year', '=', $year)->get()->count();
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+        if (($count / 5) * 100 > 79) {
+            return '<span class="badge bg-success">' . ($count / $counts) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / $counts) * 100 . '%</span>';
+        }
+    }
+
+
     if ($request->group = 'group') {
         $year = intval(date("Y")) + 539;
-        $result = groupModel::join('users', 'group.id', '=', 'users.group')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', $request->id)
+        $result = groupModel::join('users', 'group.id', '=', 'users.group')
+            ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
+            ->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', $request->id)
             ->where('year', '=', substr($year, 2, 2))
             ->get();
+        foreach ($result as $Result) {
+            $Result->per = checkstatusS($Result->status);
+            $Result->checkstatus = checkperS($Result->id, $Result->year);
+        }
         return $result;
     } else if ($request->group = 'success') {
-        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')
+            ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
+
+            ->where('status', '=', 'success')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
             ->get();
+        foreach ($groupEnd as $Result) {
+            $Result->per = checkstatusS($Result->status);
+            $Result->checkstatus =  checkperS($Result->id, $Result->year);
+        }
         return $groupEnd;
     } else if ($request->group = 'warning') {
-
-        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')
+            ->select('group.group_name', 'group.status', 'group.id', 'users.tel', 'users.year', 'users.fname', 'users.lname')
+            ->where('status', '=', 'warning')->Where('group_name', 'LIKE', '%' . $request->text . '%')->where('teacher', '=', Auth::user()->id)
             ->get();
+        foreach ($groupWait as $Result) {
+            $Result->per = checkstatusS($Result->status);
+            $Result->checkstatus =  checkperS($Result->id, $Result->year);
+        }
         return $groupWait;
     }
 });
 
 
 Route::GET('searchkey2', function (Request $request) {
+
 
     $result = groupModel::join('users', 'group.id', '=', 'users.group')
         ->where(function ($query) use ($request) {
@@ -218,9 +380,33 @@ Route::GET('searchkey2', function (Request $request) {
                 ->Where('tel', 'LIKE', '%' . $request->text . '%');
         })->get();
 
+    return  $result;
+});
+
+
+Route::GET('calendarname', function (Request $request) {
+    $result =  category_calendar::where('year', '=', $request->year)->get();
     return $result;
 });
 
 
+Route::GET('detailProject', function (Request $request) {
+
+    $group = groupModel::join('users', 'group.id', '=', 'users.group')->where('year', '=', $request->year)->get();
 
 
+    return  $group;
+});
+
+
+Route::GET('regiscalendar', function (Request $request) {
+
+    $data = category_calendar::join('calendar', 'calendar.title', '=', 'category_calendar.name')
+        ->join('exam_group', 'exam_group.exam_id', '=', 'calendar.id')
+        ->join('group', 'group.id', '=', 'exam_group.group')
+        ->select('exam_group.status as Last_status', 'exam_group.exam_id as Exam_id')
+        ->where('category_calendar.year', '=', $request->year)
+        ->where('exam_group.group', '=', $request->group)->get();
+
+    return   $data;
+});

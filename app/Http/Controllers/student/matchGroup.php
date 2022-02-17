@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\student;
 
 use App\Http\Controllers\Controller;
+use App\Models\student\groupModel;
+use App\Models\student\myaccountmodel;
 use Illuminate\Http\Request;
 
 class matchGroup extends Controller
@@ -26,6 +28,7 @@ class matchGroup extends Controller
     public function create()
     {
 
+
     }
 
     /**
@@ -36,7 +39,16 @@ class matchGroup extends Controller
      */
     public function store(Request $request)
     {
+        $insert = new groupModel();
+        $insert->std_first =$request->id;
+        $insert->std_second = '';
+        $insert->save();
 
+        $std_1 = myaccountmodel::find($request->id);
+        $std_1->group = $insert->id;
+        $std_1->save();
+
+        return redirect()->route('Group.index')->with('messagesok','สร้างกลุ่มสำเร็จ')->with('messagetype','success');
     }
 
     /**

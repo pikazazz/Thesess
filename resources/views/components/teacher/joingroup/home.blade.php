@@ -2,7 +2,6 @@
 
 
 @section('header-content')
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -12,7 +11,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                        <li class="breadcrumb-item active">JoinGroup</li>
+                        <li class="breadcrumb-item active">SendRequest</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -22,6 +21,16 @@
 
 
 @section('content')
+    @if (\Session::has('messagesok'))
+        <script>
+            Swal.fire(
+                'Success',
+                '{!! \Session::get('messagesok') !!}',
+                '{!! \Session::get('messagetype') !!}',
+            )
+        </script>
+    @endif
+
 
     <div class="row">
 
@@ -49,37 +58,46 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
-                                <th>ชื่อโครงงาน</th>
-                                <th>ผู้จัดทำ</th>
                                 <th>เครื่องมือ</th>
+                                <th>ผู้จัดทำ</th>
+                                <th>ชื่อโครงงาน</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php
                                 $i = 1;
-                                function findstd($id){
+                                function findstd($id)
+                                {
                                     $std = DB::table('users')->find($id);
-
-                                    return  $std->fname .' '. $std->lname;
+                                    return $std->fname . ' ' . $std->lname;
                                 }
                             @endphp
+                            {{-- {{dd($group)}} --}}
                             @foreach ($group as $Group)
                                 @include('components.teacher.joingroup.modalApprove')
                                 <tr>
-                                    <td>{{$Group->group_name}}</td>
-                                    <td>{{findstd($Group->std_first) }},{{findstd($Group->std_second) }}</td>
                                     <td><button type="modal" class="btn btn-success" data-toggle="modal"
                                             data-target="#modal-success{{ $i }}">
                                             <i class="fas fa-paper-plane"></i>
                                             ส่งคำเชิญ
                                         </button>
                                     </td>
+                                    @if ($Group->std_second != '')
+                                    <td>{{ findstd($Group->std_first) }},
+                                        {{ findstd($Group->std_second) }}</td>
+                                @else
+                                    <td>{{ findstd($Group->std_first) }}</td>
+                                @endif
+                                    <td>{{ $Group->group_name }}</td>
+
+
+
+
                                 </tr>
 
                                 @php
                                     $i++;
                                 @endphp
-
                             @endforeach
 
 

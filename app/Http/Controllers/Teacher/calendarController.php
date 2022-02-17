@@ -64,7 +64,7 @@ class calendarController extends Controller
             $create->exam_id = $RegisterExam->id;
             $create->type = 0;
             $create->summation = 0;
-            $create->status = "กำลังสรุปผล";
+            $create->status = "กำลังดำเนินการ";
             $create->save();
         }
 

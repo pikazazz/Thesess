@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\student;
+namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\student\request_group;
 use App\Models\student\groupModel;
 use App\Models\student\myaccountmodel;
+use App\Models\teacher\request_group;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class requestGroup extends Controller
 {
@@ -19,7 +18,7 @@ class requestGroup extends Controller
      */
     public function index()
     {
-        return view('components.student.request-group.home');
+        return view('components.teacher.request-group.home');
     }
 
     /**
@@ -40,6 +39,7 @@ class requestGroup extends Controller
      */
     public function store(Request $request)
     {
+        //
     }
 
     /**
@@ -71,53 +71,29 @@ class requestGroup extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-
-
     public function update(Request $request, $id)
     {
-
 
         if ($request->reject) {
             $cancelRequest = request_group::find($id);
             $cancelRequest->status = "reject";
             $cancelRequest->save();
-            return view('components.student.request-group.home');
+            return view('components.teacher.request-group.home');
         } else if ($request->appove) {
-            request_group::where('std_sender', '=', Auth::user()->id)->update(['status' => 'cancel']);
-            request_group::where('std_receiver', '=', Auth::user()->id)->update(['status' => 'cancel']);
+            $update_request = request_group::find($id);
+            $update_request->status = 'success';
+            $update_request->save();
 
-            $listappove = request_group::find($id);
-            $listappove->status = "success";
-            $listappove->save();
+            groupModel::where('std_first', '=', $update_request->request_sender)
+                ->orWhere('std_second', '=', $update_request->request_sender)
+                ->update(['teacher' => Auth::user()->id]);
 
-            request_group::where('std_sender', '=',  $listappove->std_sender)->update(['status' => 'cancel']);
-            request_group::where('std_receiver', '=',  $listappove->std_sender)->update(['status' => 'cancel']);
-            request_group::where('std_receiver', '=',  $listappove->std_receiver)
-            ->where('std_sender', '=',  $listappove->std_sender)
-            ->update(['status' => 'success']);
-
-
-            $group = new groupModel;
-            $group->std_first = $listappove->std_sender;
-            $group->std_second = $listappove->std_receiver;
-            $group->save();
-
-
-            $std_1 = myaccountmodel::find($listappove->std_sender);
-            $std_1->group = $group->id;
-            $std_1->save();
-
-            $std_2 = myaccountmodel::find($listappove->std_receiver);
-            $std_2->group = $group->id;
-            $std_2->save();
-
-            return view('components.student.request-group.home');
+            return view('components.teacher.request-group.home');
         } else {
             $cancelRequest = request_group::find($id);
             $cancelRequest->status = "cancel";
             $cancelRequest->save();
-            return view('components.student.request-group.home');
+            return view('components.teacher.request-group.home');
         }
     }
 

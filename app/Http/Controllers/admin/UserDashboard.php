@@ -37,14 +37,12 @@ class UserDashboard extends Controller
     public function create(Request $request)
     {
 
-
         if (isset($request->teacher_search)) {
             $student = DB::table('users')->where('role', '=', 'student')->get();
             $teacher = DB::table('users')->where('role', '=', 'teacher')->where('lname', 'LIKE', '%' . $request->teacher_search . '%')
                 ->orwhere('fname', 'LIKE', '%' . $request->teacher_search . '%')
                 ->orWhere('email', 'LIKE', '%' . $request->teacher_search . '%')
                 ->orWhere('level', 'LIKE', '%' . $request->teacher_search . '%')->get();
-
             return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student]);
         } else if (isset($request->student_search)) {
             $student = DB::table('users')
@@ -53,7 +51,6 @@ class UserDashboard extends Controller
                 ->orWhere('lname', 'LIKE', '%' . $request->student_search . '%')
                 ->orWhere('email', 'LIKE', '%' . $request->student_search . '%')->get();
             $teacher = DB::table('users')->where('role', '=', 'teacher')->get();
-
             return view('components.admin.user-dashboard.home', ['teacher' => $teacher, 'student' => $student]);
         } else {
             $student = DB::table('users')->where('role', '=', 'student')->get();
@@ -70,6 +67,7 @@ class UserDashboard extends Controller
      */
     public function store(Request $request)
     {
+        $year = substr($request->username,2,2);
 
 
         DB::table('users')->insert([
@@ -79,9 +77,12 @@ class UserDashboard extends Controller
             'tel' => '',
             'role' => $request->role,
             'group' => null,
+            'year'=>$year,
             'email' => $request->username . '@mail.rmutt.ac.th',
             'password' => Hash::make($request->password),
         ]);
+
+
 
         $student = DB::table('users')->where('role', '=', 'student')->get();
         $teacher = DB::table('users')->where('role', '=', 'teacher')->get();

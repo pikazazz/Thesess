@@ -267,12 +267,21 @@
                                         <p>Dashboard</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('Request_Group_Theacher.index') }}" class="nav-link">
+                                        <i class="nav-icon far fa-calendar-alt"></i>
+                                        <p>
+                                            คำเชิญจับคู่
+
+                                        </p>
+                                    </a>
+                                </li>
 
                                 <li class="nav-item">
                                     <a href="{{ route('JoinGroup.index') }}" class="nav-link ">
                                         <i class="nav-icon fas fa-book"></i>
 
-                                        <p>หัวข้อโครงงาน  <br> ที่ยังไม่มีอาจารย์ที่ปรึกษา</p>
+                                        <p>หัวข้อโครงงาน <br> ที่ยังไม่มีอาจารย์ที่ปรึกษา</p>
 
                                     </a>
                                 </li>
@@ -288,32 +297,34 @@
                                         <p>ลงผลการสอบ</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a href="{{ route('Request_Exam.index') }}" class="nav-link ">
                                         <i class="nav-icon fas fa-users"></i>
                                         <p>รายการขอสอบ</p>
                                     </a>
-                                </li>
+                                </li> --}}
 
 
-                                <li class="nav-header">อาจารย์ประจำวิชา</li>
+                                @if (Auth::user()->level == 1)
+                                    <li class="nav-header">อาจารย์ประจำวิชา</li>
 
 
-                                <li class="nav-item">
-                                    <a href="{{ route('DashboardPro.index') }}" class="nav-link ">
-                                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                                        <p>Dashboard-Pro</p>
-                                    </a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('DashboardPro.index') }}" class="nav-link ">
+                                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                                            <p>Dashboard-Pro</p>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-item">
-                                    <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
-                                        <i class="nav-icon far fa-calendar-alt"></i>
-                                        <p>เปิดจองวันสอบ</p>
-                                    </a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('RegisterExam.index') }}" class="nav-link ">
+                                            <i class="nav-icon far fa-calendar-alt"></i>
+                                            <p>เปิดจองวันสอบ</p>
+                                        </a>
+                                    </li>
 
-                                <li class="nav-header">***************************</li>
+                                    <li class="nav-header">***************************</li>
+                                @endif
 
                                 <li class="nav-item">
                                     <a href="{{ route('logout') }}" onclick="event.preventDefault();

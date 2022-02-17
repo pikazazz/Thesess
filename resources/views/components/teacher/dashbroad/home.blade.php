@@ -2,7 +2,6 @@
 
 
 @section('header-content')
-
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -23,6 +22,33 @@
 
 @section('content')
     <!-- Main content -->
+
+    @php
+    use App\Models\teacher\examgroup;
+    function checkstatus($status)
+    {
+        if ($status == 'warning') {
+            return '<span class="badge bg-warning">กำลังอยู่ในระหว่างดำเนินการ</span>';
+        } elseif ($status == 'success') {
+            return '<span class="badge bg-success">ผ่าน</span>';
+        } else {
+            return '<span class="badge bg-danger">ไม่ผ่าน</span>';
+        }
+    }
+
+    function checkper($id)
+    {
+        $count = examgroup::where('group', '=', $id)
+            ->where('status', '=', 'ผ่าน')
+            ->get()
+            ->count();
+        if (($count / 5) * 100 > 79) {
+            return '<span class="badge bg-success">' . ($count / 5) * 100 . '%</span>';
+        } else {
+            return '<span class="badge bg-danger">' . ($count / 5) * 100 . '%</span>';
+        }
+    }
+    @endphp
 
 
     <div class="row">
@@ -132,275 +158,20 @@
 
 
     @if ($page == 'list_group')
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">ค้นหา</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="row">
-                <div class="col">
-                    <div class="card-body p-0 m-3">
-                        <div class="form-group">
-                            <div class="c input-group input-group-lg">
-                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="find('group')"
-                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        @include('components.teacher.dashbroad.listgroup')
 
-
-            <!-- /.card-body -->
-
-        </div>
-        <div class="card">
-
-            <div class="card-header">
-                <h3 class="card-title">รายชื่อกลุ่ม</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-
-
-                    </div>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width: 100px">#</th>
-                            <th>ชื่อโครงงาน</th>
-                            <th style="width: 100px">สรุปผล</th>
-                            <th style="width: 100px">สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data_table">
-                        @php
-                            static $nums = 1;
-                        @endphp
-                        @foreach ($group->unique('group_name') as $Group)
-                            <tr>
-                                <td>{{ $nums++ }}</td>
-                                <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
-
-                            </tr>
-
-                        @endforeach
-
-
-
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
-
-        </div>
 
     @elseif($page == 'list_student')
-
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">ค้นหา</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="row">
-                <div class="col">
-                    <div class="card-body p-0 m-3">
-                        <div class="form-group">
-                            <div class="c input-group input-group-lg">
-                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="findname()"
-                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        @include('components.teacher.dashbroad.liststudent')
 
 
-            <!-- /.card-body -->
-
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">รายชื่อนักศึกษา</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-
-
-                    </div>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th style="width: 20%">ชื่อ - สกุล</th>
-                            <th style="width: 80%">กลุ่ม</th>
-                            <th style="width: 40%">เบอร์ติดต่อ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data_table">
-                        @php
-                            static $nums = 1;
-                        @endphp
-
-                        @foreach ($list_std as $List_std)
-                            <tr>
-                                <td>{{ $nums++ }}</td>
-                                <td>{{ $List_std['name'] }}</td>
-                                <td>{{ $List_std['group_name'] }}</td>
-                                <td>{{ $List_std['tel'] }}</td>
-                            </tr>
-                        @endforeach
-
-
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
-
-        </div>
     @elseif($page == 'list_success')
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">ค้นหา</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="row">
-                <div class="col">
-                    <div class="card-body p-0 m-3">
-                        <div class="form-group">
-                            <div class="c input-group input-group-lg">
-                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="find('sucess')"
-                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- /.card-body -->
-
-        </div>
-        <div class="card">
-
-            <div class="card-header">
-                <h3 class="card-title">รายชื่อกลุ่ม</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-
-
-                    </div>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width: 100px">#</th>
-                            <th>ชื่อโครงงาน</th>
-                            <th style="width: 100px">สรุปผล</th>
-                            <th style="width: 100px">สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data_table">
-                        @php
-                            static $nums = 1;
-                        @endphp
-                        @foreach ($groupEnd->unique('group_name') as $Group)
-                            <tr>
-                                <td>{{ $nums++ }}</td>
-                                <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
-
-                            </tr>
-
-                        @endforeach
-
-
-
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
-
-        </div>
+        @include('components.teacher.dashbroad.listsuccess')
 
     @elseif($page == 'list_reject')
 
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">ค้นหา</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="row">
-                <div class="col">
-                    <div class="card-body p-0 m-3">
-                        <div class="form-group">
-                            <div class="c input-group input-group-lg">
-                                <input type="text" id="text" class="form-control form-control-lg" onkeyup="find('warning')"
-                                    placeholder="ค้นหาด้วยข้อความ (Free Text)">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        @include('components.teacher.dashbroad.listreject')
 
-
-            <!-- /.card-body -->
-
-        </div>
-        <div class="card">
-
-            <div class="card-header">
-                <h3 class="card-title">รายชื่อกลุ่ม</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-
-
-                    </div>
-                </div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body p-0">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width: 100px">#</th>
-                            <th>ชื่อโครงงาน</th>
-                            <th style="width: 100px">สรุปผล</th>
-                            <th style="width: 100px">สถานะ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data_table">
-                        @php
-                            static $nums = 1;
-                        @endphp
-                        @foreach ($groupWait->unique('group_name') as $Group)
-                            <tr>
-                                <td>{{ $nums++ }}</td>
-                                <td> {{ $Group->group_name }}</td>
-                                <td><span class="badge bg-warning">ไม่ผ่าน</span></td>
-                                <td><span class="badge bg-warning">70%</span></td>
-
-                            </tr>
-
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <!-- /.card-body -->
-
-        </div>
     @endif
 
 
@@ -419,7 +190,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     function find(type) {
         //Set id to 0 so you will get all records on page load.
         var text = document.getElementById('text').value;
-        console.log(type);
         $.ajax({
             type: 'get',
             url: `/api/searchkey`,
@@ -444,8 +214,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
                             $('#data_table').append(`<tr>
                     <td>${i++}</td>
                                 <td>${element['group_name']}</td>
-                                <td><span class="badge bg-primary">1</span></td>
-                                <td></td>
+                                <td>${element['checkstatus']}</td>
+                                <td>${element['per']}</td>
                             </tr>`);
                         }
 
@@ -461,7 +231,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         });
     }
 
-    function findname(type) {
+    function findname() {
         //Set id to 0 so you will get all records on page load.
         var text = document.getElementById('text').value;
         $.ajax({
@@ -470,32 +240,27 @@ crossorigin="anonymous" referrerpolicy="no-referrer"></script>
             data: {
                 id: `{{ Auth::user()->id }}`,
                 text: text,
-                type: type
             }, //Add request data
             dataType: 'json',
+
             success: function(data) {
                 $('#data_table').html("");
-                var list = [];
-                console.log(type);
-                data.forEach((element, index) => {
-                    if (typeof element['group_name'] !== 'undefined') {
-                        // console.log(list.find(e => e == element['group_name']));
-                        // Method (return element > 0).
+                console.log(data);
+                data.forEach(element => {
 
-                        list.push(element['group_name']);
+                    if (typeof element['fname'] !== 'undefined') {
                         $('#data_table').append(`<tr>
-                    <td>${index+1}</td>
+                    <td></td>
                                 <td>${element['fname']} ${element['lname']}</td>
                                 <td>${element['group_name']}</td>
                                 <td>${element['tel']}</td>
                             </tr>`);
-                        console.log(index, '*', list.find(e => e == element['group_name']));
-
-
                     } else {
                         $('#data_table').html("");
                     }
                 });
+
+
 
             },
             error: function(e) {

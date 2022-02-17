@@ -29,14 +29,16 @@ use App\Http\Controllers\Teacher\calendarController;
 use App\Http\Controllers\Teacher\mygroup;
 use App\Http\Controllers\Teacher\ExamRequest;
 use App\Http\Controllers\Teacher\DashboardProfessional;
-
+use App\Http\Controllers\Teacher\requestGroup as request_Group;
 
 
 use App\Http\Controllers\publics\messagelog;
 use App\Http\Controllers\publics\groups;
 use App\Http\Controllers\publics\error;
+use App\Http\Controllers\publics\pagethesess;
 use App\Http\Controllers\fileManage;
 
+use App\Http\Controllers\admin\categorycalendar;
 use App\Http\Controllers\admin\introduceManage;
 use App\Http\Controllers\admin\UserDashboard;
 use App\Http\Controllers\admin\account;
@@ -90,6 +92,7 @@ Route::group(['middleware' => ['checkrole:student']], function () {
 });
 
 
+Route::resource('FindThesess', pagethesess::class);
 Route::resource('Message', messagelog::class);
 Route::resource('RegisterExam', calendarController::class);
 Route::resource('Group', groups::class);
@@ -105,6 +108,8 @@ Route::group(['middleware' => ['checkrole:teacher']], function () {
     Route::resource('JoinGroup', joingroup::class);
     Route::resource('MyGroup', mygroup::class);
     Route::resource('Request_Exam', ExamRequest::class);
+    Route::resource('Request_Group_Theacher', request_Group::class);
+
 });
 
 
@@ -113,6 +118,8 @@ Route::group(['middleware' => ['checkrole:admin']], function () {
     Route::resource('UserDashboard', UserDashboard::class);
     Route::resource('Account', account::class);
     Route::resource('Introduce', introduceManage::class);
+    Route::resource('CalendarEdit', categorycalendar::class);
+
 
     Route::GET('RTF', function (Request $request) {
         try {

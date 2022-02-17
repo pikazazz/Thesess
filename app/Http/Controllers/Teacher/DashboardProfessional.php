@@ -21,17 +21,20 @@ class DashboardProfessional extends Controller
 
         $year = intval(date("Y")) + 539;
 
-        $group = groupModel::join('users', 'group.id', '=', 'users.group')->where('year', '=', substr($year, 2, 2))
+        $group = groupModel::join('users', 'group.id', '=', 'users.group')
             ->get();
 
         $list_names = [];
-        $list_name = User::where('role', '=', 'student')->get();
+        $list_name = groupModel::join('users', 'group.id', '=', 'users.group')->get();
+
         foreach ($list_name as $List_name) {
             $list_names[] = array(
                 'name' => $List_name->fname . ' ' . $List_name->lname,
                 'tel' => $List_name->tel
             );
         }
+
+        // dd($list_name);
 
         $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')
             ->get();
@@ -96,21 +99,26 @@ class DashboardProfessional extends Controller
         $group = groupModel::get();
 
         $list_names = [];
-        $list_name = User::where('role', '=', 'student')->get();
+        $list_name = groupModel::join('users', 'group.id', '=', 'users.group')->get();
+
         foreach ($list_name as $List_name) {
             $list_names[] = array(
                 'name' => $List_name->fname . ' ' . $List_name->lname,
-                'tel' => $List_name->tel
+                'tel' => $List_name->tel,
+                'group_name' => $List_name->group_name
             );
         }
 
 
-        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'success')
+        $groupEnd = groupModel::join('users', 'group.id', '=', 'users.group')
+            ->select('group.group_name', 'group.status', 'group.id')
+            ->where('status', '=', 'success')
             ->get();
 
-        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')->where('status', '=', 'warning')
+        $groupWait = groupModel::join('users', 'group.id', '=', 'users.group')
+            ->select('group.group_name', 'group.status', 'group.id')
+            ->where('status', '=', 'warning')
             ->get();
-
 
 
 

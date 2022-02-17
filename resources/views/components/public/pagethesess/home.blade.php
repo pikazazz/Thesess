@@ -517,100 +517,14 @@
 
 <body>
     <div class="containers">
-        <div class="containers__forms">
-            <div class="form">
-                <form method="POST" action="{{ route('login') }}">
 
-
-                    <div class="form-group row mb-0">
-                        <div class="col-md-8 offset-md-4">
-                            <button type="submit" class="btn btn-primary">
-                                {{ __('Login') }}
-                            </button>
-
-                            @if (Route::has('password.request'))
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </form>
-                <form method="POST" action="{{ route('login') }}" class="form__sign-in">
-                    <h2 class="form__title">เข้าสู่ระบบ</h2>
-
-                    @csrf
-
-                    <div class="form__input-field">
-                        <i class="fas fa-user"></i>
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                            name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                        @error('email')
-
-                            <script>
-                                var text = '{{ $message }}';
-                                Swal.fire(
-                                    'ไม่พบผู้งานในระบบ',
-                                    text,
-                                    'error'
-                                )
-                            </script>
-
-                        @enderror
-
-                    </div>
-                    <br>
-                    <div class="form__input-field mt-6">
-                        <i class="fas fa-lock"></i>
-                        <input id="password" type="password"
-                            class="form-control @error('password') is-invalid @enderror" name="password" required
-                            autocomplete="current-password">
-                        @error('password')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-
-
-                        @enderror
-
-                    </div>
-                    <a class="btn btn-link " style="color: #1f51bd" href="{{ route('password.request') }}">
-                        {{ __('ลืมรหัสผ่าน') }}
-                    </a>
-                    <input class="form__submit" type="submit" value="Login" />
-
-                </form>
-
-                <form action="" class="form__sign-up">
-                    <h2 class="form__title">ค้นหาโครงงานในระบบ</h2>
-                    <div class="form__input-field">
-                        <i class="fas fa-user"></i>
-                        <input type="text" placeholder="ปีการศึกษา" required />
-                    </div>
-                    <p class="form__social-text">Or</p>
-                    <div class="form__input-field">
-                        <i class="fas fa-envelope"></i>
-                        <input type="text" id="title" name="title" placeholder=" ชื่อโครงงาน " required />
-                    </div>
-
-
-                    <input class="form__submit" onclick=" onclickS()" type="submit" value="ค้นหา" />
-
-
-                </form>
-            </div>
-        </div>
         <div class="containers__panels">
             <div class="panel panel__left">
                 <div class="panel__content">
                     <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
-                    <p class="panel__paragraph">
-                        วิธีเข้าสู่ระบบบริหารจัดการรายวิชาโครงงาน<br>
-                        ทางด้านร้านวิทยาการคอมพิวเตอร์
-                    </p>
+
                     <button class="btn btn-transparent" id="sign-up-btn">
-                        View More
+                        TEST
                     </button>
                 </div>
                 <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
@@ -619,12 +533,10 @@
                 <div class="panel__content">
                     <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
                     <p class="panel__paragraph">
-                        Username ระบบได้ทำการ Generate อัตโนมัติ ให้แล้ว
-                        <br> โดยใช้ email มหาวิทยาลัยในการใช้งานเงิน เช่น 116110905xxxxx@mail.rmutt.ac.th
-                        Password สอบถามจากอาจารย์ที่ปรึกษา
+                        TEST
                     </p>
                     <button class="btn btn-transparent" id="sign-in-btn">
-                        หน้าหลัก
+                        TEST
                     </button>
                 </div>
                 <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
@@ -632,121 +544,37 @@
             </div>
         </div>
     </div>
-</body>
-<!-- Modal -->
-<div class="modal fade " id="modal-xl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <!-- Modal -->
+
+</body><!-- Modal -->
+<div class="modal fade " id="modal-xl" tabindex="-1" style="display: block;" aria-labelledby="exampleModalLabel"
+    aria-hidden="false">
     <div class="modal-dialog modal-xl">
         <div class="modal-content ">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ผลการค้นหา</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="exampleModalLabel">รายละเอียดโครงงาน</h5>
             </div>
-            <div class="modal-body ">
-                <table class="table" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ชื่อโครงงาน</th>
-                            <th scope="col">ปีการศึกษา</th>
-                            <th scope="col">Link</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data_table">
-
-                    </tbody>
-                </table>
-            </div>
+            <div class="modal-body">
+                {{$data->group_name}}
+            </div> 
         </div>
     </div>
 </div>
 
-<script>
-    const signInBtn = document.querySelector("#sign-in-btn");
-    const signUpBtn = document.querySelector("#sign-up-btn");
-    const containers = document.querySelector(".containers");
-
-    signUpBtn.addEventListener("click", () => {
-        containers.classList.add("sign-up-mode");
-    });
-
-    signInBtn.addEventListener("click", () => {
-        containers.classList.remove("sign-up-mode");
-    });
-</script>
-{{-- @endsection --}}
-
-
-
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<script>
-    function onclickS() {
-        $('#data_table').html(``);
-        let timerInterval
-        Swal.fire({
-            title: 'กำลังทำการค้นหา!',
-            html: 'หน้าต่างกำลังจะปิดในอีก <b></b> .',
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: () => {
-                Swal.showLoading()
-                const b = Swal.getHtmlcontainers().querySelector('b')
-                timerInterval = setInterval(() => {
-                    b.textContent = Swal.getTimerLeft()
-                }, 100)
-            },
-            willClose: () => {
-                clearInterval(timerInterval)
-            }
-        }).then((result) => {
-            /* Read more about handling dismissals below */
-            var title = document.getElementById('title').value;
-
-            if (title != '') {
-                $.ajax({
-                    type: 'get',
-                    url: `/api/searchgroups`,
-                    data: {
-                        title: title,
-                    }, //Add request data
-                    dataType: 'json',
-                    success: function(data) {
-                        console.log(data);
-                        data.forEach((element, index) => {
-                            if (typeof element['group_name'] !== 'undefined') {
-                                $('#data_table').append(`  <tr>
-                            <th scope="row">${index+1}</th>
-                            <td>${element['group_name']}</td>
-                            <td>${element['year']}</td>
-                            <td><a href="FindThesess/${element['id']}">คลิ๊ก</a></td>
-                        </tr>`);
-                            }
-                        });
-                        $('#modal-xl').modal("show");
-                    },
-                    error: function(e) {
-
-                    }
-                });
-
-            } else {
-                $('#data_table').html(``);
-                $('#data_table').append(`  <tr>
-                            <th></th>
-                            <td></td>
-                            <td>ไม่พบข้อมูล</td>
-                            <td></td>
-                        </tr>`);
-            }
-
-
-        })
-    }
-</script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#modal-xl').modal("show");
+    });
+    $('#modal-xl').on('hidden.bs.modal', function(event) {
+        $('#modal-xl').modal("show");
+    })
+</script>
 <!-- Option 1: Bootstrap Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
