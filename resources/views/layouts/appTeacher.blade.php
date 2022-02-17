@@ -13,26 +13,26 @@
         <link rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/fontawesome-free/css/all.min.css') }}">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Tempusdominus Bootstrap 4 -->
         <link rel="stylesheet"
-            href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+            href="{{ asset('public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
         <!-- iCheck -->
-        <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
         <!-- JQVMap -->
-        <link rel="stylesheet" href="{{ asset('plugins/jqvmap/jqvmap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/jqvmap/jqvmap.min.css') }}">
         <!-- Theme style -->
-        <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/dist/css/adminlte.min.css') }}">
         <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
         <!-- Daterange picker -->
-        <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/daterangepicker/daterangepicker.css') }}">
 
-        <link rel="stylesheet" href="{{ asset('plugins/fullcalendar/main.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/fullcalendar/main.css') }}">
         <!-- summernote -->
-        <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('public/plugins/summernote/summernote-bs4.min.css') }}">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
@@ -60,7 +60,7 @@
 
                 <!-- Preloader -->
                 <div class="preloader flex-column justify-content-center align-items-center">
-                    <img class="animation__shake" src="{{ asset('/img/loading.png') }}" alt="AdminLTELogo"
+                    <img class="animation__shake" src="{{ asset('public//img/loading.png') }}" alt="AdminLTELogo"
                         height="200" width="200">
                 </div>
 
@@ -115,7 +115,7 @@
                                 <a href="#" class="dropdown-item">
                                     <!-- Message Start -->
                                     <div class="media">
-                                        <img src="{{ asset('dist/img/user1-128x128.jpg') }}" alt="User Avatar"
+                                        <img src="{{ asset('public/dist/img/user1-128x128.jpg') }}" alt="User Avatar"
                                             class="img-size-50 mr-3 img-circle">
                                         <div class="media-body">
                                             <h3 class="dropdown-item-title">
@@ -134,7 +134,7 @@
                                 <a href="#" class="dropdown-item">
                                     <!-- Message Start -->
                                     <div class="media">
-                                        <img src="{{ asset('dist/img/user8-128x128.jpg') }}" alt="User Avatar"
+                                        <img src="{{ asset('public/dist/img/user8-128x128.jpg') }}" alt="User Avatar"
                                             class="img-size-50 img-circle mr-3">
                                         <div class="media-body">
                                             <h3 class="dropdown-item-title">
@@ -153,7 +153,7 @@
                                 <a href="#" class="dropdown-item">
                                     <!-- Message Start -->
                                     <div class="media">
-                                        <img src="{{ asset('dist/img/user3-128x128.jpg') }}" alt="User Avatar"
+                                        <img src="{{ asset('public/dist/img/user3-128x128.jpg') }}" alt="User Avatar"
                                             class="img-size-50 img-circle mr-3">
                                         <div class="media-body">
                                             <h3 class="dropdown-item-title">
@@ -213,7 +213,7 @@
                 <aside class="main-sidebar  elevation-4" style="background-color: #3f7cff">
                     <!-- Brand Logo -->
                     <a href="index3.html" class="brand-link">
-                        <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                        <img src="{{ asset('public/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
                             class="brand-image img-circle elevation-3" style="opacity: .8">
                         <span class="brand-text font-weight-light" style="color: white">MP GROUP</span>
                     </a>
@@ -378,40 +378,40 @@
 
 
 
-        <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/jquery/jquery.min.js') }}"></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
             $.widget.bridge('uibutton', $.ui.button)
         </script>
         <!-- Bootstrap 4 -->
-        <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <!-- ChartJS -->
-        <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/chart.js/Chart.min.js') }}"></script>
         <!-- Sparkline -->
-        <script src="{{ asset('plugins/sparklines/sparkline.js') }}""></script>
+        <script src="{{ asset('public/plugins/sparklines/sparkline.js') }}""></script>
         <!-- JQVMap -->
-        <script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>
-        <script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+        <script src="{{ asset('public/plugins/jqvmap/jquery.vmap.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
         <!-- jQuery Knob Chart -->
-        <script src="{{ asset('plugins/jquery-knob/jquery.knob.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/jquery-knob/jquery.knob.min.js') }}"></script>
         <!-- daterangepicker -->
-        <script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
-        <script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+        <script src="{{ asset('public/plugins/moment/moment.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/daterangepicker/daterangepicker.js') }}"></script>
         <!-- Tempusdominus Bootstrap 4 -->
-        <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
         <!-- Summernote -->
-        <script src="{{ asset('plugins/summernote/summernote-bs4.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/summernote/summernote-bs4.min.js') }}"></script>
         <!-- overlayScrollbars -->
-        <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+        <script src="{{ asset('public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <!-- AdminLTE App -->
-        <script src="{{ asset('dist/js/adminlte.js') }}"></script>
+        <script src="{{ asset('public/dist/js/adminlte.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
-        <script src="{{ asset('dist/js/demo.js') }}"></script>
+        <script src="{{ asset('public/dist/js/demo.js') }}"></script>
 
-        <script src="{{ asset('plugins/fullcalendar/main.js') }}"></script>
-        {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
+        <script src="{{ asset('public/plugins/fullcalendar/main.js') }}"></script>
+        {{-- <script src="{{ asset('public/js/app.js') }}"></script> --}}
     </body>
 
     </html>

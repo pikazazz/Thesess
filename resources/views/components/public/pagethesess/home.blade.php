@@ -527,7 +527,7 @@
                         TEST
                     </button>
                 </div>
-                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
+                <img class="panel__image" src="{{ asset('public/img/Loginpage2.png') }}" alt="" />
             </div>
             <div class="panel panel__right">
                 <div class="panel__content">
@@ -539,7 +539,7 @@
                         TEST
                     </button>
                 </div>
-                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
+                <img class="panel__image" src="{{ asset('public/img/Loginpage2.png') }}" alt="" />
 
             </div>
         </div>
@@ -557,7 +557,7 @@
             </div>
             <div class="modal-body">
                 {{$data->group_name}}
-            </div> 
+            </div>
         </div>
     </div>
 </div>

@@ -613,7 +613,7 @@
                         View More
                     </button>
                 </div>
-                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
+                <img class="panel__image" src="{{ asset('public/img/Loginpage2.png') }}" alt="" />
             </div>
             <div class="panel panel__right">
                 <div class="panel__content">
@@ -627,7 +627,7 @@
                         หน้าหลัก
                     </button>
                 </div>
-                <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
+                <img class="panel__image" src="{{ asset('public/img/Loginpage2.png') }}" alt="" />
 
             </div>
         </div>
