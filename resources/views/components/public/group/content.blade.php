@@ -243,6 +243,10 @@ dd($findPermission);
                                 <li class="nav-item"><a class="nav-link" style="color: rgb(80, 80, 80)"
                                         href="#settings" data-toggle="tab">Settings</a></li>
                             @endif
+                            @if (Auth::user()->role == 'student')
+                                <li class="nav-item"><a class="nav-link" style="color: rgb(80, 80, 80)"
+                                        href="{{route('Deploy.index')}}" >Deploy</a></li>
+                            @endif
 
                         </ul>
                     </div><!-- /.card-header -->
@@ -270,7 +274,6 @@ dd($findPermission);
 
                                                 @foreach ($message as $Message)
                                                     @if ($Message->sender == Auth::user()->id)
-
                                                         <div class="direct-chat-msg right">
                                                             <div class="direct-chat-infos clearfix">
                                                                 <span class="direct-chat-name float-right">ฉันเอง</span>
@@ -309,8 +312,6 @@ dd($findPermission);
                                                                 <!-- /.direct-chat-text -->
                                                             </div>
                                                         @endif
-
-
                                                     @endif
                                                 @endforeach
 
@@ -374,6 +375,11 @@ dd($findPermission);
 
                                         $colist = User::where('role', '=', 'teacher')->get();
 
+                                        function findTeacher($id)
+                                        {
+                                            $name = User::find($id);
+                                            return $name->fname . ' ' . $name->lname;
+                                        }
                                     @endphp
 
 
@@ -385,8 +391,8 @@ dd($findPermission);
 
                                                 @if ($group->co_teacher != null)
                                                     <option value="{{ $group->co_teacher }}" selected="selected">
-                                                        {{ $colist[$group->co_teacher - 1]->fname }}
-                                                        {{ $colist[$group->co_teacher - 1]->lname }}
+                                                        {{ findTeacher($group->co_teacher) }}
+
                                                     </option>
                                                 @else
                                                     <option value="" selected="selected">
@@ -411,8 +417,7 @@ dd($findPermission);
 
                                                 @if ($group->co_teacher_2 != null)
                                                     <option value="{{ $group->co_teacher_2 }}" selected="selected">
-                                                        {{ $colist[$group->co_teacher_2 - 1]->fname }}
-                                                        {{ $colist[$group->co_teacher_2 - 1]->lname }}
+                                                        {{ findTeacher($group->co_teacher_2) }}
                                                     </option>
                                                 @else
                                                     <option value="" selected="selected">
@@ -438,8 +443,7 @@ dd($findPermission);
 
                                                 @if ($group->co_teacher_3 != null)
                                                     <option value="{{ $group->co_teacher_3 }}" selected="selected">
-                                                        {{ $colist[$group->co_teacher_3 - 1]->fname }}
-                                                        {{ $colist[$group->co_teacher_3 - 1]->lname }}
+                                                        {{ findTeacher($group->co_teacher_3) }}
                                                     </option>
                                                 @else
                                                     <option value="" selected="selected">
@@ -526,7 +530,7 @@ dd($findPermission);
 
                             <td class="project-state">
                                 {!! findRegister($group->id, 'สอบหัวข้อ Proposal') !!}
-                             </td>
+                            </td>
 
 
 
@@ -886,12 +890,25 @@ dd($findPermission);
     </script>
     <script>
         $(function() {
-            let ip_address = '203.158.109.144/chatapi';
+            let ip_address = '203.158.109.144/chatapi/';
             let socket_port = '80';
-            let socket = io(ip_address + ':' + socket_port);
 
+
+            socket.on('connect', function() {
+                console.log('connected!');
+                socket.emit('greet', {
+                    message: 'Hello Mr.Server!'
+                });
+            });
+
+            socket.on('respond', function(data) {
+                console.log(data);
+            });
+            let socket = io(ip_address, {
+                path: "/chatapi/socket.io",
+                transports: ['polling']
+            });
             let chatInput = $('#chatInput');
-
             chatInput.keypress(function(e) {
                 let message = $(this).html();
                 // console.log(message)

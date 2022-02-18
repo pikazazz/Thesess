@@ -37,11 +37,15 @@ use App\Http\Controllers\publics\groups;
 use App\Http\Controllers\publics\error;
 use App\Http\Controllers\publics\pagethesess;
 use App\Http\Controllers\fileManage;
+use App\Http\Controllers\DeployController;
+
 
 use App\Http\Controllers\admin\categorycalendar;
 use App\Http\Controllers\admin\introduceManage;
 use App\Http\Controllers\admin\UserDashboard;
 use App\Http\Controllers\admin\account;
+
+
 use Illuminate\Support\Facades\Auth;
 
 
@@ -65,6 +69,7 @@ use Maatwebsite\Excel\Facades\Excel;
 Route::group(['middleware' => ['checkrole:student']], function () {
     Route::resource('FindGroup', matchGroup::class);
     Route::resource('myaccount', myaccount::class);
+    Route::resource('Deploy', DeployController::class);
     Route::resource('editaccount', editaccount::class);
     Route::resource('thesis', thesis::class);
     Route::resource('introduce', introduce::class);

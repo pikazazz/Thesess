@@ -2,7 +2,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In & Sign Up Form</title>
+    <title>แบบฟอร์ม ลงทะเบียน ขึ้น Server</title>
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@500&display=swap" rel="stylesheet">
 
@@ -519,19 +519,19 @@
     <div class="containers">
 
         <div class="containers__panels">
-            <div class="panel panel__left">
+            {{-- <div class="panel panel__left">
                 <div class="panel__content">
-                    <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
+                    <h5 class="panel__title">รหัสผ่านได้จากไหน ?</h5>
 
                     <button class="btn btn-transparent" id="sign-up-btn">
                         TEST
                     </button>
                 </div>
                 <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
-            </div>
-            <div class="panel panel__right">
+            </div> --}}
+            {{-- <div class="panel panel__right">
                 <div class="panel__content">
-                    <h3 class="panel__title">รหัสผ่านได้จากไหน ?</h3>
+                    <h5 class="panel__title">รหัสผ่านได้จากไหน ?</h5>
                     <p class="panel__paragraph">
                         TEST
                     </p>
@@ -541,22 +541,147 @@
                 </div>
                 <img class="panel__image" src="{{ asset('img/Loginpage2.png') }}" alt="" />
 
-            </div>
+            </div> --}}
         </div>
     </div>
 
     <!-- Modal -->
 
 </body><!-- Modal -->
-<div class="modal fade " id="modal-xl" tabindex="-1" style="display: block;" aria-labelledby="exampleModalLabel"
+<div class="modal fade " id="modal-xl" tabindex="-1" style="display: block;" aria-h5ledby="exampleModalLabel"
     aria-hidden="false">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-mb">
         <div class="modal-content ">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">รายละเอียดโครงงาน</h5>
+                <h5 class="modal-title" id="exampleModalLabel">แบบบฟอร์ม กรอกข้อมูล Deploy Server</h5>
             </div>
             <div class="modal-body">
-                {{$data->group_name}}
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+
+                        @if (isset($data[0]->Group))
+                            <form action="{{ route('Deploy.update', $data[0]->id) }}" method="post">
+                                @csrf
+                                @method('put')
+                                <left><h5>กลุ่ม</h5>
+
+                                    <input type="text" name="Group" placeholder="{{ $data[0]->Group }}"
+                                        value="{{ $data[0]->Group }}" hidden />
+
+                                <left><h5>URL Git หน้าบ้าน</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Fornt_End_Path" placeholder=" URL Git หน้าบ้าน"
+                                        value="{{ $data[0]->Fornt_End_Path }}" required />
+                                </div>
+                                <left><h5>URL Git หลังบ้าน</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Back_End_Path" placeholder=" URL Git หลังบ้าน"
+                                        value="{{ $data[0]->Back_End_Path }}" required />
+                                </div>
+                                <left><h5>ภาษาที่ใช้ (หน้าบ้าน)</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Type_Fornt" placeholder="ภาษาที่ใช้ (หน้าบ้าน)"
+                                        value="{{ $data[0]->Type_Fornt }}" required />
+                                </div>
+                                <left><h5>ภาษาที่ใช้ (หลังบ้าน)</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Type_BackEnd" placeholder="ภาษาที่ใช้ (หลังบ้าน)"
+                                        value="{{ $data[0]->Type_BackEnd }}" required />
+                                </div>
+                                <left><h5>User Database</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="User_Database" placeholder="User Database"
+                                        value="{{ $data[0]->User_Database }}" required />
+                                </div>
+                                <left><h5>Password Database</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Password_Database" placeholder="Password Database"
+                                        value="{{ $data[0]->Password_Database }}" required />
+                                </div>
+                                <left><h5>URL Database ( Google Drive)</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Database" placeholder="URL Database ( Google Drive)"
+                                        value="{{ $data[0]->Database }}" required />
+                                </div>
+                                <left><h5>Mysql etc.</h5>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Database_Type" placeholder="Mysql etc."
+                                        value="{{ $data[0]->Database_Type }}" required />
+                                </div>
+
+                                <center> <button class="form__submit" type="submit" name="type"
+                                        value="update">อัพเดท</button>
+                                    <br>
+                                    <a href="{{ route('Group.index') }}">ย้อนกลับ</a>
+
+                                </center>
+                            </form>
+
+                        @else
+                            <form action="{{ route('Deploy.store') }}" method="post">
+                                @method('post')
+                                @csrf
+
+                                    <input type="text" name="Group" placeholder="{{ Auth::user()->group }}"
+                                        value="{{ Auth::user()->group }}" hidden />
+
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Fornt_End_Path" placeholder=" URL Git หน้าบ้าน" required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Back_End_Path" placeholder=" URL Git หลังบ้าน" required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Type_Fornt" placeholder="ภาษาที่ใช้ (หน้าบ้าน)" required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Type_BackEnd" placeholder="ภาษาที่ใช้ (หลังบ้าน)"
+                                        required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="User_Database" placeholder="User Database" required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Password_Database" placeholder="Password Database"
+                                        required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Database" placeholder="URL Database ( Google Drive)"
+                                        required />
+                                </div>
+                                <div class="form__input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" name="Database_Type" placeholder="Mysql etc." required />
+                                </div>
+                                <center> <button class="form__submit" type="submit" name="type"
+                                        value="submit">บันทึก</button></center>
+                            </form>
+                        @endif
+                    </div>
+                    <div class="col"></div>
+                </div>
+
+
+
+
+
+
             </div>
         </div>
     </div>
